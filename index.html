@@ -412,7 +412,7 @@
     // ─────────────────────────────────────────────
     //  SHARED SCENE SETUP
     // ─────────────────────────────────────────────
-    const HERO_CANVAS = document.getElementById('hero-canvas');
+
     const SPIN_CANVAS = document.getElementById('spin-canvas');
     const progressRing = document.getElementById('progress-ring');
     const ringFill = document.getElementById('ring-fill');
@@ -446,8 +446,8 @@
     scene.fog = new THREE.FogExp2(0x050e1f, 0.045);
 
     const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 200);
-    camera.position.set(0, 8, 20);
-    camera.lookAt(0, 0.5, 0);
+    camera.position.set(0, 3.5, 9);
+    camera.lookAt(0, 0.3, 0);
 
     // Lighting
     scene.add(new THREE.AmbientLight(0x223355, 1.8));
@@ -501,7 +501,7 @@
 
     const SEGMENTS = 511;
     const PLANE_SIZE = 14;
-    const MAX_HEIGHT = 1.8;
+    const MAX_HEIGHT = 2.4;
     const SEA_CUTOFF = 0.04;
 
     const loader = new THREE.TextureLoader();
@@ -551,7 +551,7 @@
         const clamped_py = Math.max(0, Math.min(size - 1, py));
         const brightness = pixels[(clamped_py * size + clamped_px) * 4] / 255;
 
-        pos.setY(i, brightness < SEA_CUTOFF ? 0 : brightness * MAX_HEIGHT);
+        pos.setY(i, brightness < SEA_CUTOFF ? -1.0 : brightness * MAX_HEIGHT);
 
         if (brightness < SEA_CUTOFF)       col.copy(deepWater);
         else if (brightness < 0.15)        col.lerpColors(lowland,    midSlope,   (brightness - SEA_CUTOFF) / 0.11);
@@ -613,7 +613,7 @@
     // ─────────────────────────────────────────────
     //  RENDERERS
     // ─────────────────────────────────────────────
-    const heroRenderer = makeRenderer(HERO_CANVAS);
+
     const spinRenderer = makeRenderer(SPIN_CANVAS);
 
     // ─────────────────────────────────────────────
@@ -657,27 +657,22 @@
         currentRotation += (targetRotation - currentRotation) * 0.07;
         island.rotation.y = currentRotation;
 
-        camera.position.y = 5.5 + Math.sin(t * 0.4) * 0.12;
-        camera.lookAt(0, 0.5, 0);
+        camera.position.y = 3.5 + Math.sin(t * 0.4) * 0.12;
+        camera.lookAt(0, 0.3, 0);
 
         if (lavaLight) {
           lavaLight.intensity = 3 + Math.sin(t * 5.3) * 0.8 + Math.sin(t * 3.1) * 0.4;
         }
 
-        if (scrollProgress < 0.01) {
-          resize(heroRenderer, camera, HERO_CANVAS);
-          heroRenderer.render(scene, camera);
-        } else {
-          resize(spinRenderer, camera, SPIN_CANVAS);
-          spinRenderer.render(scene, camera);
-        }
+        // Always render to the spin canvas — it covers the full viewport at all scroll positions
+        resize(spinRenderer, camera, SPIN_CANVAS);
+        spinRenderer.render(scene, camera);
       }
 
       animate();
     }
 
     window.addEventListener('resize', () => {
-      resize(heroRenderer, camera, HERO_CANVAS);
       resize(spinRenderer, camera, SPIN_CANVAS);
     });
 
