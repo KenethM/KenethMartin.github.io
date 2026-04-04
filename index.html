@@ -506,93 +506,101 @@
 
     const loader = new THREE.TextureLoader();
 
-    loader.load(
-      'heightmap.png',
+    // Safety net: if nothing starts the animation within 6 seconds, use fallback
+    let animationStarted = false;
+    setTimeout(function () {
+      if (!animationStarted) buildFallback();
+    }, 6000);
 
-      function (texture) {
-        const img = texture.image;
-        const size = img.width;
+    function buildIslandFromPixels(pixels, size) {
+      const geo = new THREE.PlaneGeometry(PLANE_SIZE, PLANE_SIZE, SEGMENTS, SEGMENTS);
+      geo.rotateX(-Math.PI / 2);
+
+      const pos = geo.attributes.position;
+      const colors = [];
+      const col = new THREE.Color();
+
+      const deepWater  = new THREE.Color(0x0a2040);
+      const lowland    = new THREE.Color(0x2d4a20);
+      const midSlope   = new THREE.Color(0x4a5530);
+      const highSlope  = new THREE.Color(0x6b5540);
+      const barrenLava = new THREE.Color(0x3a3030);
+      const summit     = new THREE.Color(0xd8dde8);
+
+      // Find island bounding box in pixel space for centering
+      let minPX = size, maxPX = 0, minPY = size, maxPY = 0;
+      for (let py = 0; py < size; py++) {
+        for (let px = 0; px < size; px++) {
+          if (pixels[(py * size + px) * 4] / 255 >= SEA_CUTOFF) {
+            minPX = Math.min(minPX, px); maxPX = Math.max(maxPX, px);
+            minPY = Math.min(minPY, py); maxPY = Math.max(maxPY, py);
+          }
+        }
+      }
+      const centerPX = (minPX + maxPX) / 2;
+      const centerPY = (minPY + maxPY) / 2;
+      const halfSize = size / 2;
+
+      for (let i = 0; i < pos.count; i++) {
+        const xi = i % (SEGMENTS + 1);
+        const zi = Math.floor(i / (SEGMENTS + 1));
+        // Shift sampling so island center maps to geometry center
+        const px = Math.round(xi + (centerPX - halfSize));
+        const py = Math.round((SEGMENTS - zi) + (centerPY - halfSize));
+        const clamped_px = Math.max(0, Math.min(size - 1, px));
+        const clamped_py = Math.max(0, Math.min(size - 1, py));
+        const brightness = pixels[(clamped_py * size + clamped_px) * 4] / 255;
+
+        pos.setY(i, brightness < SEA_CUTOFF ? 0 : brightness * MAX_HEIGHT);
+
+        if (brightness < SEA_CUTOFF)       col.copy(deepWater);
+        else if (brightness < 0.15)        col.lerpColors(lowland,    midSlope,   (brightness - SEA_CUTOFF) / 0.11);
+        else if (brightness < 0.5)         col.lerpColors(midSlope,   highSlope,  (brightness - 0.15) / 0.35);
+        else if (brightness < 0.75)        col.lerpColors(highSlope,  barrenLava, (brightness - 0.5)  / 0.25);
+        else                               col.lerpColors(barrenLava, summit,     (brightness - 0.75) / 0.25);
+        colors.push(col.r, col.g, col.b);
+      }
+
+      geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+      geo.computeVertexNormals();
+
+      const mesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({
+        vertexColors: true, roughness: 0.88, metalness: 0.0,
+      }));
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      island.add(mesh);
+
+      const lava = new THREE.PointLight(0xff3300, 3, 3);
+      lava.position.set(1.8, 0.4, 1.8);
+      island.add(lava);
+      startAnimation(lava);
+    }
+
+    // Try loading via Image element directly (works on file:// and http://)
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = function () {
+      try {
         const offscreen = document.createElement('canvas');
-        offscreen.width = offscreen.height = size;
+        offscreen.width = offscreen.height = img.width;
         const ctx = offscreen.getContext('2d');
         ctx.drawImage(img, 0, 0);
-        const pixels = ctx.getImageData(0, 0, size, size).data;
-
-        const geo = new THREE.PlaneGeometry(PLANE_SIZE, PLANE_SIZE, SEGMENTS, SEGMENTS);
-        geo.rotateX(-Math.PI / 2);
-
-        const pos = geo.attributes.position;
-        const colors = [];
-        const col = new THREE.Color();
-
-        const deepWater = new THREE.Color(0x0a2040);
-        const lowland = new THREE.Color(0x2d4a20);
-        const midSlope = new THREE.Color(0x4a5530);
-        const highSlope = new THREE.Color(0x6b5540);
-        const barrenLava = new THREE.Color(0x3a3030);
-        const summit = new THREE.Color(0xd8dde8);
-
-        for (let i = 0; i < pos.count; i++) {
-          const xi = i % (SEGMENTS + 1);
-          const zi = Math.floor(i / (SEGMENTS + 1));
-          const px = xi;
-          const py = SEGMENTS - zi;
-          const idx = (py * size + px) * 4;
-          const brightness = pixels[idx] / 255;
-
-          const elevation = brightness < SEA_CUTOFF ? 0 : brightness * MAX_HEIGHT;
-          pos.setY(i, elevation);
-
-          if (brightness < SEA_CUTOFF) {
-            col.copy(deepWater);
-          } else if (brightness < 0.15) {
-            col.lerpColors(lowland, midSlope, (brightness - SEA_CUTOFF) / 0.11);
-          } else if (brightness < 0.5) {
-            col.lerpColors(midSlope, highSlope, (brightness - 0.15) / 0.35);
-          } else if (brightness < 0.75) {
-            col.lerpColors(highSlope, barrenLava, (brightness - 0.5) / 0.25);
-          } else {
-            col.lerpColors(barrenLava, summit, (brightness - 0.75) / 0.25);
-          }
-          colors.push(col.r, col.g, col.b);
-        }
-
-        geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-        geo.computeVertexNormals();
-
-        const mat = new THREE.MeshStandardMaterial({
-          vertexColors: true,
-          roughness: 0.88,
-          metalness: 0.0,
-        });
-
-        const mesh = new THREE.Mesh(geo, mat);
-        mesh.castShadow = true;
-        mesh.receiveShadow = true;
-
-        geo.computeBoundingBox();
-        const center = new THREE.Vector3();
-        geo.boundingBox.getCenter(center);
-        mesh.position.set(-center.x, 0, -center.z);
-
-        island.add(mesh);
-
-        const lava = new THREE.PointLight(0xff3300, 3, 3);
-        lava.position.set(1.8, 0.4, 1.8);
-        island.add(lava);
-
-        startAnimation(lava);
-      },
-
-      undefined,
-
-      function () {
-        console.warn('Could not load heightmap.png — falling back to placeholder geometry.');
+        const pixels = ctx.getImageData(0, 0, img.width, img.height).data;
+        buildIslandFromPixels(pixels, img.width);
+      } catch (e) {
+        console.warn('getImageData failed:', e);
         buildFallback();
       }
-    );
+    };
+    img.onerror = function () {
+      console.warn('heightmap.png failed to load');
+      buildFallback();
+    };
+    img.src = 'heightmap.png';
 
     function buildFallback() {
+      if (animationStarted) return;
       const mesh = new THREE.Mesh(
         new THREE.ConeGeometry(3, 2.5, 32),
         new THREE.MeshStandardMaterial({ color: 0x3a5525, roughness: 0.9 })
@@ -639,6 +647,7 @@
     //  ANIMATION LOOP
     // ─────────────────────────────────────────────
     function startAnimation(lavaLight) {
+      animationStarted = true;
       let t = 0;
 
       function animate() {
