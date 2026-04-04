@@ -498,7 +498,7 @@
     //  Put heightmap.png in the same folder as index.html
     // ─────────────────────────────────────────────
     const island = new THREE.Group();
-    island.position.y = -0.5;
+    island.position.y = -2;
     scene.add(island);
 
     const SEGMENTS = 511;
@@ -522,12 +522,12 @@
       const colors = [];
       const col = new THREE.Color();
 
-      const deepWater  = new THREE.Color(0x0a2040);
-      const lowland    = new THREE.Color(0x2d4a20);
-      const midSlope   = new THREE.Color(0x4a5530);
-      const highSlope  = new THREE.Color(0x6b5540);
+      const deepWater = new THREE.Color(0x0a2040);
+      const lowland = new THREE.Color(0x2d4a20);
+      const midSlope = new THREE.Color(0x4a5530);
+      const highSlope = new THREE.Color(0x6b5540);
       const barrenLava = new THREE.Color(0x3a3030);
-      const summit     = new THREE.Color(0xd8dde8);
+      const summit = new THREE.Color(0xd8dde8);
 
       // Find island bounding box in pixel space for centering
       let minPX = size, maxPX = 0, minPY = size, maxPY = 0;
@@ -557,11 +557,11 @@
         const elev = brightness < SEA_CUTOFF ? -1.0 : Math.pow(brightness, 0.65) * MAX_HEIGHT;
         pos.setY(i, elev);
 
-        if (brightness < SEA_CUTOFF)       col.copy(deepWater);
-        else if (brightness < 0.15)        col.lerpColors(lowland,    midSlope,   (brightness - SEA_CUTOFF) / 0.11);
-        else if (brightness < 0.5)         col.lerpColors(midSlope,   highSlope,  (brightness - 0.15) / 0.35);
-        else if (brightness < 0.75)        col.lerpColors(highSlope,  barrenLava, (brightness - 0.5)  / 0.25);
-        else                               col.lerpColors(barrenLava, summit,     (brightness - 0.75) / 0.25);
+        if (brightness < SEA_CUTOFF) col.copy(deepWater);
+        else if (brightness < 0.15) col.lerpColors(lowland, midSlope, (brightness - SEA_CUTOFF) / 0.11);
+        else if (brightness < 0.5) col.lerpColors(midSlope, highSlope, (brightness - 0.15) / 0.35);
+        else if (brightness < 0.75) col.lerpColors(highSlope, barrenLava, (brightness - 0.5) / 0.25);
+        else col.lerpColors(barrenLava, summit, (brightness - 0.75) / 0.25);
         colors.push(col.r, col.g, col.b);
       }
 
