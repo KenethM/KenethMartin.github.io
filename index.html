@@ -425,6 +425,7 @@
       r.shadowMap.type = THREE.PCFSoftShadowMap;
       r.toneMapping = THREE.ACESFilmicToneMapping;
       r.toneMappingExposure = 1.1;
+      r.localClippingEnabled = true;
       return r;
     }
 
@@ -566,8 +567,11 @@
       geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
       geo.computeVertexNormals();
 
+      // Clip anything below sea level — eliminates the coastline wall
+      const seaClip = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
       const mesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({
         vertexColors: true, roughness: 0.88, metalness: 0.0,
+        clippingPlanes: [seaClip], clipShadows: true,
       }));
       mesh.castShadow = true;
       mesh.receiveShadow = true;
