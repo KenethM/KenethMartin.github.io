@@ -302,17 +302,44 @@
       color: rgba(0, 0, 0, 0.35);
     }
 
-    /* ── ORB HIT AREA — fixed top-right, always above content ── */
-    #orb-hit-area {
+    /* ── MODE TOGGLE — HTML orb, always above canvas and content ── */
+    #mode-toggle {
       position: fixed;
-      top: 8%;
-      right: 6%;
-      width: 90px;
-      height: 90px;
+      top: 10%;
+      right: 7%;
       z-index: 200;
       cursor: pointer;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
+      border: none;
+      background: none;
+      padding: 0;
     }
+
+    #moon-indicator {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 40%, #e8eef5, #aabbd0);
+      box-shadow: 0 0 18px 5px rgba(170, 187, 208, 0.55);
+      margin: 5px;
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    #sun-indicator {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 40%, #fffbe0, #ffcc44);
+      box-shadow: 0 0 22px 7px rgba(255, 204, 68, 0.55);
+      margin: 3px;
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      display: none;
+    }
+
+    body.light-mode #moon-indicator { display: none; }
+    body.light-mode #sun-indicator  { display: block; }
 
     /* ── KEYFRAMES ── */
     @keyframes fadeUp {
@@ -383,8 +410,11 @@
   <!-- Scroll spacer — scrolling through this lifts the camera into the sky -->
   <div id="lift-driver"></div>
 
-  <!-- Invisible hit area for orb toggle — always above content sections -->
-  <div id="orb-hit-area"></div>
+  <!-- Mode toggle — HTML orb always visible above content -->
+  <button id="mode-toggle" aria-label="Toggle day/night mode">
+    <div id="moon-indicator"></div>
+    <div id="sun-indicator"></div>
+  </button>
 
   <!-- Progress ring -->
   <div id="progress-ring">
@@ -669,10 +699,10 @@
       if (hit) e.preventDefault();
     }, { passive: false });
 
-    // Fixed hit area always sits above content — guarantees the toggle works at any scroll depth
-    const orbHitArea = document.getElementById('orb-hit-area');
-    orbHitArea.addEventListener('click', () => setMode(!isDark));
-    orbHitArea.addEventListener('touchstart', (e) => { e.preventDefault(); setMode(!isDark); }, { passive: false });
+    // HTML mode toggle — always above canvas and content, works at any scroll depth
+    const modeToggle = document.getElementById('mode-toggle');
+    modeToggle.addEventListener('click', () => setMode(!isDark));
+    modeToggle.addEventListener('touchstart', (e) => { e.preventDefault(); setMode(!isDark); }, { passive: false });
 
     // ── OCEAN ──
     const oceanGeo = new THREE.CircleGeometry(13, 64);
