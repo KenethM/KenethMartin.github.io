@@ -676,14 +676,15 @@
       mouse.y = -((clientY - rect.top) / rect.height) * 2 + 1;
       raycaster.setFromCamera(mouse, camera);
       const hits = raycaster.intersectObjects([sunOrb, moonOrb]);
-      if (!hits.length) return;
+      if (!hits.length) return false;
       setMode(hits[0].object === moonOrb ? false : true);
+      return true;
     }
 
     SPIN_CANVAS.addEventListener('click', (e) => handleOrbHit(e.clientX, e.clientY));
     SPIN_CANVAS.addEventListener('touchstart', (e) => {
-      e.preventDefault();
-      handleOrbHit(e.touches[0].clientX, e.touches[0].clientY);
+      const hit = handleOrbHit(e.touches[0].clientX, e.touches[0].clientY);
+      if (hit) e.preventDefault();
     }, { passive: false });
 
     SPIN_CANVAS.style.cursor = 'pointer';
