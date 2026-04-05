@@ -486,7 +486,7 @@
     const sunMat = new THREE.MeshStandardMaterial({
       color: 0x000000, emissive: 0xffcc44, emissiveIntensity: 0.0, roughness: 1, fog: false
     });
-    const sunOrb = new THREE.Mesh(new THREE.SphereGeometry(0.45, 16, 16), sunMat);
+    const sunOrb = new THREE.Mesh(new THREE.SphereGeometry(0.32, 16, 16), sunMat);
     const sunOrbLight = new THREE.PointLight(0xfff4d0, 0.0, 30);
     sunOrb.add(sunOrbLight);
     scene.add(sunOrb);
@@ -495,7 +495,7 @@
     const moonMat = new THREE.MeshStandardMaterial({
       color: 0x000000, emissive: 0xaabbd0, emissiveIntensity: 2.5, roughness: 1, fog: false
     });
-    const moonOrb = new THREE.Mesh(new THREE.SphereGeometry(0.38, 16, 16), moonMat);
+    const moonOrb = new THREE.Mesh(new THREE.SphereGeometry(0.22, 16, 16), moonMat);
     const moonOrbLight = new THREE.PointLight(0x8899cc, 3.0, 25);
     moonOrb.add(moonOrbLight);
     scene.add(moonOrb);
@@ -503,8 +503,8 @@
     // ── ORB ARC SYSTEM ──
     // Orbs are children of the camera so they're always visible regardless of scroll.
     // Positions are in camera-local space: +X right, +Y up, -Z forward.
-    // Upper right of view ≈ (1.2, 0.9, -4.5), lower (hidden) ≈ (1.2, -1.1, -4.5)
-    const ORB_CX = 1.2, ORB_CY = -0.1, ORB_RX = 3.0, ORB_RY = 1.0, ORB_CZ = -4.5;
+    // Top ≈ (1.8, 0.65, -4.5) visible upper-right; bottom ≈ (1.8, -3.45, -4.5) way off screen.
+    const ORB_CX = 1.8, ORB_CY = -1.4, ORB_RX = 3.0, ORB_RY = 2.05, ORB_CZ = -4.5;
 
     function orbPos(angle) {
       return {
