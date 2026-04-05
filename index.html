@@ -43,6 +43,30 @@
       --white: #22303a;
     }
 
+    body.light-mode .section-label {
+      color: var(--ash);
+    }
+
+    body.light-mode .section {
+      border-top-color: rgba(0, 0, 0, 0.10);
+    }
+
+    body.light-mode .link-pill {
+      color: var(--white);
+      border-color: rgba(0, 0, 0, 0.22);
+    }
+
+    body.light-mode .link-pill:hover {
+      border-color: rgba(0, 0, 0, 0.45);
+      background: rgba(0, 0, 0, 0.05);
+      color: var(--white);
+    }
+
+    body.light-mode footer {
+      border-top-color: rgba(0, 0, 0, 0.07);
+      color: rgba(0, 0, 0, 0.35);
+    }
+
     html {
       scroll-behavior: smooth;
     }
@@ -221,6 +245,7 @@
       position: relative;
       z-index: 10;
       background: var(--ocean);
+      transition: background 1.2s ease, color 1.2s ease;
     }
 
     .section {
