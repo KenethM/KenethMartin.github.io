@@ -583,6 +583,7 @@
     const sunOrbLight = new THREE.PointLight(0xfff4d0, 0.0, 30);
     sunOrb.add(sunOrbLight);
     scene.add(sunOrb);
+    sunOrb.visible = false; // hidden for now — HTML toggle handles UI
 
     // ── MOON ORB ──
     const moonMat = new THREE.MeshStandardMaterial({
@@ -592,6 +593,7 @@
     const moonOrbLight = new THREE.PointLight(0x8899cc, 3.0, 25);
     moonOrb.add(moonOrbLight);
     scene.add(moonOrb);
+    moonOrb.visible = false; // hidden for now — HTML toggle handles UI
 
     // ── ORB ARC SYSTEM ──
     // Orbs are children of the camera so they're always visible regardless of scroll.
