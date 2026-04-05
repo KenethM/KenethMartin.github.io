@@ -447,6 +447,7 @@
     const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 200);
     camera.position.set(CAM_ISLAND.px, CAM_ISLAND.py, CAM_ISLAND.pz);
     camera.lookAt(CAM_ISLAND.lx, CAM_ISLAND.ly, CAM_ISLAND.lz);
+    scene.add(camera); // required for camera.add() children to render
 
     // ── LIGHTING ──
     const ambientLight = new THREE.AmbientLight(0x223355, 1.8);
