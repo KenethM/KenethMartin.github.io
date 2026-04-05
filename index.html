@@ -11,64 +11,14 @@
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap"
     rel="stylesheet" />
   <style>
-    *,
-    *::before,
-    *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
       --ocean: #050e1f;
       --deep: #0a1628;
       --mid: #112244;
-      --gold: #c8a96e;
-      --gold2: #e8c98e;
       --ash: #8899aa;
       --white: #f0ece4;
-    }
-
-    body {
-      transition: background 1.2s ease, color 1.2s ease;
-    }
-
-    body.light-mode {
-      --ocean: #d6e8ef;
-      --deep: #c4d8e4;
-      --mid: #a8c4d0;
-      --gold: #7a5800;
-      --gold2: #8f6a10;
-      --ash: #4a5a68;
-      --white: #22303a;
-    }
-
-    body.light-mode .section-label {
-      color: var(--ash);
-    }
-
-    body.light-mode .section {
-      border-top-color: rgba(0, 0, 0, 0.10);
-    }
-
-    body.light-mode .link-pill {
-      color: var(--white);
-      border-color: rgba(0, 0, 0, 0.22);
-    }
-
-    body.light-mode .link-pill:hover {
-      border-color: rgba(0, 0, 0, 0.45);
-      background: rgba(0, 0, 0, 0.05);
-      color: var(--white);
-    }
-
-    body.light-mode footer {
-      border-top-color: rgba(0, 0, 0, 0.07);
-      color: rgba(0, 0, 0, 0.35);
-    }
-
-    html {
-      scroll-behavior: smooth;
     }
 
     body {
@@ -77,41 +27,39 @@
       font-family: 'Inter', sans-serif;
       font-weight: 400;
       overflow-x: hidden;
+      transition: background 1.2s ease, color 1.2s ease;
     }
 
-    /* ── HERO ── */
-    #hero {
-      position: relative;
-      height: 100vh;
-      width: 100%;
-      overflow: hidden;
+    body.light-mode {
+      --ocean: #d6e8ef;
+      --deep: #c4d8e4;
+      --mid: #a8c4d0;
+      --ash: #4a5a68;
+      --white: #22303a;
     }
 
-    #hero canvas {
-      position: absolute;
+    html { scroll-behavior: smooth; }
+
+    /* ── FIXED CANVAS — always full-screen behind everything ── */
+    #main-canvas {
+      position: fixed;
       inset: 0;
       width: 100%;
       height: 100%;
+      z-index: 0;
+      cursor: pointer;
     }
 
-    #hero::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at center, transparent 30%, var(--ocean) 100%);
-      pointer-events: none;
-    }
-
-    .hero-text {
-      position: absolute;
+    /* ── HERO OVERLAY — fades out as camera lifts ── */
+    #hero-overlay {
+      position: fixed;
       inset: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      pointer-events: none;
       z-index: 2;
-      gap: 0;
+      pointer-events: none;
     }
 
     .hero-eyebrow {
@@ -163,7 +111,6 @@
       flex-direction: column;
       align-items: center;
       gap: 8px;
-      z-index: 2;
       opacity: 0;
       animation: fadeUp 1s 1.4s forwards;
     }
@@ -184,7 +131,13 @@
       animation: scrollPulse 2s ease-in-out infinite;
     }
 
-    /* Progress ring */
+    /* ── LIFT SPACER — scrolling through this lifts the camera ── */
+    #lift-driver {
+      height: 180vh;
+      pointer-events: none;
+    }
+
+    /* ── PROGRESS RING ── */
     #progress-ring {
       position: fixed;
       bottom: max(28px, env(safe-area-inset-bottom, 28px));
@@ -194,13 +147,8 @@
       transition: opacity 0.4s;
     }
 
-    #progress-ring.visible {
-      opacity: 1;
-    }
-
-    #progress-ring svg {
-      transform: rotate(-90deg);
-    }
+    #progress-ring.visible { opacity: 1; }
+    #progress-ring svg { transform: rotate(-90deg); }
 
     #progress-ring circle.track {
       fill: none;
@@ -218,41 +166,28 @@
       transition: stroke-dashoffset 0.1s linear;
     }
 
-    /* ── SCROLL CONTAINER ── */
-    #scroll-driver {
-      position: relative;
-      height: 225vh;
-      margin-top: -100vh;
-    }
-
-    #sticky-canvas-wrap {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      width: 100%;
-      pointer-events: none;
-    }
-
-    #sticky-canvas-wrap canvas {
-      width: 100%;
-      height: 100%;
-      display: block;
-      pointer-events: auto;
-    }
-
-    /* ── CONTENT SECTIONS ── */
+    /* ── CONTENT — floats in the sky over the canvas ── */
     #content {
       position: relative;
       z-index: 10;
-      background: var(--ocean);
-      transition: background 1.2s ease, color 1.2s ease;
+      padding: 48px 24px 0;
     }
 
+    /* Frosted glass cards */
     .section {
-      max-width: 780px;
-      margin: 0 auto;
-      padding: 120px 40px;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      max-width: 760px;
+      margin: 0 auto 32px;
+      padding: 52px 56px;
+      background: rgba(5, 14, 31, 0.62);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    body.light-mode .section {
+      background: rgba(195, 220, 235, 0.60);
+      border-color: rgba(0, 0, 0, 0.08);
     }
 
     .section-label {
@@ -264,6 +199,8 @@
       text-transform: uppercase;
       margin-bottom: 32px;
     }
+
+    body.light-mode .section-label { color: var(--ash); }
 
     .section h2 {
       font-family: 'Space Grotesk', sans-serif;
@@ -284,9 +221,7 @@
       max-width: 560px;
     }
 
-    .section p+p {
-      margin-top: 20px;
-    }
+    .section p + p { margin-top: 20px; }
 
     /* ── LINKS ── */
     .links {
@@ -319,6 +254,17 @@
       transform: translateY(-2px);
     }
 
+    body.light-mode .link-pill {
+      color: var(--white);
+      border-color: rgba(0, 0, 0, 0.22);
+    }
+
+    body.light-mode .link-pill:hover {
+      border-color: rgba(0, 0, 0, 0.45);
+      background: rgba(0, 0, 0, 0.05);
+      color: var(--white);
+    }
+
     .link-icon {
       width: 13px;
       height: 13px;
@@ -333,74 +279,52 @@
       letter-spacing: 0.3em;
       color: rgba(136, 153, 170, 0.4);
       text-transform: uppercase;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
     }
 
+    body.light-mode footer { color: rgba(0, 0, 0, 0.35); }
+
+    /* ── KEYFRAMES ── */
     @keyframes fadeUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @keyframes scrollPulse {
-
-      0%,
-      100% {
-        opacity: 0.4;
-        transform: scaleY(1);
-      }
-
-      50% {
-        opacity: 1;
-        transform: scaleY(1.1);
-      }
+      0%, 100% { opacity: 0.4; transform: scaleY(1); }
+      50%       { opacity: 1;   transform: scaleY(1.1); }
     }
 
+    /* ── MOBILE ── */
     @media (max-width: 600px) {
       .section {
-        padding: 64px 24px;
+        padding: 40px 28px;
+        border-radius: 16px;
       }
-      .section p {
-        font-size: 15px;
-      }
-      footer {
-        padding: 40px 24px;
-      }
-      .links {
-        gap: 10px;
-        margin-top: 32px;
-      }
-      .link-pill {
-        padding: 8px 16px;
-        font-size: 11px;
-      }
+      .section p { font-size: 15px; }
+      footer { padding: 40px 24px; }
+      .links { gap: 10px; margin-top: 32px; }
+      .link-pill { padding: 8px 16px; font-size: 11px; }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- HERO with initial canvas -->
-  <section id="hero">
-    <canvas id="hero-canvas"></canvas>
-    <div class="hero-text">
-      <div class="hero-eyebrow">Born &amp; raised on</div>
-      <div class="hero-name">Keneth Martin</div>
-      <div class="hero-sub">Hawai&#699;i Island</div>
-    </div>
+  <!-- Fixed background canvas — always behind everything -->
+  <canvas id="main-canvas"></canvas>
+
+  <!-- Hero text — fades out as camera lifts into sky -->
+  <div id="hero-overlay">
+    <div class="hero-eyebrow">Born &amp; raised on</div>
+    <div class="hero-name">Keneth Martin</div>
+    <div class="hero-sub">Hawai&#699;i Island</div>
     <div class="scroll-hint">
       <span>Scroll</span>
       <div class="scroll-line"></div>
     </div>
-  </section>
-
-  <!-- SCROLL DRIVER — spinning island -->
-  <div id="scroll-driver">
-    <div id="sticky-canvas-wrap">
-      <canvas id="spin-canvas"></canvas>
-    </div>
   </div>
+
+  <!-- Scroll spacer — scrolling through this lifts the camera into the sky -->
+  <div id="lift-driver"></div>
 
   <!-- Progress ring -->
   <div id="progress-ring">
@@ -410,21 +334,21 @@
     </svg>
   </div>
 
-  <!-- CONTENT -->
+  <!-- Content — frosted glass cards over the sky -->
   <div id="content">
 
     <div class="section">
       <div class="section-label">About</div>
       <h2>When you're tired of looking at my page,<br />get out and go explore nature.</h2>
-      <p>Howdy! I'm Kenneth Martin, I'm sure you already got that far. I'm from the Big Island,
+      <p>Howdy! I'm Keneth Martin, I'm sure you already got that far. I'm from the Big Island,
         born and raised, and after living on a farm for most of my life, I was hanging up my hat
-        and wanted to experience the flip side,working in a well-ventilated room with a desk
+        and wanted to experience the flip side, working in a well-ventilated room with a desk
         surrounding me. I graduated from Hilo High School and pursued higher education in my hometown.
         I will be graduating in the spring semester of 2026 with a bachelor's in Computer Science.
         I hope to find work after graduation in areas where I'm able to work with and promote land
         and cultural conservation. As someone who loves to go out and enjoy nature, I want to do what
         I can to preserve it!</p>
-      <p>Outside of school and word, you'll find me in the water diving, scrambling up streams hunting
+      <p>Outside of school and work, you'll find me in the water diving, scrambling up streams hunting
         for waterfalls, or jumping off rock faces into cold river pools.
       </p>
 
@@ -433,8 +357,7 @@
         <!-- GitHub -->
         <a class="link-pill" href="https://github.com/KenethM" target="_blank" rel="noopener">
           <svg class="link-icon" viewBox="0 0 24 24" fill="currentColor">
-            <path
-              d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55v-2c-3.19.69-3.86-1.54-3.86-1.54-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.68 1.24 3.33.95.1-.74.4-1.24.73-1.53-2.55-.29-5.23-1.27-5.23-5.66 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.17a10.9 10.9 0 012.87-.39c.97.01 1.95.13 2.87.39 2.18-1.48 3.14-1.17 3.14-1.17.63 1.58.23 2.75.11 3.04.74.8 1.18 1.82 1.18 3.07 0 4.4-2.69 5.37-5.25 5.65.41.36.78 1.07.78 2.16v3.2c0 .31.2.66.79.55C20.21 21.39 23.5 17.09 23.5 12 23.5 5.65 18.35.5 12 .5z" />
+            <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55v-2c-3.19.69-3.86-1.54-3.86-1.54-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.68 1.24 3.33.95.1-.74.4-1.24.73-1.53-2.55-.29-5.23-1.27-5.23-5.66 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.17a10.9 10.9 0 012.87-.39c.97.01 1.95.13 2.87.39 2.18-1.48 3.14-1.17 3.14-1.17.63 1.58.23 2.75.11 3.04.74.8 1.18 1.82 1.18 3.07 0 4.4-2.69 5.37-5.25 5.65.41.36.78 1.07.78 2.16v3.2c0 .31.2.66.79.55C20.21 21.39 23.5 17.09 23.5 12 23.5 5.65 18.35.5 12 .5z" />
           </svg>
           GitHub
         </a>
@@ -442,8 +365,7 @@
         <!-- LinkedIn -->
         <a class="link-pill" href="https://www.linkedin.com/in/keneth-martin-119400382/" target="_blank" rel="noopener">
           <svg class="link-icon" viewBox="0 0 24 24" fill="currentColor">
-            <path
-              d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 110-4.14 2.07 2.07 0 010 4.14zM3.56 20.45h3.56V9H3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z" />
+            <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 110-4.14 2.07 2.07 0 010 4.14zM3.56 20.45h3.56V9H3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z" />
           </svg>
           LinkedIn
         </a>
@@ -462,8 +384,7 @@
         <!-- Instagram -->
         <a class="link-pill" href="https://instagram.com/kenn.ehh" target="_blank" rel="noopener">
           <svg class="link-icon" viewBox="0 0 24 24" fill="currentColor">
-            <path
-              d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
           </svg>
           Instagram
         </a>
@@ -486,12 +407,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script>
     // ─────────────────────────────────────────────
-    //  SHARED SCENE SETUP
+    //  RENDERER & SCENE
     // ─────────────────────────────────────────────
-
-    const SPIN_CANVAS = document.getElementById('spin-canvas');
+    const MAIN_CANVAS  = document.getElementById('main-canvas');
+    const heroOverlay  = document.getElementById('hero-overlay');
     const progressRing = document.getElementById('progress-ring');
-    const ringFill = document.getElementById('ring-fill');
+    const ringFill     = document.getElementById('ring-fill');
     const CIRCUMFERENCE = 2 * Math.PI * 22;
 
     function makeRenderer(canvas) {
@@ -506,8 +427,7 @@
     }
 
     function resize(renderer, camera, canvas) {
-      const w = canvas.clientWidth;
-      const h = canvas.clientHeight;
+      const w = canvas.clientWidth, h = canvas.clientHeight;
       if (renderer.domElement.width !== w || renderer.domElement.height !== h) {
         renderer.setSize(w, h, false);
         camera.aspect = w / h;
@@ -515,18 +435,20 @@
       }
     }
 
-    // ─────────────────────────────────────────────
-    //  BUILD SCENE
-    // ─────────────────────────────────────────────
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x050e1f);
     scene.fog = new THREE.FogExp2(0x050e1f, 0.045);
 
-    const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 200);
-    camera.position.set(0, 3.5, 14);
-    camera.lookAt(0, 0.3, 0);
+    // ── CAMERA ──
+    // Two waypoints: island view → sky view
+    const CAM_ISLAND = { px: 0, py: 3.5, pz: 14, lx: 0, ly: 0.5,  lz: 0  };
+    const CAM_SKY    = { px: 0, py: 22,  pz: 4,  lx: 0, ly: 17.0, lz: -6 };
 
-    // Lighting
+    const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 200);
+    camera.position.set(CAM_ISLAND.px, CAM_ISLAND.py, CAM_ISLAND.pz);
+    camera.lookAt(CAM_ISLAND.lx, CAM_ISLAND.ly, CAM_ISLAND.lz);
+
+    // ── LIGHTING ──
     const ambientLight = new THREE.AmbientLight(0x223355, 1.8);
     scene.add(ambientLight);
 
@@ -543,7 +465,7 @@
     rim.position.set(-5, 3, -6);
     scene.add(rim);
 
-    // Stars
+    // ── STARS ──
     const starVerts = [];
     for (let i = 0; i < 2000; i++) {
       const r = 60 + Math.random() * 20;
@@ -562,10 +484,10 @@
 
     // ── SUN ORB ──
     const sunMat = new THREE.MeshStandardMaterial({
-      color: 0x000000, emissive: 0xffcc44, emissiveIntensity: 0.6, roughness: 1, fog: false
+      color: 0x000000, emissive: 0xffcc44, emissiveIntensity: 0.0, roughness: 1, fog: false
     });
     const sunOrb = new THREE.Mesh(new THREE.SphereGeometry(0.45, 16, 16), sunMat);
-    const sunOrbLight = new THREE.PointLight(0xfff4d0, 1.0, 30);
+    const sunOrbLight = new THREE.PointLight(0xfff4d0, 0.0, 30);
     sunOrb.add(sunOrbLight);
     scene.add(sunOrb);
 
@@ -578,60 +500,58 @@
     moonOrb.add(moonOrbLight);
     scene.add(moonOrb);
 
-    // ── MODE SYSTEM ──
-    // Both orbs share one elliptical arc, always 180° apart.
-    // orbAngle = PI/2  → moon at top (dark mode)
-    // orbAngle = -PI/2 → sun at top  (light mode)
-    // Arc sweeps through angle=0 (toward camera) giving the curved swap path.
-    const ORB_X = 3.8;
-    const ORB_Z = 5.5;
-    const ORB_Y_UP = 4.2;
-    const ORB_Y_DOWN = -2.0;
-    const ORB_CY = (ORB_Y_UP + ORB_Y_DOWN) / 2;   // arc centre y
-    const ORB_RY = (ORB_Y_UP - ORB_Y_DOWN) / 2;   // vertical radius
-    const ORB_RX = 20;                            // sideways swing during swap
+    // ── ORB ARC SYSTEM ──
+    // Orbs ride an elliptical arc, always 180° apart.
+    // Their Y is offset upward as the camera lifts so they stay in frame.
+    const ORB_X        = 3.8;
+    const ORB_Z        = 5.5;
+    const ORB_Y_UP     = 4.2;
+    const ORB_Y_DOWN   = -2.0;
+    const ORB_CY       = (ORB_Y_UP + ORB_Y_DOWN) / 2;
+    const ORB_RY       = (ORB_Y_UP - ORB_Y_DOWN) / 2;
+    const ORB_RX       = 20;
 
-    function orbPos(angle) {
+    function orbPos(angle, yShift) {
       return {
         x: ORB_X - ORB_RX * Math.cos(angle),
-        y: ORB_CY + ORB_RY * Math.sin(angle),
+        y: ORB_CY + ORB_RY * Math.sin(angle) + yShift,
         z: ORB_Z
       };
     }
 
-    let orbAngle = Math.PI / 2;
+    let orbAngle       = Math.PI / 2;
     let orbTargetAngle = Math.PI / 2;
-    let isDark = true;
+    let isDark         = true;
 
-    const mp0 = orbPos(orbAngle);
-    const sp0 = orbPos(orbAngle + Math.PI);
+    const mp0 = orbPos(orbAngle, 0);
+    const sp0 = orbPos(orbAngle + Math.PI, 0);
     moonOrb.position.set(ORB_X, mp0.y, mp0.z);
     sunOrb.position.set(ORB_X, sp0.y, sp0.z);
 
-    // ── TRANSITION COLOURS ──
+    // ── MODE COLOURS ──
     function lerp(a, b, t) { return a + (b - a) * t; }
-    const C_DARK_BG = new THREE.Color(0x050e1f);
-    const C_LIGHT_BG = new THREE.Color(0x9bbfcc);
-    const C_DARK_AMB = new THREE.Color(0x223355);
-    const C_LIGHT_AMB = new THREE.Color(0xd4cbb8);
-    const C_DARK_KEY = new THREE.Color(0xfff4d0);
-    const C_LIGHT_KEY = new THREE.Color(0xfff0cc);
-    const C_DARK_RIM = new THREE.Color(0x4477bb);
-    const C_LIGHT_RIM = new THREE.Color(0xc8b890);
+    const C_DARK_BG    = new THREE.Color(0x050e1f);
+    const C_LIGHT_BG   = new THREE.Color(0x9bbfcc);
+    const C_DARK_AMB   = new THREE.Color(0x223355);
+    const C_LIGHT_AMB  = new THREE.Color(0xd4cbb8);
+    const C_DARK_KEY   = new THREE.Color(0xfff4d0);
+    const C_LIGHT_KEY  = new THREE.Color(0xfff0cc);
+    const C_DARK_RIM   = new THREE.Color(0x4477bb);
+    const C_LIGHT_RIM  = new THREE.Color(0xc8b890);
     const C_DARK_OCEAN = new THREE.Color(0x061828);
-    const C_LIGHT_OCEAN = new THREE.Color(0x033970);
+    const C_LIGHT_OCEAN= new THREE.Color(0x34b1eb);
 
-    let modeProgress = 0;   // 0 = full dark, 1 = full light
-    let modeTarget = 0;
+    let modeProgress = 0;
+    let modeTarget   = 0;
 
     // ── CLOUDS ──
     const clouds = [];
     [
-      { x: -18, y: 2.8, z: 0.5, spd: 0.0030, sc: 0.70 },
-      { x: -6, y: 3.4, z: -0.5, spd: 0.0022, sc: 0.55 },
-      { x: 3, y: 2.6, z: 1.0, spd: 0.0038, sc: 0.50 },
-      { x: 11, y: 3.2, z: 0.0, spd: 0.0025, sc: 0.65 },
-      { x: 20, y: 2.8, z: -0.8, spd: 0.0032, sc: 0.55 },
+      { x: -18, y: 2.8,  z:  0.5, spd: 0.0030, sc: 0.70 },
+      { x:  -6, y: 3.4,  z: -0.5, spd: 0.0022, sc: 0.55 },
+      { x:   3, y: 2.6,  z:  1.0, spd: 0.0038, sc: 0.50 },
+      { x:  11, y: 3.2,  z:  0.0, spd: 0.0025, sc: 0.65 },
+      { x:  20, y: 2.8,  z: -0.8, spd: 0.0032, sc: 0.55 },
     ].forEach(cfg => {
       const mat = new THREE.MeshStandardMaterial({
         color: 0xf0f4f8, transparent: true, opacity: 0,
@@ -639,21 +559,19 @@
       });
       const grp = new THREE.Group();
       [
-        [0.0, 0.00, 0.0, 1.00],
-        [1.3, -0.10, 0.2, 0.75],
+        [ 0.0,  0.00,  0.0, 1.00],
+        [ 1.3, -0.10,  0.2, 0.75],
         [-1.1, -0.10, -0.1, 0.70],
-        [0.5, 0.40, 0.1, 0.60],
-        [-0.4, 0.35, 0.2, 0.55],
-        [0.9, 0.30, -0.2, 0.50],
+        [ 0.5,  0.40,  0.1, 0.60],
+        [-0.4,  0.35,  0.2, 0.55],
+        [ 0.9,  0.30, -0.2, 0.50],
       ].forEach(([x, y, z, r]) => {
-        const puff = new THREE.Mesh(
-          new THREE.SphereGeometry(r * cfg.sc, 7, 5), mat
-        );
+        const puff = new THREE.Mesh(new THREE.SphereGeometry(r * cfg.sc, 7, 5), mat);
         puff.position.set(x * cfg.sc, y * cfg.sc, z * cfg.sc);
         grp.add(puff);
       });
       grp.position.set(cfg.x, cfg.y, cfg.z);
-      grp.userData = { spd: cfg.spd, mat };
+      grp.userData = { spd: cfg.spd, mat, baseY: cfg.y };
       scene.add(grp);
       clouds.push(grp);
     });
@@ -666,14 +584,14 @@
       document.body.classList.toggle('light-mode', !dark);
     }
 
-    // ── RAYCASTER for orb clicks ──
+    // ── RAYCASTER — orb tap/click ──
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
 
     function handleOrbHit(clientX, clientY) {
-      const rect = SPIN_CANVAS.getBoundingClientRect();
-      mouse.x = ((clientX - rect.left) / rect.width) * 2 - 1;
-      mouse.y = -((clientY - rect.top) / rect.height) * 2 + 1;
+      const rect = MAIN_CANVAS.getBoundingClientRect();
+      mouse.x =  ((clientX - rect.left) / rect.width)  * 2 - 1;
+      mouse.y = -((clientY - rect.top)  / rect.height) * 2 + 1;
       raycaster.setFromCamera(mouse, camera);
       const hits = raycaster.intersectObjects([sunOrb, moonOrb]);
       if (!hits.length) return false;
@@ -681,19 +599,15 @@
       return true;
     }
 
-    SPIN_CANVAS.addEventListener('click', (e) => handleOrbHit(e.clientX, e.clientY));
-    SPIN_CANVAS.addEventListener('touchstart', (e) => {
+    MAIN_CANVAS.addEventListener('click', (e) => handleOrbHit(e.clientX, e.clientY));
+    MAIN_CANVAS.addEventListener('touchstart', (e) => {
       const hit = handleOrbHit(e.touches[0].clientX, e.touches[0].clientY);
       if (hit) e.preventDefault();
     }, { passive: false });
 
-    SPIN_CANVAS.style.cursor = 'pointer';
-
-    // Ocean — flat plane, colour driven by day/night mode
+    // ── OCEAN ──
     const oceanGeo = new THREE.CircleGeometry(13, 64);
-    const oceanMat = new THREE.MeshStandardMaterial({
-      color: 0x061828, roughness: 0, metalness: 0.55
-    });
+    const oceanMat = new THREE.MeshStandardMaterial({ color: 0x061828, roughness: 0, metalness: 0.55 });
     const ocean = new THREE.Mesh(oceanGeo, oceanMat);
     ocean.rotation.x = -Math.PI / 2;
     ocean.position.y = -0.08;
@@ -702,23 +616,19 @@
 
     // ─────────────────────────────────────────────
     //  HEIGHTMAP ISLAND
-    //  Put heightmap.png in the same folder as index.html
     // ─────────────────────────────────────────────
     const island = new THREE.Group();
     island.position.y = -0.06;
     island.position.z = 1.4;
     scene.add(island);
 
-    const SEGMENTS = 511;
+    const SEGMENTS   = 511;
     const PLANE_SIZE = 20;
     const MAX_HEIGHT = 1;
     const SEA_CUTOFF = 0.04;
 
-    // Safety net: if nothing starts the animation within 6 seconds, use fallback
     let animationStarted = false;
-    setTimeout(function () {
-      if (!animationStarted) buildFallback();
-    }, 6000);
+    setTimeout(() => { if (!animationStarted) buildFallback(); }, 6000);
 
     function buildIslandFromPixels(pixels, size) {
       const geo = new THREE.PlaneGeometry(PLANE_SIZE, PLANE_SIZE, SEGMENTS, SEGMENTS);
@@ -728,15 +638,13 @@
       const colors = [];
       const col = new THREE.Color();
 
-      // Big Island colour palette — matched to real aerial photography
-      const deepWater = new THREE.Color(0x061828);  // deep ocean
-      const coastal = new THREE.Color(0x3a5820);  // muted earthy coastal green
-      const lavaLow = new THREE.Color(0x1a1210);  // dark aa/pahoehoe lava fields
-      const lavaRed = new THREE.Color(0x5a3018);  // reddish-brown volcanic mid
-      const drySlope = new THREE.Color(0x8a6040);  // dry tan-brown upper slope
-      const summit = new THREE.Color(0x6a5245);  // grey-brown summit (Mauna Kea/Loa)
+      const deepWater = new THREE.Color(0x061828);
+      const coastal   = new THREE.Color(0x3a5820);
+      const lavaLow   = new THREE.Color(0x1a1210);
+      const lavaRed   = new THREE.Color(0x5a3018);
+      const drySlope  = new THREE.Color(0x8a6040);
+      const summit    = new THREE.Color(0x6a5245);
 
-      // Find island bounding box in pixel space for centering
       let minPX = size, maxPX = 0, minPY = size, maxPY = 0;
       for (let py = 0; py < size; py++) {
         for (let px = 0; px < size; px++) {
@@ -748,34 +656,30 @@
       }
       const centerPX = (minPX + maxPX) / 2;
       const centerPY = (minPY + maxPY) / 2;
-      const halfSize = size / 2;
+      const halfSize  = size / 2;
 
       for (let i = 0; i < pos.count; i++) {
         const xi = i % (SEGMENTS + 1);
         const zi = Math.floor(i / (SEGMENTS + 1));
-        // Shift sampling so island center maps to geometry center
         const px = Math.round(xi + (centerPX - halfSize));
         const py = Math.round((SEGMENTS - zi) + (centerPY - halfSize));
-        const clamped_px = Math.max(0, Math.min(size - 1, px));
-        const clamped_py = Math.max(0, Math.min(size - 1, py));
-        const brightness = pixels[(clamped_py * size + clamped_px) * 4] / 255;
+        const cpx = Math.max(0, Math.min(size - 1, px));
+        const cpy = Math.max(0, Math.min(size - 1, py));
+        const brightness = pixels[(cpy * size + cpx) * 4] / 255;
 
-        // Power curve < 1 compresses peaks, keeps coastal slopes natural
-        const elev = brightness < SEA_CUTOFF ? -1.0 : Math.pow(brightness, 0.90) * MAX_HEIGHT;
-        pos.setY(i, elev);
+        pos.setY(i, brightness < SEA_CUTOFF ? -1.0 : Math.pow(brightness, 0.90) * MAX_HEIGHT);
 
-        if (brightness < SEA_CUTOFF) col.copy(deepWater);
-        else if (brightness < 0.25) col.lerpColors(coastal, lavaLow, (brightness - SEA_CUTOFF) / (0.25 - SEA_CUTOFF));
-        else if (brightness < 0.50) col.lerpColors(lavaLow, lavaRed, (brightness - 0.25) / (0.50 - 0.25));
-        else if (brightness < 0.80) col.lerpColors(lavaRed, drySlope, (brightness - 0.50) / (0.80 - 0.50));
-        else col.lerpColors(drySlope, summit, (brightness - 0.80) / (1.00 - 0.80));
+        if      (brightness < SEA_CUTOFF) col.copy(deepWater);
+        else if (brightness < 0.25) col.lerpColors(coastal,  lavaLow,  (brightness - SEA_CUTOFF) / (0.25 - SEA_CUTOFF));
+        else if (brightness < 0.50) col.lerpColors(lavaLow,  lavaRed,  (brightness - 0.25) / 0.25);
+        else if (brightness < 0.80) col.lerpColors(lavaRed,  drySlope, (brightness - 0.50) / 0.30);
+        else                        col.lerpColors(drySlope, summit,   (brightness - 0.80) / 0.20);
         colors.push(col.r, col.g, col.b);
       }
 
       geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
       geo.computeVertexNormals();
 
-      // Clip anything below sea level — eliminates the coastline wall
       const seaClip = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
       const mesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({
         vertexColors: true, roughness: 0.88, metalness: 0.02,
@@ -784,11 +688,9 @@
       mesh.castShadow = true;
       mesh.receiveShadow = true;
       island.add(mesh);
-
       startAnimation();
     }
 
-    // Try loading via Image element directly (works on file:// and http://)
     const img = new Image();
     img.crossOrigin = 'anonymous';
     img.onload = function () {
@@ -797,17 +699,13 @@
         offscreen.width = offscreen.height = img.width;
         const ctx = offscreen.getContext('2d');
         ctx.drawImage(img, 0, 0);
-        const pixels = ctx.getImageData(0, 0, img.width, img.height).data;
-        buildIslandFromPixels(pixels, img.width);
+        buildIslandFromPixels(ctx.getImageData(0, 0, img.width, img.height).data, img.width);
       } catch (e) {
         console.warn('getImageData failed:', e);
         buildFallback();
       }
     };
-    img.onerror = function () {
-      console.warn('heightmap.png failed to load');
-      buildFallback();
-    };
+    img.onerror = () => { console.warn('heightmap.png failed'); buildFallback(); };
     img.src = 'heightmap.png';
 
     function buildFallback() {
@@ -822,36 +720,27 @@
     }
 
     // ─────────────────────────────────────────────
-    //  RENDERERS
+    //  RENDERER
     // ─────────────────────────────────────────────
-
-    const spinRenderer = makeRenderer(SPIN_CANVAS);
+    const renderer = makeRenderer(MAIN_CANVAS);
 
     // ─────────────────────────────────────────────
-    //  SCROLL LOGIC
+    //  SCROLL → CAMERA LIFT
     // ─────────────────────────────────────────────
-    let scrollProgress = 0;
-    let targetRotation = 0;
-    let currentRotation = 0;
-
-    const scrollDriver = document.getElementById('scroll-driver');
+    let liftProgress = 0;
+    let skyLocked    = false;
+    const liftDriver = document.getElementById('lift-driver');
 
     window.addEventListener('scroll', () => {
-      const rect = scrollDriver.getBoundingClientRect();
-      const total = scrollDriver.offsetHeight - window.innerHeight;
-      const scrolled = -rect.top;
-      scrollProgress = Math.max(0, Math.min(1, scrolled / total));
+      const raw = window.scrollY / liftDriver.offsetHeight;
+      liftProgress = Math.min(1, raw);
+      if (liftProgress > 0.9) skyLocked = true;
 
-      targetRotation = scrollProgress * Math.PI * 2;
-
-      if (scrollProgress > 0.01 && scrollProgress < 0.99) {
-        progressRing.classList.add('visible');
-      } else {
-        progressRing.classList.remove('visible');
-      }
-
-      const offset = CIRCUMFERENCE * (1 - scrollProgress);
-      ringFill.style.strokeDashoffset = offset;
+      // Progress ring tracks full-page scroll
+      const docH   = document.documentElement.scrollHeight - window.innerHeight;
+      const totalP = docH > 0 ? window.scrollY / docH : 0;
+      progressRing.classList.toggle('visible', totalP > 0.02 && totalP < 0.98);
+      ringFill.style.strokeDashoffset = CIRCUMFERENCE * (1 - totalP);
     });
 
     // ─────────────────────────────────────────────
@@ -860,60 +749,77 @@
     function startAnimation() {
       animationStarted = true;
       let t = 0;
+      let currentRotation = 0;
 
       function animate() {
         requestAnimationFrame(animate);
         t += 0.008;
 
-        currentRotation += (targetRotation - currentRotation) * 0.07;
+        // Island auto-rotates slowly — no scroll dependency
+        currentRotation += 0.0015;
         island.rotation.y = currentRotation;
 
-        camera.position.y = 2.5 + Math.sin(t * 0.4) * 0.12;
-        camera.lookAt(0, 0.2, 0);
+        // Camera lift with smoothstep easing
+        const lp   = skyLocked ? 1.0 : liftProgress;
+        const ease = lp * lp * (3 - 2 * lp);
 
-        // Arc swap — single angle drives both orbs along the ellipse
+        camera.position.set(
+          lerp(CAM_ISLAND.px, CAM_SKY.px, ease),
+          lerp(CAM_ISLAND.py, CAM_SKY.py, ease) + Math.sin(t * 0.4) * lerp(0.12, 0.04, ease),
+          lerp(CAM_ISLAND.pz, CAM_SKY.pz, ease)
+        );
+        camera.lookAt(
+          lerp(CAM_ISLAND.lx, CAM_SKY.lx, ease),
+          lerp(CAM_ISLAND.ly, CAM_SKY.ly, ease),
+          lerp(CAM_ISLAND.lz, CAM_SKY.lz, ease)
+        );
+
+        // Hero text fades out quickly as lift begins
+        heroOverlay.style.opacity = Math.max(0, 1 - lp * 2.5);
+
+        // Orbs rise with camera so they stay in frame
         orbAngle += (orbTargetAngle - orbAngle) * 0.03;
-        const mp = orbPos(orbAngle);
-        const sp = orbPos(orbAngle + Math.PI);
+        const orbYShift = lerp(0, 18, ease);
+        const mp = orbPos(orbAngle, orbYShift);
+        const sp = orbPos(orbAngle + Math.PI, orbYShift);
         moonOrb.position.set(mp.x, mp.y, mp.z);
         sunOrb.position.set(sp.x, sp.y, sp.z);
 
-        // Smooth mode transition
+        // Day/night mode colours
         modeProgress += (modeTarget - modeProgress) * 0.012;
         const p = modeProgress;
 
         scene.background.copy(C_DARK_BG).lerp(C_LIGHT_BG, p);
         scene.fog.color.copy(C_DARK_BG).lerp(C_LIGHT_BG, p);
+        scene.fog.density = lerp(0.045, 0.012, ease);  // fog thins at altitude
         ambientLight.color.copy(C_DARK_AMB).lerp(C_LIGHT_AMB, p);
-        ambientLight.intensity = lerp(1.8, 1.2, p);
+        ambientLight.intensity    = lerp(1.8,  1.2, p);
         keyLight.color.copy(C_DARK_KEY).lerp(C_LIGHT_KEY, p);
-        keyLight.intensity = lerp(3.0, 1.6, p);
+        keyLight.intensity        = lerp(3.0,  1.6, p);
         rim.color.copy(C_DARK_RIM).lerp(C_LIGHT_RIM, p);
-        sunMat.emissiveIntensity = lerp(0.0, 2.0, p);
-        sunOrbLight.intensity = lerp(0.0, 2.0, p);
-        moonMat.emissiveIntensity = lerp(2.5, 0.3, p);
-        moonOrbLight.intensity = lerp(3.0, 0.3, p);
-        starsMat.opacity = lerp(0.7, 0.0, p);
+        sunMat.emissiveIntensity  = lerp(0.0,  2.0, p);
+        sunOrbLight.intensity     = lerp(0.0,  2.0, p);
+        moonMat.emissiveIntensity = lerp(2.5,  0.3, p);
+        moonOrbLight.intensity    = lerp(3.0,  0.3, p);
+        starsMat.opacity          = lerp(0.7,  0.0, p);
         oceanMat.color.copy(C_DARK_OCEAN).lerp(C_LIGHT_OCEAN, p);
 
-        // Drift clouds, opacity tied to day progress
+        // Clouds drift and rise with camera
         clouds.forEach(c => {
           c.position.x += c.userData.spd;
           if (c.position.x > 22) c.position.x = -22;
+          c.position.y = c.userData.baseY + orbYShift;
           c.userData.mat.opacity = lerp(0, 0.82, p);
         });
 
-        // Always render to the spin canvas — it covers the full viewport at all scroll positions
-        resize(spinRenderer, camera, SPIN_CANVAS);
-        spinRenderer.render(scene, camera);
+        resize(renderer, camera, MAIN_CANVAS);
+        renderer.render(scene, camera);
       }
 
       animate();
     }
 
-    window.addEventListener('resize', () => {
-      resize(spinRenderer, camera, SPIN_CANVAS);
-    });
+    window.addEventListener('resize', () => resize(renderer, camera, MAIN_CANVAS));
 
     document.getElementById('yr').textContent = new Date().getFullYear();
   </script>
