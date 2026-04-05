@@ -11,7 +11,13 @@
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap"
     rel="stylesheet" />
   <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     :root {
       --ocean: #050e1f;
@@ -38,7 +44,9 @@
       --white: #22303a;
     }
 
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+    }
 
     /* ── FIXED CANVAS — always full-screen behind everything ── */
     #main-canvas {
@@ -147,8 +155,13 @@
       transition: opacity 0.4s;
     }
 
-    #progress-ring.visible { opacity: 1; }
-    #progress-ring svg { transform: rotate(-90deg); }
+    #progress-ring.visible {
+      opacity: 1;
+    }
+
+    #progress-ring svg {
+      transform: rotate(-90deg);
+    }
 
     #progress-ring circle.track {
       fill: none;
@@ -200,7 +213,9 @@
       margin-bottom: 32px;
     }
 
-    body.light-mode .section-label { color: var(--ash); }
+    body.light-mode .section-label {
+      color: var(--ash);
+    }
 
     .section h2 {
       font-family: 'Space Grotesk', sans-serif;
@@ -221,7 +236,9 @@
       max-width: 560px;
     }
 
-    .section p + p { margin-top: 20px; }
+    .section p+p {
+      margin-top: 20px;
+    }
 
     /* ── LINKS ── */
     .links {
@@ -281,16 +298,30 @@
       text-transform: uppercase;
     }
 
-    body.light-mode footer { color: rgba(0, 0, 0, 0.35); }
+    body.light-mode footer {
+      color: rgba(0, 0, 0, 0.35);
+    }
 
     /* ── KEYFRAMES ── */
     @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     @keyframes scrollPulse {
-      0%, 100% { opacity: 0.4; transform: scaleY(1); }
-      50%       { opacity: 1;   transform: scaleY(1.1); }
+
+      0%,
+      100% {
+        opacity: 0.4;
+        transform: scaleY(1);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scaleY(1.1);
+      }
     }
 
     /* ── MOBILE ── */
@@ -299,10 +330,24 @@
         padding: 40px 28px;
         border-radius: 16px;
       }
-      .section p { font-size: 15px; }
-      footer { padding: 40px 24px; }
-      .links { gap: 10px; margin-top: 32px; }
-      .link-pill { padding: 8px 16px; font-size: 11px; }
+
+      .section p {
+        font-size: 15px;
+      }
+
+      footer {
+        padding: 40px 24px;
+      }
+
+      .links {
+        gap: 10px;
+        margin-top: 32px;
+      }
+
+      .link-pill {
+        padding: 8px 16px;
+        font-size: 11px;
+      }
     }
   </style>
 </head>
@@ -357,7 +402,8 @@
         <!-- GitHub -->
         <a class="link-pill" href="https://github.com/KenethM" target="_blank" rel="noopener">
           <svg class="link-icon" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55v-2c-3.19.69-3.86-1.54-3.86-1.54-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.68 1.24 3.33.95.1-.74.4-1.24.73-1.53-2.55-.29-5.23-1.27-5.23-5.66 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.17a10.9 10.9 0 012.87-.39c.97.01 1.95.13 2.87.39 2.18-1.48 3.14-1.17 3.14-1.17.63 1.58.23 2.75.11 3.04.74.8 1.18 1.82 1.18 3.07 0 4.4-2.69 5.37-5.25 5.65.41.36.78 1.07.78 2.16v3.2c0 .31.2.66.79.55C20.21 21.39 23.5 17.09 23.5 12 23.5 5.65 18.35.5 12 .5z" />
+            <path
+              d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55v-2c-3.19.69-3.86-1.54-3.86-1.54-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.68 1.24 3.33.95.1-.74.4-1.24.73-1.53-2.55-.29-5.23-1.27-5.23-5.66 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.17a10.9 10.9 0 012.87-.39c.97.01 1.95.13 2.87.39 2.18-1.48 3.14-1.17 3.14-1.17.63 1.58.23 2.75.11 3.04.74.8 1.18 1.82 1.18 3.07 0 4.4-2.69 5.37-5.25 5.65.41.36.78 1.07.78 2.16v3.2c0 .31.2.66.79.55C20.21 21.39 23.5 17.09 23.5 12 23.5 5.65 18.35.5 12 .5z" />
           </svg>
           GitHub
         </a>
@@ -365,7 +411,8 @@
         <!-- LinkedIn -->
         <a class="link-pill" href="https://www.linkedin.com/in/keneth-martin-119400382/" target="_blank" rel="noopener">
           <svg class="link-icon" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 110-4.14 2.07 2.07 0 010 4.14zM3.56 20.45h3.56V9H3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z" />
+            <path
+              d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 110-4.14 2.07 2.07 0 010 4.14zM3.56 20.45h3.56V9H3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z" />
           </svg>
           LinkedIn
         </a>
@@ -384,7 +431,8 @@
         <!-- Instagram -->
         <a class="link-pill" href="https://instagram.com/kenn.ehh" target="_blank" rel="noopener">
           <svg class="link-icon" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+            <path
+              d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
           </svg>
           Instagram
         </a>
@@ -409,10 +457,10 @@
     // ─────────────────────────────────────────────
     //  RENDERER & SCENE
     // ─────────────────────────────────────────────
-    const MAIN_CANVAS  = document.getElementById('main-canvas');
-    const heroOverlay  = document.getElementById('hero-overlay');
+    const MAIN_CANVAS = document.getElementById('main-canvas');
+    const heroOverlay = document.getElementById('hero-overlay');
     const progressRing = document.getElementById('progress-ring');
-    const ringFill     = document.getElementById('ring-fill');
+    const ringFill = document.getElementById('ring-fill');
     const CIRCUMFERENCE = 2 * Math.PI * 22;
 
     function makeRenderer(canvas) {
@@ -441,8 +489,8 @@
 
     // ── CAMERA ──
     // Two waypoints: island view → sky view
-    const CAM_ISLAND = { px: 0, py: 3.5, pz: 14, lx: 0, ly: 0.5,  lz: 0  };
-    const CAM_SKY    = { px: 0, py: 22,  pz: 4,  lx: 0, ly: 17.0, lz: -6 };
+    const CAM_ISLAND = { px: 0, py: 3.5, pz: 14, lx: 0, ly: 0.5, lz: 0 };
+    const CAM_SKY = { px: 0, py: 22, pz: 4, lx: 0, ly: 17.0, lz: -6 };
 
     const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 200);
     camera.position.set(CAM_ISLAND.px, CAM_ISLAND.py, CAM_ISLAND.pz);
@@ -504,7 +552,7 @@
     // Orbs are children of the camera so they're always visible regardless of scroll.
     // Positions are in camera-local space: +X right, +Y up, -Z forward.
     // Top ≈ (1.8, 0.65, -4.5) visible upper-right; bottom ≈ (1.8, -3.45, -4.5) way off screen.
-    const ORB_CX = 1.8, ORB_CY = -1.4, ORB_RX = 3.0, ORB_RY = 2.05, ORB_CZ = -4.5;
+    const ORB_CX = 2.3, ORB_CY = -1.4, ORB_RX = 3.0, ORB_RY = 2.05, ORB_CZ = -4.5;
 
     function orbPos(angle) {
       return {
@@ -514,9 +562,9 @@
       };
     }
 
-    let orbAngle       = Math.PI / 2;
+    let orbAngle = Math.PI / 2;
     let orbTargetAngle = Math.PI / 2;
-    let isDark         = true;
+    let isDark = true;
 
     camera.updateMatrixWorld();
     const mp0 = orbPos(orbAngle);
@@ -526,28 +574,28 @@
 
     // ── MODE COLOURS ──
     function lerp(a, b, t) { return a + (b - a) * t; }
-    const C_DARK_BG    = new THREE.Color(0x050e1f);
-    const C_LIGHT_BG   = new THREE.Color(0x9bbfcc);
-    const C_DARK_AMB   = new THREE.Color(0x223355);
-    const C_LIGHT_AMB  = new THREE.Color(0xd4cbb8);
-    const C_DARK_KEY   = new THREE.Color(0xfff4d0);
-    const C_LIGHT_KEY  = new THREE.Color(0xfff0cc);
-    const C_DARK_RIM   = new THREE.Color(0x4477bb);
-    const C_LIGHT_RIM  = new THREE.Color(0xc8b890);
+    const C_DARK_BG = new THREE.Color(0x050e1f);
+    const C_LIGHT_BG = new THREE.Color(0x9bbfcc);
+    const C_DARK_AMB = new THREE.Color(0x223355);
+    const C_LIGHT_AMB = new THREE.Color(0xd4cbb8);
+    const C_DARK_KEY = new THREE.Color(0xfff4d0);
+    const C_LIGHT_KEY = new THREE.Color(0xfff0cc);
+    const C_DARK_RIM = new THREE.Color(0x4477bb);
+    const C_LIGHT_RIM = new THREE.Color(0xc8b890);
     const C_DARK_OCEAN = new THREE.Color(0x061828);
-    const C_LIGHT_OCEAN= new THREE.Color(0x34b1eb);
+    const C_LIGHT_OCEAN = new THREE.Color(0x34b1eb);
 
     let modeProgress = 0;
-    let modeTarget   = 0;
+    let modeTarget = 0;
 
     // ── CLOUDS ──
     const clouds = [];
     [
-      { x: -18, y: 2.8,  z:  0.5, spd: 0.0030, sc: 0.70 },
-      { x:  -6, y: 3.4,  z: -0.5, spd: 0.0022, sc: 0.55 },
-      { x:   3, y: 2.6,  z:  1.0, spd: 0.0038, sc: 0.50 },
-      { x:  11, y: 3.2,  z:  0.0, spd: 0.0025, sc: 0.65 },
-      { x:  20, y: 2.8,  z: -0.8, spd: 0.0032, sc: 0.55 },
+      { x: -18, y: 2.8, z: 0.5, spd: 0.0030, sc: 0.70 },
+      { x: -6, y: 3.4, z: -0.5, spd: 0.0022, sc: 0.55 },
+      { x: 3, y: 2.6, z: 1.0, spd: 0.0038, sc: 0.50 },
+      { x: 11, y: 3.2, z: 0.0, spd: 0.0025, sc: 0.65 },
+      { x: 20, y: 2.8, z: -0.8, spd: 0.0032, sc: 0.55 },
     ].forEach(cfg => {
       const mat = new THREE.MeshStandardMaterial({
         color: 0xf0f4f8, transparent: true, opacity: 0,
@@ -555,12 +603,12 @@
       });
       const grp = new THREE.Group();
       [
-        [ 0.0,  0.00,  0.0, 1.00],
-        [ 1.3, -0.10,  0.2, 0.75],
+        [0.0, 0.00, 0.0, 1.00],
+        [1.3, -0.10, 0.2, 0.75],
         [-1.1, -0.10, -0.1, 0.70],
-        [ 0.5,  0.40,  0.1, 0.60],
-        [-0.4,  0.35,  0.2, 0.55],
-        [ 0.9,  0.30, -0.2, 0.50],
+        [0.5, 0.40, 0.1, 0.60],
+        [-0.4, 0.35, 0.2, 0.55],
+        [0.9, 0.30, -0.2, 0.50],
       ].forEach(([x, y, z, r]) => {
         const puff = new THREE.Mesh(new THREE.SphereGeometry(r * cfg.sc, 7, 5), mat);
         puff.position.set(x * cfg.sc, y * cfg.sc, z * cfg.sc);
@@ -580,19 +628,24 @@
       document.body.classList.toggle('light-mode', !dark);
     }
 
-    // ── RAYCASTER — orb tap/click ──
-    const raycaster = new THREE.Raycaster();
-    const mouse = new THREE.Vector2();
+    // ── ORB HIT DETECTION — 2D screen-space projection (reliable for HUD-style orbs) ──
+    const _proj = new THREE.Vector3();
+    const HIT_RADIUS = 44; // px — generous for mobile taps
 
     function handleOrbHit(clientX, clientY) {
       const rect = MAIN_CANVAS.getBoundingClientRect();
-      mouse.x =  ((clientX - rect.left) / rect.width)  * 2 - 1;
-      mouse.y = -((clientY - rect.top)  / rect.height) * 2 + 1;
-      raycaster.setFromCamera(mouse, camera);
-      const hits = raycaster.intersectObjects([sunOrb, moonOrb]);
-      if (!hits.length) return false;
-      setMode(hits[0].object === moonOrb ? false : true);
-      return true;
+      const cx = clientX - rect.left;
+      const cy = clientY - rect.top;
+      for (const [orb, darkMode] of [[moonOrb, false], [sunOrb, true]]) {
+        _proj.copy(orb.position).project(camera);
+        const sx = (_proj.x *  0.5 + 0.5) * rect.width;
+        const sy = (_proj.y * -0.5 + 0.5) * rect.height;
+        if (Math.hypot(cx - sx, cy - sy) < HIT_RADIUS) {
+          setMode(darkMode);
+          return true;
+        }
+      }
+      return false;
     }
 
     MAIN_CANVAS.addEventListener('click', (e) => handleOrbHit(e.clientX, e.clientY));
@@ -618,7 +671,7 @@
     island.position.z = 1.4;
     scene.add(island);
 
-    const SEGMENTS   = 511;
+    const SEGMENTS = 511;
     const PLANE_SIZE = 20;
     const MAX_HEIGHT = 1;
     const SEA_CUTOFF = 0.04;
@@ -635,11 +688,11 @@
       const col = new THREE.Color();
 
       const deepWater = new THREE.Color(0x061828);
-      const coastal   = new THREE.Color(0x3a5820);
-      const lavaLow   = new THREE.Color(0x1a1210);
-      const lavaRed   = new THREE.Color(0x5a3018);
-      const drySlope  = new THREE.Color(0x8a6040);
-      const summit    = new THREE.Color(0x6a5245);
+      const coastal = new THREE.Color(0x3a5820);
+      const lavaLow = new THREE.Color(0x1a1210);
+      const lavaRed = new THREE.Color(0x5a3018);
+      const drySlope = new THREE.Color(0x8a6040);
+      const summit = new THREE.Color(0x6a5245);
 
       let minPX = size, maxPX = 0, minPY = size, maxPY = 0;
       for (let py = 0; py < size; py++) {
@@ -652,7 +705,7 @@
       }
       const centerPX = (minPX + maxPX) / 2;
       const centerPY = (minPY + maxPY) / 2;
-      const halfSize  = size / 2;
+      const halfSize = size / 2;
 
       for (let i = 0; i < pos.count; i++) {
         const xi = i % (SEGMENTS + 1);
@@ -665,11 +718,11 @@
 
         pos.setY(i, brightness < SEA_CUTOFF ? -1.0 : Math.pow(brightness, 0.90) * MAX_HEIGHT);
 
-        if      (brightness < SEA_CUTOFF) col.copy(deepWater);
-        else if (brightness < 0.25) col.lerpColors(coastal,  lavaLow,  (brightness - SEA_CUTOFF) / (0.25 - SEA_CUTOFF));
-        else if (brightness < 0.50) col.lerpColors(lavaLow,  lavaRed,  (brightness - 0.25) / 0.25);
-        else if (brightness < 0.80) col.lerpColors(lavaRed,  drySlope, (brightness - 0.50) / 0.30);
-        else                        col.lerpColors(drySlope, summit,   (brightness - 0.80) / 0.20);
+        if (brightness < SEA_CUTOFF) col.copy(deepWater);
+        else if (brightness < 0.25) col.lerpColors(coastal, lavaLow, (brightness - SEA_CUTOFF) / (0.25 - SEA_CUTOFF));
+        else if (brightness < 0.50) col.lerpColors(lavaLow, lavaRed, (brightness - 0.25) / 0.25);
+        else if (brightness < 0.80) col.lerpColors(lavaRed, drySlope, (brightness - 0.50) / 0.30);
+        else col.lerpColors(drySlope, summit, (brightness - 0.80) / 0.20);
         colors.push(col.r, col.g, col.b);
       }
 
@@ -731,7 +784,7 @@
       liftProgress = Math.min(1, raw);
 
       // Progress ring tracks full-page scroll
-      const docH   = document.documentElement.scrollHeight - window.innerHeight;
+      const docH = document.documentElement.scrollHeight - window.innerHeight;
       const totalP = docH > 0 ? window.scrollY / docH : 0;
       progressRing.classList.toggle('visible', totalP > 0.02 && totalP < 0.98);
       ringFill.style.strokeDashoffset = CIRCUMFERENCE * (1 - totalP);
@@ -754,7 +807,7 @@
         island.rotation.y = currentRotation;
 
         // Camera lift with smoothstep easing
-        const lp   = liftProgress;
+        const lp = liftProgress;
         const ease = lp * lp * (3 - 2 * lp);
 
         camera.position.set(
@@ -790,15 +843,15 @@
         scene.fog.color.copy(C_DARK_BG).lerp(C_LIGHT_BG, p);
         scene.fog.density = lerp(0.045, 0.012, ease);  // fog thins at altitude
         ambientLight.color.copy(C_DARK_AMB).lerp(C_LIGHT_AMB, p);
-        ambientLight.intensity    = lerp(1.8,  1.2, p);
+        ambientLight.intensity = lerp(1.8, 1.2, p);
         keyLight.color.copy(C_DARK_KEY).lerp(C_LIGHT_KEY, p);
-        keyLight.intensity        = lerp(3.0,  1.6, p);
+        keyLight.intensity = lerp(3.0, 1.6, p);
         rim.color.copy(C_DARK_RIM).lerp(C_LIGHT_RIM, p);
-        sunMat.emissiveIntensity  = lerp(0.0,  2.0, p);
-        sunOrbLight.intensity     = lerp(0.0,  2.0, p);
-        moonMat.emissiveIntensity = lerp(2.5,  0.3, p);
-        moonOrbLight.intensity    = lerp(3.0,  0.3, p);
-        starsMat.opacity          = lerp(0.7,  0.0, p);
+        sunMat.emissiveIntensity = lerp(0.0, 2.0, p);
+        sunOrbLight.intensity = lerp(0.0, 2.0, p);
+        moonMat.emissiveIntensity = lerp(2.5, 0.3, p);
+        moonOrbLight.intensity = lerp(3.0, 0.3, p);
+        starsMat.opacity = lerp(0.7, 0.0, p);
         oceanMat.color.copy(C_DARK_OCEAN).lerp(C_LIGHT_OCEAN, p);
 
         // Clouds drift and rise with camera
