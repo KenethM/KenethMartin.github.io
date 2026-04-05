@@ -302,6 +302,18 @@
       color: rgba(0, 0, 0, 0.35);
     }
 
+    /* ── ORB HIT AREA — fixed top-right, always above content ── */
+    #orb-hit-area {
+      position: fixed;
+      top: 8%;
+      right: 6%;
+      width: 90px;
+      height: 90px;
+      z-index: 200;
+      cursor: pointer;
+      border-radius: 50%;
+    }
+
     /* ── KEYFRAMES ── */
     @keyframes fadeUp {
       to {
@@ -370,6 +382,9 @@
 
   <!-- Scroll spacer — scrolling through this lifts the camera into the sky -->
   <div id="lift-driver"></div>
+
+  <!-- Invisible hit area for orb toggle — always above content sections -->
+  <div id="orb-hit-area"></div>
 
   <!-- Progress ring -->
   <div id="progress-ring">
@@ -653,6 +668,11 @@
       const hit = handleOrbHit(e.touches[0].clientX, e.touches[0].clientY);
       if (hit) e.preventDefault();
     }, { passive: false });
+
+    // Fixed hit area always sits above content — guarantees the toggle works at any scroll depth
+    const orbHitArea = document.getElementById('orb-hit-area');
+    orbHitArea.addEventListener('click', () => setMode(!isDark));
+    orbHitArea.addEventListener('touchstart', (e) => { e.preventDefault(); setMode(!isDark); }, { passive: false });
 
     // ── OCEAN ──
     const oceanGeo = new THREE.CircleGeometry(13, 64);
