@@ -489,7 +489,7 @@
     const sunOrb = new THREE.Mesh(new THREE.SphereGeometry(0.45, 16, 16), sunMat);
     const sunOrbLight = new THREE.PointLight(0xfff4d0, 0.0, 30);
     sunOrb.add(sunOrbLight);
-    scene.add(sunOrb);
+    camera.add(sunOrb);
 
     // ── MOON ORB ──
     const moonMat = new THREE.MeshStandardMaterial({
@@ -498,24 +498,19 @@
     const moonOrb = new THREE.Mesh(new THREE.SphereGeometry(0.38, 16, 16), moonMat);
     const moonOrbLight = new THREE.PointLight(0x8899cc, 3.0, 25);
     moonOrb.add(moonOrbLight);
-    scene.add(moonOrb);
+    camera.add(moonOrb);
 
     // ── ORB ARC SYSTEM ──
-    // Orbs ride an elliptical arc, always 180° apart.
-    // Their Y is offset upward as the camera lifts so they stay in frame.
-    const ORB_X        = 3.8;
-    const ORB_Z        = 5.5;
-    const ORB_Y_UP     = 4.2;
-    const ORB_Y_DOWN   = -2.0;
-    const ORB_CY       = (ORB_Y_UP + ORB_Y_DOWN) / 2;
-    const ORB_RY       = (ORB_Y_UP - ORB_Y_DOWN) / 2;
-    const ORB_RX       = 20;
+    // Orbs are children of the camera so they're always visible regardless of scroll.
+    // Positions are in camera-local space: +X right, +Y up, -Z forward.
+    // Upper right of view ≈ (1.2, 0.9, -4.5), lower (hidden) ≈ (1.2, -1.1, -4.5)
+    const ORB_CX = 1.2, ORB_CY = -0.1, ORB_RX = 3.0, ORB_RY = 1.0, ORB_CZ = -4.5;
 
-    function orbPos(angle, yShift) {
+    function orbPos(angle) {
       return {
-        x: ORB_X - ORB_RX * Math.cos(angle),
-        y: ORB_CY + ORB_RY * Math.sin(angle) + yShift,
-        z: ORB_Z
+        x: ORB_CX - ORB_RX * Math.cos(angle),
+        y: ORB_CY + ORB_RY * Math.sin(angle),
+        z: ORB_CZ
       };
     }
 
@@ -523,10 +518,10 @@
     let orbTargetAngle = Math.PI / 2;
     let isDark         = true;
 
-    const mp0 = orbPos(orbAngle, 0);
-    const sp0 = orbPos(orbAngle + Math.PI, 0);
-    moonOrb.position.set(ORB_X, mp0.y, mp0.z);
-    sunOrb.position.set(ORB_X, sp0.y, sp0.z);
+    const mp0 = orbPos(orbAngle);
+    const sp0 = orbPos(orbAngle + Math.PI);
+    moonOrb.position.set(mp0.x, mp0.y, mp0.z);
+    sunOrb.position.set(sp0.x, sp0.y, sp0.z);
 
     // ── MODE COLOURS ──
     function lerp(a, b, t) { return a + (b - a) * t; }
@@ -728,13 +723,11 @@
     //  SCROLL → CAMERA LIFT
     // ─────────────────────────────────────────────
     let liftProgress = 0;
-    let skyLocked    = false;
     const liftDriver = document.getElementById('lift-driver');
 
     window.addEventListener('scroll', () => {
       const raw = window.scrollY / liftDriver.offsetHeight;
       liftProgress = Math.min(1, raw);
-      if (liftProgress > 0.9) skyLocked = true;
 
       // Progress ring tracks full-page scroll
       const docH   = document.documentElement.scrollHeight - window.innerHeight;
@@ -756,11 +749,11 @@
         t += 0.008;
 
         // Island auto-rotates slowly — no scroll dependency
-        currentRotation += 0.0015;
+        currentRotation += 0.0005;
         island.rotation.y = currentRotation;
 
         // Camera lift with smoothstep easing
-        const lp   = skyLocked ? 1.0 : liftProgress;
+        const lp   = liftProgress;
         const ease = lp * lp * (3 - 2 * lp);
 
         camera.position.set(
@@ -779,11 +772,13 @@
 
         // Orbs rise with camera so they stay in frame
         orbAngle += (orbTargetAngle - orbAngle) * 0.03;
-        const orbYShift = lerp(0, 18, ease);
-        const mp = orbPos(orbAngle, orbYShift);
-        const sp = orbPos(orbAngle + Math.PI, orbYShift);
+        const mp = orbPos(orbAngle);
+        const sp = orbPos(orbAngle + Math.PI);
         moonOrb.position.set(mp.x, mp.y, mp.z);
         sunOrb.position.set(sp.x, sp.y, sp.z);
+
+        // Clouds rise/fall with camera
+        const orbYShift = lerp(0, 18, ease);
 
         // Day/night mode colours
         modeProgress += (modeTarget - modeProgress) * 0.012;
