@@ -447,7 +447,6 @@
     const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 200);
     camera.position.set(CAM_ISLAND.px, CAM_ISLAND.py, CAM_ISLAND.pz);
     camera.lookAt(CAM_ISLAND.lx, CAM_ISLAND.ly, CAM_ISLAND.lz);
-    scene.add(camera); // required for camera.add() children to render
 
     // ── LIGHTING ──
     const ambientLight = new THREE.AmbientLight(0x223355, 1.8);
@@ -490,7 +489,7 @@
     const sunOrb = new THREE.Mesh(new THREE.SphereGeometry(0.45, 16, 16), sunMat);
     const sunOrbLight = new THREE.PointLight(0xfff4d0, 0.0, 30);
     sunOrb.add(sunOrbLight);
-    camera.add(sunOrb);
+    scene.add(sunOrb);
 
     // ── MOON ORB ──
     const moonMat = new THREE.MeshStandardMaterial({
@@ -499,7 +498,7 @@
     const moonOrb = new THREE.Mesh(new THREE.SphereGeometry(0.38, 16, 16), moonMat);
     const moonOrbLight = new THREE.PointLight(0x8899cc, 3.0, 25);
     moonOrb.add(moonOrbLight);
-    camera.add(moonOrb);
+    scene.add(moonOrb);
 
     // ── ORB ARC SYSTEM ──
     // Orbs are children of the camera so they're always visible regardless of scroll.
@@ -519,10 +518,11 @@
     let orbTargetAngle = Math.PI / 2;
     let isDark         = true;
 
+    camera.updateMatrixWorld();
     const mp0 = orbPos(orbAngle);
     const sp0 = orbPos(orbAngle + Math.PI);
-    moonOrb.position.set(mp0.x, mp0.y, mp0.z);
-    sunOrb.position.set(sp0.x, sp0.y, sp0.z);
+    moonOrb.position.set(mp0.x, mp0.y, mp0.z).applyMatrix4(camera.matrixWorld);
+    sunOrb.position.set(sp0.x, sp0.y, sp0.z).applyMatrix4(camera.matrixWorld);
 
     // ── MODE COLOURS ──
     function lerp(a, b, t) { return a + (b - a) * t; }
@@ -771,12 +771,13 @@
         // Hero text fades out quickly as lift begins
         heroOverlay.style.opacity = Math.max(0, 1 - lp * 2.5);
 
-        // Orbs rise with camera so they stay in frame
+        // Orbs: convert camera-local arc positions → world space each frame
+        camera.updateMatrixWorld();
         orbAngle += (orbTargetAngle - orbAngle) * 0.03;
         const mp = orbPos(orbAngle);
         const sp = orbPos(orbAngle + Math.PI);
-        moonOrb.position.set(mp.x, mp.y, mp.z);
-        sunOrb.position.set(sp.x, sp.y, sp.z);
+        moonOrb.position.set(mp.x, mp.y, mp.z).applyMatrix4(camera.matrixWorld);
+        sunOrb.position.set(sp.x, sp.y, sp.z).applyMatrix4(camera.matrixWorld);
 
         // Clouds rise/fall with camera
         const orbYShift = lerp(0, 18, ease);
