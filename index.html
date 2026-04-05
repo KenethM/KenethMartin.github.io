@@ -650,16 +650,21 @@
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
 
-    SPIN_CANVAS.addEventListener('click', (e) => {
+    function handleOrbHit(clientX, clientY) {
       const rect = SPIN_CANVAS.getBoundingClientRect();
-      mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-      mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      mouse.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((clientY - rect.top) / rect.height) * 2 + 1;
       raycaster.setFromCamera(mouse, camera);
       const hits = raycaster.intersectObjects([sunOrb, moonOrb]);
       if (!hits.length) return;
-      // Clicking the visible orb toggles to the other mode
       setMode(hits[0].object === moonOrb ? false : true);
-    });
+    }
+
+    SPIN_CANVAS.addEventListener('click', (e) => handleOrbHit(e.clientX, e.clientY));
+    SPIN_CANVAS.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      handleOrbHit(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: false });
 
     SPIN_CANVAS.addEventListener('mousemove', (e) => {
       const rect = SPIN_CANVAS.getBoundingClientRect();
