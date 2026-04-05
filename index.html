@@ -598,6 +598,8 @@
     const C_LIGHT_KEY = new THREE.Color(0xfff0cc);
     const C_DARK_RIM = new THREE.Color(0x4477bb);
     const C_LIGHT_RIM = new THREE.Color(0xc8b890);
+    const C_DARK_OCEAN = new THREE.Color(0x061828);
+    const C_LIGHT_OCEAN = new THREE.Color(0x1a8fa0);  // tropical turquoise
 
     let modeProgress = 0;   // 0 = full dark, 1 = full light
     let modeTarget = 0;
@@ -668,11 +670,12 @@
       SPIN_CANVAS.style.cursor = hits.length ? 'pointer' : '';
     });
 
-    // Ocean disk
-    const ocean = new THREE.Mesh(
-      new THREE.CircleGeometry(13, 80),
-      new THREE.MeshStandardMaterial({ color: 0x061828, roughness: 0.05, metalness: 0.6 })
-    );
+    // Ocean — flat plane, colour driven by day/night mode
+    const oceanGeo = new THREE.PlaneGeometry(26, 26, 1, 1);
+    const oceanMat = new THREE.MeshStandardMaterial({
+      color: 0x061828, roughness: 0.08, metalness: 0.55
+    });
+    const ocean = new THREE.Mesh(oceanGeo, oceanMat);
     ocean.rotation.x = -Math.PI / 2;
     ocean.position.y = -0.08;
     ocean.receiveShadow = true;
@@ -877,6 +880,7 @@
         moonMat.emissiveIntensity = lerp(2.5, 0.3, p);
         moonOrbLight.intensity = lerp(3.0, 0.3, p);
         starsMat.opacity = lerp(0.7, 0.0, p);
+        oceanMat.color.copy(C_DARK_OCEAN).lerp(C_LIGHT_OCEAN, p);
 
         // Drift clouds, opacity tied to day progress
         clouds.forEach(c => {
