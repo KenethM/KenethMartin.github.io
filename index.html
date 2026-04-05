@@ -187,8 +187,8 @@
     /* Progress ring */
     #progress-ring {
       position: fixed;
-      bottom: 28px;
-      right: 28px;
+      bottom: max(28px, env(safe-area-inset-bottom, 28px));
+      right: max(28px, env(safe-area-inset-right, 28px));
       z-index: 100;
       opacity: 0;
       transition: opacity 0.4s;
@@ -354,6 +354,26 @@
       50% {
         opacity: 1;
         transform: scaleY(1.1);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .section {
+        padding: 64px 24px;
+      }
+      .section p {
+        font-size: 15px;
+      }
+      footer {
+        padding: 40px 24px;
+      }
+      .links {
+        gap: 10px;
+        margin-top: 32px;
+      }
+      .link-pill {
+        padding: 8px 16px;
+        font-size: 11px;
       }
     }
   </style>
@@ -666,14 +686,7 @@
       handleOrbHit(e.touches[0].clientX, e.touches[0].clientY);
     }, { passive: false });
 
-    SPIN_CANVAS.addEventListener('mousemove', (e) => {
-      const rect = SPIN_CANVAS.getBoundingClientRect();
-      mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-      mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-      raycaster.setFromCamera(mouse, camera);
-      const hits = raycaster.intersectObjects([sunOrb, moonOrb]);
-      SPIN_CANVAS.style.cursor = hits.length ? 'pointer' : '';
-    });
+    SPIN_CANVAS.style.cursor = 'pointer';
 
     // Ocean — flat plane, colour driven by day/night mode
     const oceanGeo = new THREE.CircleGeometry(13, 64);
@@ -699,8 +712,6 @@
     const PLANE_SIZE = 20;
     const MAX_HEIGHT = 1;
     const SEA_CUTOFF = 0.04;
-
-    const loader = new THREE.TextureLoader();
 
     // Safety net: if nothing starts the animation within 6 seconds, use fallback
     let animationStarted = false;
@@ -773,7 +784,7 @@
       mesh.receiveShadow = true;
       island.add(mesh);
 
-      startAnimation(null);
+      startAnimation();
     }
 
     // Try loading via Image element directly (works on file:// and http://)
@@ -806,7 +817,7 @@
       );
       mesh.position.y = 1.25;
       island.add(mesh);
-      startAnimation(null);
+      startAnimation();
     }
 
     // ─────────────────────────────────────────────
@@ -845,7 +856,7 @@
     // ─────────────────────────────────────────────
     //  ANIMATION LOOP
     // ─────────────────────────────────────────────
-    function startAnimation(lavaLight) {
+    function startAnimation() {
       animationStarted = true;
       let t = 0;
 
@@ -858,10 +869,6 @@
 
         camera.position.y = 2.5 + Math.sin(t * 0.4) * 0.12;
         camera.lookAt(0, 0.2, 0);
-
-        if (lavaLight) {
-          lavaLight.intensity = 3 + Math.sin(t * 5.3) * 0.8 + Math.sin(t * 3.1) * 0.4;
-        }
 
         // Arc swap — single angle drives both orbs along the ellipse
         orbAngle += (orbTargetAngle - orbAngle) * 0.03;
