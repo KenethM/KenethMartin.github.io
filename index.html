@@ -4,388 +4,698 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Keneth Martin &mdash; Hawai&#699;i Island</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap"
-    rel="stylesheet" />
+  <title>Keneth Martin — CS @ UH Hilo</title>
+  <meta name="description"
+    content="Keneth Martin — Computer Science student at UH Hilo, graduating Spring 2026. NLP researcher, software developer, Big Island born and raised." />
+  <meta property="og:title" content="Keneth Martin" />
+  <meta property="og:description"
+    content="CS student at UH Hilo. NLP research, software development, Big Island roots." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#000080" />
+  <link rel="icon" type="image/png" href="Social Icons Pack (PNG)/32x/windows_icon.png" />
   <style>
     *,
     *::before,
     *::after {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-    }
-
-    :root {
-      --ocean: #050e1f;
-      --deep: #0a1628;
-      --mid: #112244;
-      --ash: #8899aa;
-      --white: #f0ece4;
     }
 
     body {
-      background: var(--ocean);
-      color: var(--white);
-      font-family: 'Inter', sans-serif;
-      font-weight: 400;
-      overflow-x: hidden;
-      transition: background 1.2s ease, color 1.2s ease;
+      font-family: 'MS Sans Serif', 'Microsoft Sans Serif', Arial, sans-serif;
+      font-size: 13px;
+      background: #021822;
+      height: 100vh;
+      overflow: hidden;
+      cursor: default;
+      user-select: none;
     }
 
-    body.light-mode {
-      --ocean: #d6e8ef;
-      --deep: #c4d8e4;
-      --mid: #a8c4d0;
-      --ash: #4a5a68;
-      --white: #22303a;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    /* ── FIXED CANVAS — always full-screen behind everything ── */
-    #main-canvas {
+    /* ── DESKTOP ── */
+    #desktop {
       position: fixed;
       inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      cursor: pointer;
+      bottom: 42px;
     }
 
-    /* ── HERO OVERLAY — fades out as camera lifts ── */
-    #hero-overlay {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 2;
-      pointer-events: none;
-    }
-
-    .hero-eyebrow {
-      font-family: 'Inter', sans-serif;
-      font-weight: 500;
-      font-size: clamp(12px, 1.4vw, 15px);
-      letter-spacing: 0.35em;
-      color: rgba(255, 255, 255, 0.82);
-      text-transform: uppercase;
-      text-shadow: 0 1px 12px rgba(0, 0, 0, 0.7);
-      opacity: 0;
-      transform: translateY(12px);
-      animation: fadeUp 1.2s 0.3s forwards;
-    }
-
-    .hero-name {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: clamp(54px, 8.5vw, 112px);
-      letter-spacing: 0.02em;
-      line-height: 1;
-      color: #ffffff;
-      text-shadow: 0 2px 24px rgba(0, 0, 0, 0.55);
-      opacity: 0;
-      transform: translateY(16px);
-      animation: fadeUp 1.2s 0.55s forwards;
-    }
-
-    .hero-sub {
-      font-family: 'Inter', sans-serif;
-      font-weight: 500;
-      font-size: clamp(13px, 1.5vw, 17px);
-      letter-spacing: 0.3em;
-      color: rgba(255, 255, 255, 0.82);
-      text-transform: uppercase;
-      text-shadow: 0 1px 10px rgba(0, 0, 0, 0.65);
-      margin-top: 16px;
-      opacity: 0;
-      transform: translateY(12px);
-      animation: fadeUp 1.2s 0.8s forwards;
-    }
-
-    .scroll-hint {
+    /* ── DESKTOP ICONS ── */
+    .desk-icon {
       position: absolute;
-      bottom: 36px;
-      left: 50%;
-      transform: translateX(-50%);
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
-      opacity: 0;
-      animation: fadeUp 1s 1.4s forwards;
+      gap: 5px;
+      width: 90px;
+      padding: 6px;
+      cursor: pointer;
+      border: 1px dotted transparent;
+      text-align: center;
     }
 
-    .scroll-hint span {
-      font-family: 'Inter', sans-serif;
-      font-weight: 500;
-      font-size: 11px;
-      letter-spacing: 0.3em;
-      color: rgba(255, 255, 255, 0.82);
-      text-transform: uppercase;
-    }
-
-    .scroll-line {
-      width: 1px;
-      height: 48px;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.7), transparent);
-      animation: scrollPulse 2s ease-in-out infinite;
-    }
-
-    /* ── LIFT SPACER — scrolling through this lifts the camera ── */
-    #lift-driver {
-      height: 180vh;
-      pointer-events: none;
-    }
-
-    /* ── PROGRESS RING ── */
-    #progress-ring {
-      position: fixed;
-      bottom: max(28px, env(safe-area-inset-bottom, 28px));
-      right: max(28px, env(safe-area-inset-right, 28px));
-      z-index: 100;
-      opacity: 0;
-      transition: opacity 0.4s;
-    }
-
-    #progress-ring.visible {
-      opacity: 1;
-    }
-
-    #progress-ring svg {
-      transform: rotate(-90deg);
-    }
-
-    #progress-ring circle.track {
-      fill: none;
-      stroke: rgba(255, 255, 255, 0.15);
-      stroke-width: 1.5;
-    }
-
-    #progress-ring circle.fill {
-      fill: none;
-      stroke: rgba(255, 255, 255, 0.75);
-      stroke-width: 1.5;
-      stroke-linecap: round;
-      stroke-dasharray: 138.2;
-      stroke-dashoffset: 138.2;
-      transition: stroke-dashoffset 0.1s linear;
-    }
-
-    /* ── CONTENT — floats in the sky over the canvas ── */
-    #content {
-      position: relative;
-      z-index: 10;
-      padding: 48px 24px 0;
-    }
-
-    /* Frosted glass cards */
-    .section {
-      max-width: 760px;
-      margin: 0 auto 32px;
-      padding: 52px 56px;
-      background: rgba(5, 14, 31, 0.62);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    body.light-mode .section {
-      background: rgba(195, 220, 235, 0.60);
-      border-color: rgba(0, 0, 0, 0.08);
-    }
-
-    .section-label {
-      font-family: 'Inter', sans-serif;
-      font-weight: 500;
-      font-size: 11px;
-      letter-spacing: 0.4em;
-      color: rgba(255, 255, 255, 0.5);
-      text-transform: uppercase;
-      margin-bottom: 32px;
-    }
-
-    body.light-mode .section-label {
-      color: var(--ash);
-    }
-
-    .section h2 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 600;
-      font-size: clamp(26px, 3.5vw, 46px);
-      line-height: 1.2;
-      color: var(--white);
-      margin-bottom: 28px;
-    }
-
-    .section p {
-      font-family: 'Inter', sans-serif;
-      font-weight: 400;
-      font-size: 16px;
-      letter-spacing: 0.02em;
-      line-height: 1.85;
-      color: var(--ash);
-      max-width: 560px;
-    }
-
-    .section p+p {
-      margin-top: 20px;
-    }
-
-    /* ── LINKS ── */
-    .links {
-      display: flex;
-      gap: 16px;
-      margin-top: 48px;
-      flex-wrap: wrap;
-    }
-
-    .link-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 20px;
-      border-radius: 100px;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      background: transparent;
-      color: rgba(255, 255, 255, 0.82);
-      text-decoration: none;
-      font-family: 'DM Mono', monospace;
-      font-size: 12px;
-      letter-spacing: 0.12em;
-      transition: border-color 0.2s, background 0.2s, color 0.2s, transform 0.15s;
-    }
-
-    .link-pill:hover {
+    .desk-icon:hover {
       border-color: rgba(255, 255, 255, 0.6);
-      background: rgba(255, 255, 255, 0.08);
-      color: #ffffff;
-      transform: translateY(-2px);
+      background: rgba(0, 0, 128, 0.3);
     }
 
-    body.light-mode .link-pill {
-      color: var(--white);
-      border-color: rgba(0, 0, 0, 0.22);
+    .desk-icon svg {
+      width: 32px;
+      height: 32px;
     }
 
-    body.light-mode .link-pill:hover {
-      border-color: rgba(0, 0, 0, 0.45);
-      background: rgba(0, 0, 0, 0.05);
-      color: var(--white);
+    .desk-icon img {
+      width: 32px;
+      height: 32px;
+      image-rendering: pixelated;
     }
 
-    .link-icon {
-      width: 13px;
-      height: 13px;
-      opacity: 0.8;
+    .win-titlebar-icon img {
+      width: 18px;
+      height: 18px;
+      image-rendering: pixelated;
+    }
+
+    .desk-icon span {
+      font-size: 12px;
+      color: #fff;
+      text-shadow: 1px 1px 0 #000;
+      line-height: 1.3;
+    }
+
+    /* ── WINDOW CHROME ── */
+    .win {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      background: #c0c0c0;
+      border: 2px solid;
+      border-color: #fff #808080 #808080 #fff;
+      outline: 1px solid #000;
+      min-width: 200px;
+    }
+
+    .win.inactive>.win-titlebar {
+      background: #808080;
+    }
+
+    .win-titlebar {
+      background: linear-gradient(to right, #000080, #1084d0);
+      color: #fff;
+      font-weight: bold;
+      font-size: 13px;
+      padding: 4px 4px 4px 6px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: move;
       flex-shrink: 0;
     }
 
-    footer {
-      text-align: center;
-      padding: 60px 40px;
-      font-size: 10px;
-      letter-spacing: 0.3em;
-      color: rgba(136, 153, 170, 0.4);
-      text-transform: uppercase;
+    .win-titlebar-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
     }
 
-    body.light-mode footer {
-      color: rgba(0, 0, 0, 0.35);
+    .win-titlebar-text {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    /* ── MODE TOGGLE — HTML orb, always above canvas and content ── */
-    #mode-toggle {
-      position: fixed;
-      top: 10%;
-      right: 7%;
-      z-index: 200;
+    .win-controls {
+      display: flex;
+      gap: 2px;
+      flex-shrink: 0;
+    }
+
+    .wbtn {
+      width: 22px;
+      height: 18px;
+      background: #c0c0c0;
+      border: 1px solid;
+      border-color: #fff #000 #000 #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: #000;
       cursor: pointer;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: none;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .wbtn:active {
+      border-color: #000 #fff #fff #000;
+    }
+
+    .win-menubar {
+      display: flex;
+      padding: 2px 4px;
+      border-bottom: 1px solid #808080;
+      flex-shrink: 0;
+    }
+
+    .mitem {
+      padding: 3px 10px;
+      cursor: pointer;
+    }
+
+    .mitem:hover {
+      background: #000080;
+      color: #fff;
+    }
+
+    .win-body {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .inset {
+      border: 1px solid;
+      border-color: #808080 #fff #fff #808080;
+      background: #fff;
+      overflow-y: auto;
+      user-select: text;
+    }
+
+    .win-statusbar {
+      border-top: 1px solid #808080;
+      padding: 3px 6px;
+      flex-shrink: 0;
+      display: flex;
+      gap: 2px;
+    }
+
+    .status-cell {
+      border: 1px solid;
+      border-color: #808080 #fff #fff #808080;
+      padding: 2px 8px;
+      flex: 1;
+    }
+
+    /* ── WINDOW CONTENT STYLES ── */
+    .about-wrap {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .about-photo {
+      width: 110px;
+      height: 110px;
+      object-fit: cover;
+      object-position: center 15%;
+      border: 1px solid;
+      border-color: #808080 #fff #fff #808080;
+      flex-shrink: 0;
+    }
+
+    .about-wrap p {
+      line-height: 1.6;
+      color: #000;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    .about-links {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .wlink {
+      color: #000080;
+      text-decoration: underline;
+      cursor: pointer;
+      font-size: 13px;
       background: none;
+      border: none;
+      font-family: inherit;
       padding: 0;
     }
 
-    #moon-indicator {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 40% 40%, #e8eef5, #aabbd0);
-      box-shadow: 0 0 18px 5px rgba(170, 187, 208, 0.55);
-      margin: 5px;
-      transition: opacity 0.6s ease, transform 0.6s ease;
+    .wlink:hover {
+      color: #0000ff;
     }
 
-    #sun-indicator {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 40% 40%, #fffbe0, #ffcc44);
-      box-shadow: 0 0 22px 7px rgba(255, 204, 68, 0.55);
-      margin: 3px;
-      transition: opacity 0.6s ease, transform 0.6s ease;
+    .exp-entry {
+      margin-bottom: 12px;
+    }
+
+    .exp-role {
+      font-weight: bold;
+      font-size: 13px;
+      color: #000;
+    }
+
+    .exp-meta {
+      color: #555;
+      font-size: 12px;
+      margin-bottom: 4px;
+      line-height: 1.5;
+    }
+
+    .exp-desc {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #000;
+    }
+
+    .exp-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 6px;
+    }
+
+    .tag {
+      border: 1px solid;
+      border-color: #fff #808080 #808080 #fff;
+      background: #c0c0c0;
+      padding: 2px 8px;
+      font-size: 12px;
+    }
+
+    .exp-rule {
+      border: none;
+      border-top: 1px solid #808080;
+      margin: 12px 0;
+    }
+
+    .sec-head {
+      font-weight: bold;
+      color: #808080;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 5px;
+    }
+
+    /* ── TASKBAR ── */
+    #taskbar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 42px;
+      background: #c0c0c0;
+      border-top: 2px solid #fff;
+      display: flex;
+      align-items: center;
+      padding: 3px 6px;
+      gap: 4px;
+      z-index: 9999;
+    }
+
+    #start-btn {
+      background: #c0c0c0;
+      border: 2px solid;
+      border-color: #fff #808080 #808080 #fff;
+      outline: 1px solid #000;
+      height: 32px;
+      padding: 0 12px;
+      font-weight: bold;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'MS Sans Serif', Arial, sans-serif;
+    }
+
+    #start-btn:active {
+      border-color: #808080 #fff #fff #808080;
+    }
+
+    .tb-divider {
+      width: 2px;
+      height: 28px;
+      border-left: 1px solid #808080;
+      border-right: 1px solid #fff;
+    }
+
+    #tb-wins {
+      display: flex;
+      gap: 3px;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .tb-btn {
+      border: 2px solid;
+      border-color: #fff #808080 #808080 #fff;
+      outline: 1px solid #000;
+      background: #c0c0c0;
+      height: 32px;
+      padding: 0 10px;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      max-width: 180px;
+      overflow: hidden;
+      white-space: nowrap;
+      font-family: 'MS Sans Serif', Arial, sans-serif;
+    }
+
+    .tb-btn.pressed {
+      border-color: #808080 #fff #fff #808080;
+      background: #b0b0b0;
+    }
+
+    #sys-tray {
+      border: 1px solid;
+      border-color: #808080 #fff #fff #808080;
+      padding: 2px 10px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+
+    /* ── START MENU ── */
+    #start-menu {
+      position: fixed;
+      bottom: 42px;
+      left: 0;
+      width: 260px;
+      background: #c0c0c0;
+      border: 2px solid;
+      border-color: #fff #808080 #808080 #fff;
+      outline: 1px solid #000;
       display: none;
+      flex-direction: row;
+      z-index: 9998;
     }
 
-    body.light-mode #moon-indicator { display: none; }
-    body.light-mode #sun-indicator  { display: block; }
-
-    /* ── KEYFRAMES ── */
-    @keyframes fadeUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    #start-menu.open {
+      display: flex;
     }
 
-    @keyframes scrollPulse {
+    .sm-sidebar {
+      background: #808080;
+      width: 30px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 8px;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-weight: bold;
+      font-size: 18px;
+      color: #c0c0c0;
+      letter-spacing: 1px;
+      flex-shrink: 0;
+    }
 
-      0%,
-      100% {
-        opacity: 0.4;
-        transform: scaleY(1);
-      }
+    .sm-items {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 3px 0;
+    }
 
-      50% {
-        opacity: 1;
-        transform: scaleY(1.1);
-      }
+    .sm-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 10px;
+      cursor: pointer;
+      font-size: 13px;
+      color: #000;
+    }
+
+    .sm-item:hover {
+      background: #000080;
+      color: #fff;
+    }
+
+    .sm-item svg {
+      width: 26px;
+      height: 26px;
+      flex-shrink: 0;
+    }
+
+    .sm-rule {
+      border: none;
+      border-top: 1px solid #808080;
+      border-bottom: 1px solid #fff;
+      margin: 2px 0;
+    }
+
+    /* ── PAINT APP ── */
+    .paint-toolbar {
+      background: #c0c0c0;
+      border-bottom: 1px solid #808080;
+      padding: 3px 5px;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      flex-shrink: 0;
+    }
+
+    .tool-btn {
+      height: 28px;
+      min-width: 30px;
+      padding: 0 6px;
+      background: #c0c0c0;
+      border: 1px solid;
+      border-color: #fff #808080 #808080 #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 13px;
+      flex-shrink: 0;
+      font-family: inherit;
+    }
+
+    .tool-btn.active {
+      border-color: #808080 #fff #fff #808080;
+      background: #b4b4b4;
+    }
+
+    .tool-btn:hover:not(.active) {
+      border-color: #fff #000 #000 #fff;
+    }
+
+    .brush-btn {
+      width: 30px;
+      height: 28px;
+      background: #c0c0c0;
+      border: 1px solid;
+      border-color: #fff #808080 #808080 #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .brush-btn.active {
+      border-color: #808080 #fff #fff #808080;
+      background: #b4b4b4;
+    }
+
+    .brush-btn:hover:not(.active) {
+      border-color: #fff #000 #000 #fff;
+    }
+
+    .brush-dot {
+      background: #000;
+      border-radius: 50%;
+    }
+
+    .paint-sep {
+      width: 2px;
+      height: 22px;
+      border-left: 1px solid #808080;
+      border-right: 1px solid #fff;
+      margin: 0 3px;
+      flex-shrink: 0;
+    }
+
+    .paint-canvas-wrap {
+      flex: 1;
+      overflow: auto;
+      background: #808080;
+      padding: 8px;
+      display: flex;
+    }
+
+    #paint-canvas {
+      border: 1px solid;
+      border-color: #808080 #fff #fff #808080;
+      cursor: crosshair;
+      display: block;
+      flex-shrink: 0;
+      touch-action: none;
+    }
+
+    .paint-colors {
+      background: #c0c0c0;
+      border-top: 1px solid #808080;
+      padding: 5px 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .active-colors {
+      position: relative;
+      width: 42px;
+      height: 34px;
+      flex-shrink: 0;
+    }
+
+    .clr-bg {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 28px;
+      height: 24px;
+      border: 1px solid;
+      border-color: #808080 #fff #fff #808080;
+    }
+
+    .clr-fg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 28px;
+      height: 24px;
+      border: 2px solid;
+      border-color: #fff #808080 #808080 #fff;
+      outline: 1px solid #000;
+    }
+
+    .swatches {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2px;
+      width: 288px;
+    }
+
+    .swatch {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      border: 1px solid;
+      border-color: #808080 #fff #fff #808080;
+      flex-shrink: 0;
+    }
+
+    .swatch:hover {
+      outline: 1px solid #000;
+      outline-offset: -2px;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar {
+      width: 16px;
+      height: 16px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #c0c0c0;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #c0c0c0;
+      border: 1px solid;
+      border-color: #fff #808080 #808080 #fff;
+    }
+
+    ::-webkit-scrollbar-button {
+      background: #c0c0c0;
+      border: 1px solid;
+      border-color: #fff #808080 #808080 #fff;
+      display: block;
+      height: 16px;
     }
 
     /* ── MOBILE ── */
-    @media (max-width: 600px) {
-      .section {
-        padding: 40px 28px;
-        border-radius: 16px;
+    @media (max-width: 700px) {
+      body {
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: auto;
+        min-height: 100vh;
       }
 
-      .section p {
-        font-size: 15px;
+      #desktop {
+        position: static;
+        bottom: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 10px;
+        height: auto;
       }
 
-      footer {
-        padding: 40px 24px;
+      .desk-icon {
+        display: none;
       }
 
-      .links {
-        gap: 10px;
-        margin-top: 32px;
+      .win {
+        position: static !important;
+        left: auto !important;
+        top: auto !important;
+        width: 100% !important;
+        display: flex !important;
       }
 
-      .link-pill {
-        padding: 8px 16px;
-        font-size: 11px;
+      #win-paint {
+        display: none !important;
+      }
+
+      .win-titlebar {
+        cursor: default;
+      }
+
+      .win-controls {
+        display: none;
+      }
+
+      .win-menubar {
+        display: none;
+      }
+
+      .inset {
+        height: auto !important;
+        max-height: none !important;
+      }
+
+      .about-wrap {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .about-photo {
+        width: 90px;
+        height: 90px;
+      }
+
+      .about-links {
+        justify-content: center;
+      }
+
+      .win-statusbar {
+        display: none;
+      }
+
+      #taskbar,
+      #start-menu {
+        display: none !important;
       }
     }
   </style>
@@ -393,537 +703,567 @@
 
 <body>
 
-  <!-- Fixed background canvas — always behind everything -->
-  <canvas id="main-canvas"></canvas>
+  <!-- ═══ DESKTOP ═══ -->
+  <div id="desktop">
 
-  <!-- Hero text — fades out as camera lifts into sky -->
-  <div id="hero-overlay">
-    <div class="hero-eyebrow">Born &amp; raised on</div>
-    <div class="hero-name">Keneth Martin</div>
-    <div class="hero-sub">Hawai&#699;i Island</div>
-    <div class="scroll-hint">
-      <span>Scroll</span>
-      <div class="scroll-line"></div>
+    <!-- Icons -->
+    <div class="desk-icon" style="top:16px;left:112px;" ondblclick="openWin('win-exp')">
+      <img src="Social Icons Pack (PNG)/32x/folder_icon.png" alt="Experience" />
+      <span>Experience</span>
     </div>
-  </div>
 
-  <!-- Scroll spacer — scrolling through this lifts the camera into the sky -->
-  <div id="lift-driver"></div>
+    <div class="desk-icon" style="top:16px;left:12px;" ondblclick="openWin('win-about')">
+      <img src="Social Icons Pack (PNG)/32x/windows_icon.png" alt="PC" />
+      <span>Keneth's PC</span>
+    </div>
 
-  <!-- Mode toggle — HTML orb always visible above content -->
-  <button id="mode-toggle" aria-label="Toggle day/night mode">
-    <div id="moon-indicator"></div>
-    <div id="sun-indicator"></div>
-  </button>
+    <div class="desk-icon" style="top:96px;left:12px;" onclick="window.open('https://github.com/KenethM','_blank')">
+      <img src="Social Icons Pack (PNG)/32x/github_icon.png" alt="GitHub" />
+      <span>GitHub</span>
+    </div>
 
-  <!-- Progress ring -->
-  <div id="progress-ring">
-    <svg width="44" height="44" viewBox="0 0 44 44">
-      <circle class="track" cx="22" cy="22" r="22" />
-      <circle class="fill" cx="22" cy="22" r="22" id="ring-fill" />
-    </svg>
-  </div>
+    <div class="desk-icon" style="top:176px;left:12px;"
+      onclick="window.open('https://www.linkedin.com/in/keneth-martin-119400382/','_blank')">
+      <img src="Social Icons Pack (PNG)/32x/linkedin_icon.png" alt="LinkedIn" />
+      <span>LinkedIn</span>
+    </div>
 
-  <!-- Content — frosted glass cards over the sky -->
-  <div id="content">
+    <div class="desk-icon" style="top:256px;left:12px;"
+      onclick="window.open('https://instagram.com/kenn.ehh','_blank')">
+      <img src="Social Icons Pack (PNG)/32x/Insta_icon.png" alt="Instagram" />
+      <span>Instagram</span>
+    </div>
 
-    <div class="section">
-      <div class="section-label">About</div>
-      <h2>When you're tired of looking at my page,<br />get out and go explore nature.</h2>
-      <p>Howdy! I'm Keneth Martin, I'm sure you already got that far. I'm from the Big Island,
-        born and raised, and after living on a farm for most of my life, I was hanging up my hat
-        and wanted to experience the flip side, working in a well-ventilated room with a desk
-        surrounding me. I graduated from Hilo High School and pursued higher education in my hometown.
-        I will be graduating in the spring semester of 2026 with a bachelor's in Computer Science.
-        I hope to find work after graduation in areas where I'm able to work with and promote land
-        and cultural conservation. As someone who loves to go out and enjoy nature, I want to do what
-        I can to preserve it!</p>
-      <p>Outside of school and work, you'll find me in the water diving, scrambling up streams hunting
-        for waterfalls, or jumping off rock faces into cold river pools.
-      </p>
+    <div class="desk-icon" style="top:336px;left:12px;" ondblclick="openWin('win-paint')">
+      <img src="Social Icons Pack (PNG)/32x/paint_icon.png" alt="Paint" />
+      <span>Paint</span>
+    </div>
 
-      <div class="links">
+    <div class="desk-icon" style="top:416px;left:12px;" ondblclick="openWin('win-pub')">
+      <img src="Social Icons Pack (PNG)/32x/doc_icon.png" alt="Publications" />
+      <span>Publications</span>
+    </div>
 
-        <!-- GitHub -->
-        <a class="link-pill" href="https://github.com/KenethM" target="_blank" rel="noopener">
-          <svg class="link-icon" viewBox="0 0 24 24" fill="currentColor">
-            <path
-              d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55v-2c-3.19.69-3.86-1.54-3.86-1.54-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.68 1.24 3.33.95.1-.74.4-1.24.73-1.53-2.55-.29-5.23-1.27-5.23-5.66 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.17a10.9 10.9 0 012.87-.39c.97.01 1.95.13 2.87.39 2.18-1.48 3.14-1.17 3.14-1.17.63 1.58.23 2.75.11 3.04.74.8 1.18 1.82 1.18 3.07 0 4.4-2.69 5.37-5.25 5.65.41.36.78 1.07.78 2.16v3.2c0 .31.2.66.79.55C20.21 21.39 23.5 17.09 23.5 12 23.5 5.65 18.35.5 12 .5z" />
-          </svg>
-          GitHub
-        </a>
+    <div class="desk-icon" style="top:496px;left:12px;" ondblclick="alert('Empty — just like my free time.')">
+      <img src="Social Icons Pack (PNG)/32x/bin_icon.png" alt="Recycle Bin" />
+      <span>Recycle Bin</span>
+    </div>
 
-        <!-- LinkedIn -->
-        <a class="link-pill" href="https://www.linkedin.com/in/keneth-martin-119400382/" target="_blank" rel="noopener">
-          <svg class="link-icon" viewBox="0 0 24 24" fill="currentColor">
-            <path
-              d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 110-4.14 2.07 2.07 0 010 4.14zM3.56 20.45h3.56V9H3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z" />
-          </svg>
-          LinkedIn
-        </a>
-
-        <!-- Email -->
-        <a class="link-pill" href="#"
-          onclick="navigator.clipboard.writeText('keneth@hawaii.edu'); this.textContent='Copied!'; setTimeout(()=>this.innerHTML='<svg class=\'link-icon\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'><rect x=\'2\' y=\'4\' width=\'20\' height=\'16\' rx=\'2\'/><path d=\'M2 7l10 7 10-7\'/></svg> Email', 1500); return false;">
-          <svg class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="4" width="20" height="16" rx="2" />
-            <path d="M2 7l10 7 10-7" />
-          </svg>
-          Email
-        </a>
-
-        <!-- Instagram -->
-        <a class="link-pill" href="https://instagram.com/kenn.ehh" target="_blank" rel="noopener">
-          <svg class="link-icon" viewBox="0 0 24 24" fill="currentColor">
-            <path
-              d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
-          </svg>
-          Instagram
-        </a>
-
+    <!-- ═══ ABOUT WINDOW ═══ -->
+    <div class="win" id="win-about" style="top:24px; left:118px; width:560px; z-index:103;">
+      <div class="win-titlebar" onmousedown="startDrag(event,'win-about')">
+        <span class="win-titlebar-icon"><img src="Social Icons Pack (PNG)/32x/windows_icon.png" alt="" /></span>
+        <span class="win-titlebar-text">About Keneth &mdash; Notepad</span>
+        <div class="win-controls">
+          <div class="wbtn" onclick="minimizeWin('win-about')">_</div>
+          <div class="wbtn">&#9633;</div>
+          <div class="wbtn" onclick="closeWin('win-about')" style="font-weight:bold;">&#x2715;</div>
+        </div>
+      </div>
+      <div class="win-menubar">
+        <span class="mitem">File</span><span class="mitem">Edit</span><span class="mitem">View</span><span
+          class="mitem">Help</span>
+      </div>
+      <div class="win-body" style="padding:6px;">
+        <div class="inset" style="padding:14px; flex:1; height:320px;">
+          <div class="about-wrap">
+            <img class="about-photo" src="IMG_2379.png" alt="Keneth Martin" />
+            <div>
+              <p><strong>Keneth Martin</strong></p>
+              <p>Howdy! I'm from the Big Island, born and raised. After living on a farm for most of my life, I wanted
+                to experience the flip side — a desk, a monitor, a well-ventilated room.</p>
+              <p>Graduating Spring 2026 with a B.S. in Computer Science from UH Hilo. Looking to work in land and
+                cultural conservation.</p>
+              <p>Outside of school you'll find me diving, scrambling up streams after waterfalls, or jumping off rocks
+                into cold river pools.</p>
+            </div>
+          </div>
+          <div class="about-links">
+            <a class="wlink" href="https://github.com/KenethM" target="_blank">GitHub ↗</a>
+            <a class="wlink" href="https://www.linkedin.com/in/keneth-martin-119400382/" target="_blank">LinkedIn ↗</a>
+            <a class="wlink" href="https://instagram.com/kenn.ehh" target="_blank">Instagram ↗</a>
+            <button class="wlink"
+              onclick="navigator.clipboard.writeText('keneth@purplemaia.org'); this.textContent='Copied!'; setTimeout(()=>this.textContent='Copy Email',1500);">Copy
+              Email</button>
+          </div>
+        </div>
+      </div>
+      <div class="win-statusbar">
+        <div class="status-cell">Hawai&#699;i Island &middot; 19.8968&deg;N, 155.5828&deg;W</div>
       </div>
     </div>
 
-    <div class="section">
-      <div class="section-label">Work</div>
-      <h2>What I build.</h2>
-      <p>Describe your projects, skills, or work.</p>
+    <!-- ═══ EXPERIENCE WINDOW ═══ -->
+    <div class="win" id="win-exp" style="top:24px; left:700px; width:440px; z-index:102;">
+      <div class="win-titlebar" onmousedown="startDrag(event,'win-exp')">
+        <span class="win-titlebar-icon"><img src="Social Icons Pack (PNG)/32x/folder_icon.png" alt="" /></span>
+        <span class="win-titlebar-text">Experience.txt</span>
+        <div class="win-controls">
+          <div class="wbtn" onclick="minimizeWin('win-exp')">_</div>
+          <div class="wbtn">&#9633;</div>
+          <div class="wbtn" onclick="closeWin('win-exp')" style="font-weight:bold;">&#x2715;</div>
+        </div>
+      </div>
+      <div class="win-menubar">
+        <span class="mitem">File</span><span class="mitem">Edit</span><span class="mitem">Help</span>
+      </div>
+      <div class="win-body" style="padding:6px;">
+        <div class="inset" style="padding:14px; height:450px;">
+
+          <div class="exp-entry">
+            <div class="exp-role">Junior Software Engineer</div>
+            <div class="exp-meta">Purple Ma&#699;i Foundation &middot; Internship<br />Feb 2026 &ndash; Present &middot;
+              Hilo, HI &middot; Remote</div>
+            <div class="exp-desc">Building culturally grounded tech that supports &#699;āina restoration and strengthens
+              our communities.</div>
+          </div>
+
+          <hr class="exp-rule" />
+
+          <div class="exp-entry">
+            <div class="exp-role">NLP Research Intern</div>
+            <div class="exp-meta">University of Hawai&#699;i at Hilo<br />May 2025 &ndash; Jul 2025 &middot; 3 mos
+              &middot; On-site</div>
+            <div class="exp-tags">
+              <span class="tag">React.js</span>
+              <span class="tag">GitHub</span>
+              <span class="tag">NLP</span>
+            </div>
+          </div>
+
+          <hr class="exp-rule" />
+
+          <div class="exp-entry">
+            <div class="exp-role">ACM Student Assistant &mdash; CS</div>
+            <div class="exp-meta">University of Hawai&#699;i at Hilo &middot; Part-time<br />Jan 2024 &ndash; Apr 2025
+              &middot; 1 yr 4 mos</div>
+            <div class="exp-tags">
+              <span class="tag">C#</span>
+              <span class="tag">Communication</span>
+              <span class="tag">Creative Media</span>
+            </div>
+          </div>
+
+          <hr class="exp-rule" />
+
+          <div class="exp-entry">
+            <div class="sec-head">Education</div>
+            <div class="exp-role">University of Hawai&#699;i at Hilo</div>
+            <div class="exp-meta">B.S. Computer Science &middot; Aug 2022 &ndash; Spring 2026</div>
+            <div class="exp-role" style="margin-top:6px;">Hilo High School</div>
+          </div>
+
+        </div>
+      </div>
+      <div class="win-statusbar">
+        <div class="status-cell">3 positions &middot; UH Hilo &middot; Hilo High School</div>
+      </div>
     </div>
 
-    <footer>
-      &copy; <span id="yr"></span> Keneth Martin &mdash; Hawai&#699;i Island &middot; 19.8968&deg; N, 155.5828&deg; W
-    </footer>
+    <!-- ═══ PUBLICATIONS WINDOW ═══ -->
+    <div class="win" id="win-pub" style="top:420px; left:118px; width:560px; z-index:101;">
+      <div class="win-titlebar" onmousedown="startDrag(event,'win-pub')">
+        <span class="win-titlebar-icon"><img src="Social Icons Pack (PNG)/32x/doc_icon.png" alt="" /></span>
+        <span class="win-titlebar-text">Publications &mdash; Research</span>
+        <div class="win-controls">
+          <div class="wbtn" onclick="minimizeWin('win-pub')">_</div>
+          <div class="wbtn">&#9633;</div>
+          <div class="wbtn" onclick="closeWin('win-pub')" style="font-weight:bold;">&#x2715;</div>
+        </div>
+      </div>
+      <div class="win-body" style="padding:6px;">
+        <div class="inset" style="padding:12px;">
+          <div style="font-weight:bold; font-size:12px; line-height:1.4; margin-bottom:6px; color:#000;">
+            A Modern Online Learning Platform for &#699;&#332;lelo Hawai&#699;i Classrooms
+          </div>
+          <div style="color:#555; font-size:11px; margin-bottom:10px;">LREC &middot; March 2026</div>
+          <div style="font-size:11px; line-height:1.65; color:#000; user-select:text;">
+            A browser-based platform designed to streamline teaching workflows and enhance learning for students in
+            Hawaiian language classrooms.
+          </div>
+        </div>
+      </div>
+      <div class="win-statusbar">
+        <div class="status-cell">1 publication</div>
+      </div>
+    </div>
 
+    <!-- ═══ PAINT WINDOW ═══ -->
+    <div class="win" id="win-paint" style="top:50px; left:150px; width:620px; z-index:100; display:none;">
+      <div class="win-titlebar" onmousedown="startDrag(event,'win-paint')">
+        <span class="win-titlebar-icon"><img src="Social Icons Pack (PNG)/32x/paint_icon.png" alt="" /></span>
+        <span class="win-titlebar-text" id="paint-title">Paint &mdash; Untitled</span>
+        <div class="win-controls">
+          <div class="wbtn" onclick="minimizeWin('win-paint')">_</div>
+          <div class="wbtn">&#9633;</div>
+          <div class="wbtn" onclick="closeWin('win-paint')" style="font-weight:bold;">&#x2715;</div>
+        </div>
+      </div>
+      <div class="win-menubar">
+        <span class="mitem">File</span><span class="mitem">Edit</span><span class="mitem">View</span><span
+          class="mitem">Help</span>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="paint-toolbar">
+        <div class="tool-btn active" id="ptool-pencil" onclick="setTool('pencil')" title="Pencil">&#9998;</div>
+        <div class="tool-btn" id="ptool-eraser" onclick="setTool('eraser')" title="Eraser">&#9633;</div>
+        <div class="tool-btn" id="ptool-fill" onclick="setTool('fill')" title="Fill Bucket">&#9724;</div>
+        <div class="paint-sep"></div>
+        <div class="brush-btn active" id="psize-1" onclick="setBrush(1)" title="1px">
+          <div class="brush-dot" style="width:2px;height:2px;"></div>
+        </div>
+        <div class="brush-btn" id="psize-3" onclick="setBrush(3)" title="3px">
+          <div class="brush-dot" style="width:5px;height:5px;"></div>
+        </div>
+        <div class="brush-btn" id="psize-6" onclick="setBrush(6)" title="6px">
+          <div class="brush-dot" style="width:8px;height:8px;"></div>
+        </div>
+        <div class="brush-btn" id="psize-12" onclick="setBrush(12)" title="12px">
+          <div class="brush-dot" style="width:13px;height:13px;"></div>
+        </div>
+        <div class="paint-sep"></div>
+        <div class="tool-btn" onclick="clearCanvas()" title="Clear">Clear</div>
+        <div class="tool-btn" onclick="saveCanvas()" title="Save as PNG">Save</div>
+      </div>
+
+      <!-- Canvas -->
+      <div class="paint-canvas-wrap">
+        <canvas id="paint-canvas" width="560" height="400"></canvas>
+      </div>
+
+      <!-- Color palette -->
+      <div class="paint-colors">
+        <div class="active-colors">
+          <div class="clr-bg" id="clr-bg" style="background:#ffffff;" title="Right-click swatch to set bg"></div>
+          <div class="clr-fg" id="clr-fg" style="background:#000000;" title="Left-click swatch to set fg"></div>
+        </div>
+        <div class="swatches" id="paint-swatches"></div>
+      </div>
+
+      <div class="win-statusbar">
+        <div class="status-cell" id="paint-status">Pencil &middot; 1px</div>
+        <div class="status-cell" style="flex:0;min-width:100px;text-align:right;" id="paint-pos">0, 0</div>
+      </div>
+    </div>
+
+  </div><!-- #desktop -->
+
+  <!-- ═══ TASKBAR ═══ -->
+  <div id="taskbar">
+    <button id="start-btn" onclick="toggleStart()">
+      <img src="Social Icons Pack (PNG)/32x/windows_icon.png" alt=""
+        style="width:20px;height:20px;image-rendering:pixelated;vertical-align:middle;" />
+      Start
+    </button>
+    <div class="tb-divider"></div>
+    <div id="tb-wins"></div>
+    <div id="sys-tray"><span id="clock">12:00 PM</span></div>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- ═══ START MENU ═══ -->
+  <div id="start-menu">
+    <div class="sm-sidebar">Windows</div>
+    <div class="sm-items">
+      <div class="sm-item" onclick="openWin('win-about'); toggleStart()">
+        <img src="Social Icons Pack (PNG)/32x/windows_icon.png"
+          style="width:22px;height:22px;image-rendering:pixelated;flex-shrink:0;" />
+        About Me
+      </div>
+      <div class="sm-item" onclick="openWin('win-exp'); toggleStart()">
+        <img src="Social Icons Pack (PNG)/32x/folder_icon.png"
+          style="width:22px;height:22px;image-rendering:pixelated;flex-shrink:0;" />
+        Experience
+      </div>
+      <div class="sm-item" onclick="openWin('win-pub'); toggleStart()">
+        <img src="Social Icons Pack (PNG)/32x/doc_icon.png"
+          style="width:22px;height:22px;image-rendering:pixelated;flex-shrink:0;" />
+        Publications
+      </div>
+      <div class="sm-item" onclick="openWin('win-paint'); toggleStart()">
+        <img src="Social Icons Pack (PNG)/32x/paint_icon.png"
+          style="width:22px;height:22px;image-rendering:pixelated;flex-shrink:0;" />
+        Paint
+      </div>
+      <hr class="sm-rule" />
+      <div class="sm-item" onclick="window.open('https://github.com/KenethM','_blank'); toggleStart()">
+        <img src="Social Icons Pack (PNG)/32x/github_icon.png"
+          style="width:22px;height:22px;image-rendering:pixelated;flex-shrink:0;" />
+        GitHub ↗
+      </div>
+      <div class="sm-item"
+        onclick="window.open('https://www.linkedin.com/in/keneth-martin-119400382/','_blank'); toggleStart()">
+        <img src="Social Icons Pack (PNG)/32x/linkedin_icon.png"
+          style="width:22px;height:22px;image-rendering:pixelated;flex-shrink:0;" />
+        LinkedIn ↗
+      </div>
+      <hr class="sm-rule" />
+      <div class="sm-item" style="color:#800;"
+        onclick="alert('Shut Down?\n\nAre you sure you want to leave this page?\n\n[ Yes ] — you cannot.')">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="9" fill="#c0c0c0" stroke="#808080" />
+          <rect x="11" y="5" width="2" height="8" fill="#000" />
+          <path fill="none" stroke="#000" stroke-width="2" d="M8 7A6 6 0 1 0 16 7" />
+        </svg>
+        Shut Down...
+      </div>
+    </div>
+  </div>
+
   <script>
-    // ─────────────────────────────────────────────
-    //  RENDERER & SCENE
-    // ─────────────────────────────────────────────
-    const MAIN_CANVAS = document.getElementById('main-canvas');
-    const heroOverlay = document.getElementById('hero-overlay');
-    const progressRing = document.getElementById('progress-ring');
-    const ringFill = document.getElementById('ring-fill');
-    const CIRCUMFERENCE = 2 * Math.PI * 22;
+    // ── Window management ──
+    let topZ = 103;
+    const WIN_IDS = ['win-about', 'win-exp', 'win-pub', 'win-paint'];
 
-    function makeRenderer(canvas) {
-      const r = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-      r.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      r.shadowMap.enabled = true;
-      r.shadowMap.type = THREE.PCFSoftShadowMap;
-      r.toneMapping = THREE.ACESFilmicToneMapping;
-      r.toneMappingExposure = 1.1;
-      r.localClippingEnabled = true;
-      return r;
+    function openWin(id) {
+      const el = document.getElementById(id);
+      el.style.display = 'flex';
+      focusWin(id);
+      const tb = document.getElementById('tb-' + id);
+      if (tb) tb.style.display = 'flex';
     }
 
-    function resize(renderer, camera, canvas) {
-      const w = canvas.clientWidth, h = canvas.clientHeight;
-      if (renderer.domElement.width !== w || renderer.domElement.height !== h) {
-        renderer.setSize(w, h, false);
-        camera.aspect = w / h;
-        camera.updateProjectionMatrix();
-      }
-    }
-
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x050e1f);
-    scene.fog = new THREE.FogExp2(0x050e1f, 0.045);
-
-    // ── CAMERA ──
-    // Two waypoints: island view → sky view
-    const CAM_ISLAND = { px: 0, py: 3.5, pz: 14, lx: 0, ly: 0.5, lz: 0 };
-    const CAM_SKY = { px: 0, py: 22, pz: 4, lx: 0, ly: 17.0, lz: -6 };
-
-    const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 200);
-    camera.position.set(CAM_ISLAND.px, CAM_ISLAND.py, CAM_ISLAND.pz);
-    camera.lookAt(CAM_ISLAND.lx, CAM_ISLAND.ly, CAM_ISLAND.lz);
-
-    // ── LIGHTING ──
-    const ambientLight = new THREE.AmbientLight(0x223355, 1.8);
-    scene.add(ambientLight);
-
-    const keyLight = new THREE.DirectionalLight(0xfff4d0, 3.0);
-    keyLight.position.set(6, 10, 4);
-    keyLight.castShadow = true;
-    keyLight.shadow.mapSize.set(2048, 2048);
-    keyLight.shadow.camera.left = keyLight.shadow.camera.bottom = -12;
-    keyLight.shadow.camera.right = keyLight.shadow.camera.top = 12;
-    keyLight.shadow.camera.far = 60;
-    scene.add(keyLight);
-
-    const rim = new THREE.DirectionalLight(0x4477bb, 0.6);
-    rim.position.set(-5, 3, -6);
-    scene.add(rim);
-
-    // ── STARS ──
-    const starVerts = [];
-    for (let i = 0; i < 2000; i++) {
-      const r = 60 + Math.random() * 20;
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(2 * Math.random() - 1);
-      starVerts.push(
-        r * Math.sin(phi) * Math.cos(theta),
-        r * Math.sin(phi) * Math.sin(theta),
-        r * Math.cos(phi)
-      );
-    }
-    const starGeo = new THREE.BufferGeometry();
-    starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starVerts, 3));
-    const starsMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.18, transparent: true, opacity: 0.7, fog: false });
-    scene.add(new THREE.Points(starGeo, starsMat));
-
-    // ── SUN ORB ──
-    const sunMat = new THREE.MeshStandardMaterial({
-      color: 0x000000, emissive: 0xffcc44, emissiveIntensity: 0.0, roughness: 1, fog: false
-    });
-    const sunOrb = new THREE.Mesh(new THREE.SphereGeometry(0.32, 16, 16), sunMat);
-    const sunOrbLight = new THREE.PointLight(0xfff4d0, 0.0, 30);
-    sunOrb.add(sunOrbLight);
-    scene.add(sunOrb);
-    sunOrb.visible = false; // hidden for now — HTML toggle handles UI
-
-    // ── MOON ORB ──
-    const moonMat = new THREE.MeshStandardMaterial({
-      color: 0x000000, emissive: 0xaabbd0, emissiveIntensity: 2.5, roughness: 1, fog: false
-    });
-    const moonOrb = new THREE.Mesh(new THREE.SphereGeometry(0.22, 16, 16), moonMat);
-    const moonOrbLight = new THREE.PointLight(0x8899cc, 3.0, 25);
-    moonOrb.add(moonOrbLight);
-    scene.add(moonOrb);
-    moonOrb.visible = false; // hidden for now — HTML toggle handles UI
-
-    // ── ORB ARC SYSTEM ──
-    // Orbs are children of the camera so they're always visible regardless of scroll.
-    // Positions are in camera-local space: +X right, +Y up, -Z forward.
-    // Top ≈ (1.8, 0.65, -4.5) visible upper-right; bottom ≈ (1.8, -3.45, -4.5) way off screen.
-    const ORB_CX = 2.3, ORB_CY = -1.4, ORB_RX = 3.0, ORB_RY = 2.05, ORB_CZ = -4.5;
-
-    function orbPos(angle) {
-      return {
-        x: ORB_CX - ORB_RX * Math.cos(angle),
-        y: ORB_CY + ORB_RY * Math.sin(angle),
-        z: ORB_CZ
-      };
-    }
-
-    let orbAngle = Math.PI / 2;
-    let orbTargetAngle = Math.PI / 2;
-    let isDark = true;
-
-    camera.updateMatrixWorld();
-    const mp0 = orbPos(orbAngle);
-    const sp0 = orbPos(orbAngle + Math.PI);
-    moonOrb.position.set(mp0.x, mp0.y, mp0.z).applyMatrix4(camera.matrixWorld);
-    sunOrb.position.set(sp0.x, sp0.y, sp0.z).applyMatrix4(camera.matrixWorld);
-
-    // ── MODE COLOURS ──
-    function lerp(a, b, t) { return a + (b - a) * t; }
-    const C_DARK_BG = new THREE.Color(0x050e1f);
-    const C_LIGHT_BG = new THREE.Color(0x9bbfcc);
-    const C_DARK_AMB = new THREE.Color(0x223355);
-    const C_LIGHT_AMB = new THREE.Color(0xd4cbb8);
-    const C_DARK_KEY = new THREE.Color(0xfff4d0);
-    const C_LIGHT_KEY = new THREE.Color(0xfff0cc);
-    const C_DARK_RIM = new THREE.Color(0x4477bb);
-    const C_LIGHT_RIM = new THREE.Color(0xc8b890);
-    const C_DARK_OCEAN = new THREE.Color(0x061828);
-    const C_LIGHT_OCEAN = new THREE.Color(0x34b1eb);
-
-    let modeProgress = 0;
-    let modeTarget = 0;
-
-    // ── CLOUDS ──
-    const clouds = [];
-    [
-      { x: -18, y: 2.8, z: 0.5, spd: 0.0030, sc: 0.70 },
-      { x: -6, y: 3.4, z: -0.5, spd: 0.0022, sc: 0.55 },
-      { x: 3, y: 2.6, z: 1.0, spd: 0.0038, sc: 0.50 },
-      { x: 11, y: 3.2, z: 0.0, spd: 0.0025, sc: 0.65 },
-      { x: 20, y: 2.8, z: -0.8, spd: 0.0032, sc: 0.55 },
-    ].forEach(cfg => {
-      const mat = new THREE.MeshStandardMaterial({
-        color: 0xf0f4f8, transparent: true, opacity: 0,
-        roughness: 1, metalness: 0, fog: false, depthWrite: false
+    function focusWin(id) {
+      topZ++;
+      WIN_IDS.forEach(w => {
+        document.getElementById(w).classList.add('inactive');
       });
-      const grp = new THREE.Group();
-      [
-        [0.0, 0.00, 0.0, 1.00],
-        [1.3, -0.10, 0.2, 0.75],
-        [-1.1, -0.10, -0.1, 0.70],
-        [0.5, 0.40, 0.1, 0.60],
-        [-0.4, 0.35, 0.2, 0.55],
-        [0.9, 0.30, -0.2, 0.50],
-      ].forEach(([x, y, z, r]) => {
-        const puff = new THREE.Mesh(new THREE.SphereGeometry(r * cfg.sc, 7, 5), mat);
-        puff.position.set(x * cfg.sc, y * cfg.sc, z * cfg.sc);
-        grp.add(puff);
+      const el = document.getElementById(id);
+      el.style.zIndex = topZ;
+      el.classList.remove('inactive');
+      document.querySelectorAll('.tb-btn').forEach(b => b.classList.remove('pressed'));
+      const tb = document.getElementById('tb-' + id);
+      if (tb) tb.classList.add('pressed');
+    }
+
+    function minimizeWin(id) {
+      document.getElementById(id).style.display = 'none';
+      const tb = document.getElementById('tb-' + id);
+      if (tb) tb.classList.remove('pressed');
+    }
+
+    function closeWin(id) {
+      document.getElementById(id).style.display = 'none';
+      const tb = document.getElementById('tb-' + id);
+      if (tb) tb.style.display = 'none';
+    }
+
+    // Click window body to focus
+    WIN_IDS.forEach(id => {
+      document.getElementById(id).addEventListener('mousedown', () => focusWin(id));
+    });
+
+    // ── Taskbar buttons ──
+    function initTaskbar() {
+      const container = document.getElementById('tb-wins');
+      WIN_IDS.forEach(id => {
+        const title = document.getElementById(id).querySelector('.win-titlebar-text').textContent.trim();
+        const btn = document.createElement('button');
+        btn.className = 'tb-btn';
+        btn.id = 'tb-' + id;
+        btn.textContent = title.length > 22 ? title.slice(0, 22) + '…' : title;
+        btn.onclick = () => {
+          const el = document.getElementById(id);
+          if (el.style.display === 'none') { openWin(id); }
+          else { focusWin(id); }
+        };
+        if (document.getElementById(id).style.display === 'none') btn.style.display = 'none';
+        container.appendChild(btn);
       });
-      grp.position.set(cfg.x, cfg.y, cfg.z);
-      grp.userData = { spd: cfg.spd, mat, baseY: cfg.y };
-      scene.add(grp);
-      clouds.push(grp);
+      // Set initial pressed state for top window
+      document.getElementById('tb-win-about').classList.add('pressed');
+    }
+
+    // ── Drag ──
+    let dragging = null, ox = 0, oy = 0;
+
+    function startDrag(e, id) {
+      if (e.target.closest('.win-controls')) return;
+      focusWin(id);
+      dragging = document.getElementById(id);
+      const r = dragging.getBoundingClientRect();
+      ox = e.clientX - r.left;
+      oy = e.clientY - r.top;
+      e.preventDefault();
+    }
+
+    document.addEventListener('mousemove', e => {
+      if (dragging) {
+        dragging.style.left = (e.clientX - ox) + 'px';
+        dragging.style.top = Math.max(0, e.clientY - oy) + 'px';
+      }
+    });
+    document.addEventListener('mouseup', () => { dragging = null; });
+
+    // ── Clock ──
+    function tick() {
+      document.getElementById('clock').textContent =
+        new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+    }
+    tick();
+    setInterval(tick, 15000);
+
+    // ── Start Menu ──
+    let startOpen = false;
+    function toggleStart() {
+      startOpen = !startOpen;
+      document.getElementById('start-menu').classList.toggle('open', startOpen);
+    }
+    document.addEventListener('click', e => {
+      if (!e.target.closest('#start-btn') && !e.target.closest('#start-menu')) {
+        startOpen = false;
+        document.getElementById('start-menu').classList.remove('open');
+      }
     });
 
-    function setMode(dark) {
-      if (isDark === dark) return;
-      isDark = dark;
-      modeTarget = dark ? 0 : 1;
-      orbTargetAngle = dark ? Math.PI / 2 : -Math.PI / 2;
-      document.body.classList.toggle('light-mode', !dark);
-    }
+    // ── PAINT APP ──
+    let paintCtx = null;
+    let paintTool = 'pencil';
+    let brushSize = 1;
+    let fgColor = '#000000';
+    let bgColor = '#ffffff';
+    let painting = false;
+    let lastX = 0, lastY = 0;
 
-    // ── ORB HIT DETECTION — 2D screen-space projection (reliable for HUD-style orbs) ──
-    const _proj = new THREE.Vector3();
-    const HIT_RADIUS = 44; // px — generous for mobile taps
+    const PALETTE = [
+      '#000000', '#808080', '#800000', '#808000', '#008000', '#008080', '#000080', '#800080',
+      '#c0c0c0', '#ffffff', '#ff0000', '#ffff00', '#00ff00', '#00ffff', '#0000ff', '#ff00ff',
+      '#ff8040', '#804000', '#ffff80', '#408000', '#00ff80', '#004080', '#8080ff', '#ff0080',
+      '#ff8080', '#8000ff', '#0040ff', '#80ff80', '#ff80ff', '#80ffff', '#404040', '#ff4040',
+    ];
 
-    function handleOrbHit(clientX, clientY) {
-      const rect = MAIN_CANVAS.getBoundingClientRect();
-      const cx = clientX - rect.left;
-      const cy = clientY - rect.top;
-      for (const [orb, darkMode] of [[moonOrb, false], [sunOrb, true]]) {
-        _proj.copy(orb.position).project(camera);
-        const sx = (_proj.x *  0.5 + 0.5) * rect.width;
-        const sy = (_proj.y * -0.5 + 0.5) * rect.height;
-        if (Math.hypot(cx - sx, cy - sy) < HIT_RADIUS) {
-          setMode(darkMode);
-          return true;
-        }
-      }
-      return false;
-    }
+    // ── Init ──
+    initTaskbar();
+    document.getElementById('win-exp').classList.add('inactive');
+    document.getElementById('win-pub').classList.add('inactive');
+    document.getElementById('win-paint').classList.add('inactive');
+    initPaint();
 
-    MAIN_CANVAS.addEventListener('click', (e) => handleOrbHit(e.clientX, e.clientY));
-    MAIN_CANVAS.addEventListener('touchstart', (e) => {
-      const hit = handleOrbHit(e.touches[0].clientX, e.touches[0].clientY);
-      if (hit) e.preventDefault();
-    }, { passive: false });
+    function initPaint() {
+      const canvas = document.getElementById('paint-canvas');
+      paintCtx = canvas.getContext('2d');
+      paintCtx.fillStyle = '#ffffff';
+      paintCtx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // HTML mode toggle — always above canvas and content, works at any scroll depth
-    const modeToggle = document.getElementById('mode-toggle');
-    modeToggle.addEventListener('click', () => setMode(!isDark));
-    modeToggle.addEventListener('touchstart', (e) => { e.preventDefault(); setMode(!isDark); }, { passive: false });
-
-    // ── OCEAN ──
-    const oceanGeo = new THREE.CircleGeometry(13, 64);
-    const oceanMat = new THREE.MeshStandardMaterial({ color: 0x061828, roughness: 0, metalness: 0.55 });
-    const ocean = new THREE.Mesh(oceanGeo, oceanMat);
-    ocean.rotation.x = -Math.PI / 2;
-    ocean.position.y = -0.08;
-    ocean.receiveShadow = true;
-    scene.add(ocean);
-
-    // ─────────────────────────────────────────────
-    //  HEIGHTMAP ISLAND
-    // ─────────────────────────────────────────────
-    const island = new THREE.Group();
-    island.position.y = -0.06;
-    island.position.z = 1.4;
-    scene.add(island);
-
-    const SEGMENTS = 511;
-    const PLANE_SIZE = 20;
-    const MAX_HEIGHT = 1;
-    const SEA_CUTOFF = 0.04;
-
-    let animationStarted = false;
-    setTimeout(() => { if (!animationStarted) buildFallback(); }, 6000);
-
-    function buildIslandFromPixels(pixels, size) {
-      const geo = new THREE.PlaneGeometry(PLANE_SIZE, PLANE_SIZE, SEGMENTS, SEGMENTS);
-      geo.rotateX(-Math.PI / 2);
-
-      const pos = geo.attributes.position;
-      const colors = [];
-      const col = new THREE.Color();
-
-      const deepWater = new THREE.Color(0x061828);
-      const coastal = new THREE.Color(0x3a5820);
-      const lavaLow = new THREE.Color(0x1a1210);
-      const lavaRed = new THREE.Color(0x5a3018);
-      const drySlope = new THREE.Color(0x8a6040);
-      const summit = new THREE.Color(0x6a5245);
-
-      let minPX = size, maxPX = 0, minPY = size, maxPY = 0;
-      for (let py = 0; py < size; py++) {
-        for (let px = 0; px < size; px++) {
-          if (pixels[(py * size + px) * 4] / 255 >= SEA_CUTOFF) {
-            minPX = Math.min(minPX, px); maxPX = Math.max(maxPX, px);
-            minPY = Math.min(minPY, py); maxPY = Math.max(maxPY, py);
-          }
-        }
-      }
-      const centerPX = (minPX + maxPX) / 2;
-      const centerPY = (minPY + maxPY) / 2;
-      const halfSize = size / 2;
-
-      for (let i = 0; i < pos.count; i++) {
-        const xi = i % (SEGMENTS + 1);
-        const zi = Math.floor(i / (SEGMENTS + 1));
-        const px = Math.round(xi + (centerPX - halfSize));
-        const py = Math.round((SEGMENTS - zi) + (centerPY - halfSize));
-        const cpx = Math.max(0, Math.min(size - 1, px));
-        const cpy = Math.max(0, Math.min(size - 1, py));
-        const brightness = pixels[(cpy * size + cpx) * 4] / 255;
-
-        pos.setY(i, brightness < SEA_CUTOFF ? -1.0 : Math.pow(brightness, 0.90) * MAX_HEIGHT);
-
-        if (brightness < SEA_CUTOFF) col.copy(deepWater);
-        else if (brightness < 0.25) col.lerpColors(coastal, lavaLow, (brightness - SEA_CUTOFF) / (0.25 - SEA_CUTOFF));
-        else if (brightness < 0.50) col.lerpColors(lavaLow, lavaRed, (brightness - 0.25) / 0.25);
-        else if (brightness < 0.80) col.lerpColors(lavaRed, drySlope, (brightness - 0.50) / 0.30);
-        else col.lerpColors(drySlope, summit, (brightness - 0.80) / 0.20);
-        colors.push(col.r, col.g, col.b);
-      }
-
-      geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-      geo.computeVertexNormals();
-
-      const seaClip = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
-      const mesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({
-        vertexColors: true, roughness: 0.88, metalness: 0.02,
-        clippingPlanes: [seaClip], clipShadows: true,
-      }));
-      mesh.castShadow = true;
-      mesh.receiveShadow = true;
-      island.add(mesh);
-      startAnimation();
-    }
-
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.onload = function () {
-      try {
-        const offscreen = document.createElement('canvas');
-        offscreen.width = offscreen.height = img.width;
-        const ctx = offscreen.getContext('2d');
-        ctx.drawImage(img, 0, 0);
-        buildIslandFromPixels(ctx.getImageData(0, 0, img.width, img.height).data, img.width);
-      } catch (e) {
-        console.warn('getImageData failed:', e);
-        buildFallback();
-      }
-    };
-    img.onerror = () => { console.warn('heightmap.png failed'); buildFallback(); };
-    img.src = 'heightmap.png';
-
-    function buildFallback() {
-      if (animationStarted) return;
-      const mesh = new THREE.Mesh(
-        new THREE.ConeGeometry(3, 2.5, 32),
-        new THREE.MeshStandardMaterial({ color: 0x3a5525, roughness: 0.9 })
-      );
-      mesh.position.y = 1.25;
-      island.add(mesh);
-      startAnimation();
-    }
-
-    // ─────────────────────────────────────────────
-    //  RENDERER
-    // ─────────────────────────────────────────────
-    const renderer = makeRenderer(MAIN_CANVAS);
-
-    // ─────────────────────────────────────────────
-    //  SCROLL → CAMERA LIFT
-    // ─────────────────────────────────────────────
-    let liftProgress = 0;
-    const liftDriver = document.getElementById('lift-driver');
-
-    window.addEventListener('scroll', () => {
-      const raw = window.scrollY / liftDriver.offsetHeight;
-      liftProgress = Math.min(1, raw);
-
-      // Progress ring tracks full-page scroll
-      const docH = document.documentElement.scrollHeight - window.innerHeight;
-      const totalP = docH > 0 ? window.scrollY / docH : 0;
-      progressRing.classList.toggle('visible', totalP > 0.02 && totalP < 0.98);
-      ringFill.style.strokeDashoffset = CIRCUMFERENCE * (1 - totalP);
-    });
-
-    // ─────────────────────────────────────────────
-    //  ANIMATION LOOP
-    // ─────────────────────────────────────────────
-    function startAnimation() {
-      animationStarted = true;
-      let t = 0;
-      let currentRotation = 0;
-
-      function animate() {
-        requestAnimationFrame(animate);
-        t += 0.008;
-
-        // Island auto-rotates slowly — no scroll dependency
-        currentRotation += 0.0005;
-        island.rotation.y = currentRotation;
-
-        // Camera lift with smoothstep easing
-        const lp = liftProgress;
-        const ease = lp * lp * (3 - 2 * lp);
-
-        camera.position.set(
-          lerp(CAM_ISLAND.px, CAM_SKY.px, ease),
-          lerp(CAM_ISLAND.py, CAM_SKY.py, ease) + Math.sin(t * 0.4) * lerp(0.12, 0.04, ease),
-          lerp(CAM_ISLAND.pz, CAM_SKY.pz, ease)
-        );
-        camera.lookAt(
-          lerp(CAM_ISLAND.lx, CAM_SKY.lx, ease),
-          lerp(CAM_ISLAND.ly, CAM_SKY.ly, ease),
-          lerp(CAM_ISLAND.lz, CAM_SKY.lz, ease)
-        );
-
-        // Hero text fades out quickly as lift begins
-        heroOverlay.style.opacity = Math.max(0, 1 - lp * 2.5);
-
-        // Orbs: convert camera-local arc positions → world space each frame
-        camera.updateMatrixWorld();
-        orbAngle += (orbTargetAngle - orbAngle) * 0.03;
-        const mp = orbPos(orbAngle);
-        const sp = orbPos(orbAngle + Math.PI);
-        moonOrb.position.set(mp.x, mp.y, mp.z).applyMatrix4(camera.matrixWorld);
-        sunOrb.position.set(sp.x, sp.y, sp.z).applyMatrix4(camera.matrixWorld);
-
-        // Clouds rise/fall with camera
-        const orbYShift = lerp(0, 18, ease);
-
-        // Day/night mode colours
-        modeProgress += (modeTarget - modeProgress) * 0.012;
-        const p = modeProgress;
-
-        scene.background.copy(C_DARK_BG).lerp(C_LIGHT_BG, p);
-        scene.fog.color.copy(C_DARK_BG).lerp(C_LIGHT_BG, p);
-        scene.fog.density = lerp(0.045, 0.012, ease);  // fog thins at altitude
-        ambientLight.color.copy(C_DARK_AMB).lerp(C_LIGHT_AMB, p);
-        ambientLight.intensity = lerp(1.8, 1.2, p);
-        keyLight.color.copy(C_DARK_KEY).lerp(C_LIGHT_KEY, p);
-        keyLight.intensity = lerp(3.0, 1.6, p);
-        rim.color.copy(C_DARK_RIM).lerp(C_LIGHT_RIM, p);
-        sunMat.emissiveIntensity = lerp(0.0, 2.0, p);
-        sunOrbLight.intensity = lerp(0.0, 2.0, p);
-        moonMat.emissiveIntensity = lerp(2.5, 0.3, p);
-        moonOrbLight.intensity = lerp(3.0, 0.3, p);
-        starsMat.opacity = lerp(0.7, 0.0, p);
-        oceanMat.color.copy(C_DARK_OCEAN).lerp(C_LIGHT_OCEAN, p);
-
-        // Clouds drift and rise with camera
-        clouds.forEach(c => {
-          c.position.x += c.userData.spd;
-          if (c.position.x > 22) c.position.x = -22;
-          c.position.y = c.userData.baseY + orbYShift;
-          c.userData.mat.opacity = lerp(0, 0.82, p);
+      // Build palette swatches
+      const container = document.getElementById('paint-swatches');
+      PALETTE.forEach(color => {
+        const s = document.createElement('div');
+        s.className = 'swatch';
+        s.style.background = color;
+        s.title = color;
+        s.addEventListener('click', () => {
+          fgColor = color;
+          document.getElementById('clr-fg').style.background = color;
         });
+        s.addEventListener('contextmenu', e => {
+          e.preventDefault();
+          bgColor = color;
+          document.getElementById('clr-bg').style.background = color;
+        });
+        container.appendChild(s);
+      });
 
-        resize(renderer, camera, MAIN_CANVAS);
-        renderer.render(scene, camera);
-      }
+      canvas.addEventListener('pointerdown', e => {
+        if (e.button !== 0) return;
+        e.preventDefault();
+        e.stopPropagation();
+        canvas.setPointerCapture(e.pointerId);
+        const [x, y] = canvasXY(canvas, e);
+        if (paintTool === 'fill') { floodFill(x, y); return; }
+        painting = true;
+        lastX = x; lastY = y;
+        paintDot(x, y);
+      });
 
-      animate();
+      canvas.addEventListener('pointermove', e => {
+        const [x, y] = canvasXY(canvas, e);
+        document.getElementById('paint-pos').textContent = `${x}, ${y}`;
+        if (!painting || !paintCtx) return;
+        paintCtx.beginPath();
+        paintCtx.moveTo(lastX, lastY);
+        paintCtx.lineTo(x, y);
+        paintCtx.strokeStyle = paintTool === 'eraser' ? bgColor : fgColor;
+        paintCtx.lineWidth = brushSize;
+        paintCtx.lineCap = paintCtx.lineJoin = 'round';
+        paintCtx.stroke();
+        lastX = x; lastY = y;
+      });
+
+      canvas.addEventListener('pointerup', () => { painting = false; });
+      canvas.addEventListener('pointercancel', () => { painting = false; });
     }
 
-    window.addEventListener('resize', () => resize(renderer, camera, MAIN_CANVAS));
+    function canvasXY(canvas, e) {
+      const r = canvas.getBoundingClientRect();
+      return [Math.floor(e.clientX - r.left), Math.floor(e.clientY - r.top)];
+    }
 
-    document.getElementById('yr').textContent = new Date().getFullYear();
+    function paintDot(x, y) {
+      paintCtx.beginPath();
+      paintCtx.arc(x, y, Math.max(0.5, brushSize / 2), 0, Math.PI * 2);
+      paintCtx.fillStyle = paintTool === 'eraser' ? bgColor : fgColor;
+      paintCtx.fill();
+    }
+
+    function setTool(tool) {
+      paintTool = tool;
+      document.querySelectorAll('[id^="ptool-"]').forEach(b => b.classList.remove('active'));
+      document.getElementById('ptool-' + tool).classList.add('active');
+      updatePaintStatus();
+    }
+
+    function setBrush(size) {
+      brushSize = size;
+      document.querySelectorAll('.brush-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('psize-' + size).classList.add('active');
+      updatePaintStatus();
+    }
+
+    function updatePaintStatus() {
+      const name = paintTool.charAt(0).toUpperCase() + paintTool.slice(1);
+      document.getElementById('paint-status').textContent = `${name} \u00b7 ${brushSize}px`;
+    }
+
+    function clearCanvas() {
+      paintCtx.fillStyle = bgColor;
+      paintCtx.fillRect(0, 0, paintCtx.canvas.width, paintCtx.canvas.height);
+    }
+
+    function saveCanvas() {
+      const a = Object.assign(document.createElement('a'), {
+        download: 'painting.png',
+        href: paintCtx.canvas.toDataURL('image/png')
+      });
+      a.click();
+    }
+
+    function floodFill(x, y) {
+      const { width: w, height: h } = paintCtx.canvas;
+      const img = paintCtx.getImageData(0, 0, w, h);
+      const d = img.data;
+      const si = (y * w + x) * 4;
+      const [tR, tG, tB, tA] = [d[si], d[si + 1], d[si + 2], d[si + 3]];
+      const tmp = Object.assign(document.createElement('canvas'), { width: 1, height: 1 });
+      const tc = tmp.getContext('2d');
+      tc.fillStyle = fgColor; tc.fillRect(0, 0, 1, 1);
+      const [fR, fG, fB, fA] = tc.getImageData(0, 0, 1, 1).data;
+      if (tR === fR && tG === fG && tB === fB && tA === fA) return;
+      const stack = [y * w + x];
+      const seen = new Uint8Array(w * h);
+      while (stack.length) {
+        const pos = stack.pop();
+        if (seen[pos]) continue;
+        const px = pos % w, py = (pos / w) | 0;
+        if (px < 0 || py < 0 || px >= w || py >= h) continue;
+        const i = pos * 4;
+        if (d[i] !== tR || d[i + 1] !== tG || d[i + 2] !== tB || d[i + 3] !== tA) continue;
+        seen[pos] = 1;
+        d[i] = fR; d[i + 1] = fG; d[i + 2] = fB; d[i + 3] = fA;
+        stack.push(pos + 1, pos - 1, pos + w, pos - w);
+      }
+      paintCtx.putImageData(img, 0, 0);
+    }
   </script>
 </body>
 
