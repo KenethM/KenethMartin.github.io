@@ -296,6 +296,127 @@
       margin-bottom: 5px;
     }
 
+    /* ── RESIZE HANDLES ── */
+    .rh {
+      position: absolute;
+      z-index: 10;
+    }
+
+    .rh-n {
+      top: -4px;
+      left: 8px;
+      right: 8px;
+      height: 8px;
+      cursor: n-resize;
+    }
+
+    .rh-s {
+      bottom: -4px;
+      left: 8px;
+      right: 8px;
+      height: 8px;
+      cursor: s-resize;
+    }
+
+    .rh-e {
+      right: -4px;
+      top: 8px;
+      bottom: 8px;
+      width: 8px;
+      cursor: e-resize;
+    }
+
+    .rh-w {
+      left: -4px;
+      top: 8px;
+      bottom: 8px;
+      width: 8px;
+      cursor: w-resize;
+    }
+
+    .rh-ne {
+      top: -4px;
+      right: -4px;
+      width: 12px;
+      height: 12px;
+      cursor: ne-resize;
+    }
+
+    .rh-nw {
+      top: -4px;
+      left: -4px;
+      width: 12px;
+      height: 12px;
+      cursor: nw-resize;
+    }
+
+    .rh-se {
+      bottom: -4px;
+      right: -4px;
+      width: 12px;
+      height: 12px;
+      cursor: se-resize;
+    }
+
+    .rh-sw {
+      bottom: -4px;
+      left: -4px;
+      width: 12px;
+      height: 12px;
+      cursor: sw-resize;
+    }
+
+    /* ── SKILLS WINDOW ── */
+    .skills-section {
+      margin-bottom: 14px;
+    }
+
+    .skills-section-label {
+      font-weight: bold;
+      font-size: 11px;
+      color: #808080;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 5px;
+    }
+
+    .skills-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .skill-tag {
+      border: 1px solid;
+      border-color: #fff #808080 #808080 #fff;
+      background: #c0c0c0;
+      padding: 3px 10px;
+      font-size: 12px;
+      cursor: default;
+    }
+
+    .skill-tag:hover {
+      background: #000080;
+      color: #fff;
+      border-color: #1084d0;
+    }
+
+    /* ── RESUME WINDOW ── */
+    .resume-toolbar {
+      background: #c0c0c0;
+      border-bottom: 1px solid #808080;
+      padding: 4px 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .resume-toolbar a {
+      text-decoration: none;
+      color: #000;
+    }
+
     /* ── TASKBAR ── */
     #taskbar {
       position: fixed;
@@ -661,11 +782,9 @@
         cursor: default;
       }
 
-      .win-controls {
-        display: none;
-      }
-
-      .win-menubar {
+      .win-controls,
+      .win-menubar,
+      .rh {
         display: none;
       }
 
@@ -707,50 +826,65 @@
   <div id="desktop">
 
     <!-- Icons -->
-    <div class="desk-icon" style="top:16px;left:112px;" ondblclick="openWin('win-exp')">
-      <img src="Social Icons Pack (PNG)/32x/folder_icon.png" alt="Experience" />
-      <span>Experience</span>
-    </div>
-
-    <div class="desk-icon" style="top:16px;left:12px;" ondblclick="openWin('win-about')">
+    <!-- Row 1: Keneth's PC · Publications · Resume -->
+    <div class="desk-icon" style="top:16px;left:10px;" ondblclick="openWin('win-about')">
       <img src="Social Icons Pack (PNG)/32x/windows_icon.png" alt="PC" />
       <span>Keneth's PC</span>
     </div>
 
-    <div class="desk-icon" style="top:96px;left:12px;" onclick="window.open('https://github.com/KenethM','_blank')">
+    <div class="desk-icon" style="top:16px;left:210px;" ondblclick="openWin('win-pub')">
+      <img src="Social Icons Pack (PNG)/32x/doc_icon.png" alt="Publications" />
+      <span>Publications</span>
+    </div>
+
+    <div class="desk-icon" style="top:16px;left:310px;" ondblclick="openWin('win-resume')">
+      <img src="Social Icons Pack (PNG)/32x/doc_icon.png" alt="Resume" />
+      <span>Resume.pdf</span>
+    </div>
+
+    <!-- Col 1: social links -->
+    <div class="desk-icon" style="top:176px;left:10px;" onclick="window.open('https://github.com/KenethM','_blank')">
       <img src="Social Icons Pack (PNG)/32x/github_icon.png" alt="GitHub" />
       <span>GitHub</span>
     </div>
 
-    <div class="desk-icon" style="top:176px;left:12px;"
+    <div class="desk-icon" style="top:256px;left:10px;"
       onclick="window.open('https://www.linkedin.com/in/keneth-martin-119400382/','_blank')">
       <img src="Social Icons Pack (PNG)/32x/linkedin_icon.png" alt="LinkedIn" />
       <span>LinkedIn</span>
     </div>
 
-    <div class="desk-icon" style="top:256px;left:12px;"
+    <div class="desk-icon" style="top:336px;left:10px;"
       onclick="window.open('https://instagram.com/kenn.ehh','_blank')">
       <img src="Social Icons Pack (PNG)/32x/Insta_icon.png" alt="Instagram" />
       <span>Instagram</span>
     </div>
 
-    <div class="desk-icon" style="top:336px;left:12px;" ondblclick="openWin('win-paint')">
+    <!-- Col 1: portfolio folders -->
+    <div class="desk-icon" style="top:496px;left:10px;" ondblclick="openWin('win-skills')">
+      <img src="Social Icons Pack (PNG)/32x/folder_icon.png" alt="Skills" />
+      <span>Skills</span>
+    </div>
+
+    <div class="desk-icon" style="top:576px;left:10px;" ondblclick="openWin('win-exp')">
+      <img src="Social Icons Pack (PNG)/32x/folder_icon.png" alt="Experience" />
+      <span>Experience</span>
+    </div>
+
+    <!-- Col 1: Paint -->
+    <div class="desk-icon" style="top:736px;left:10px;" ondblclick="openWin('win-paint')">
       <img src="Social Icons Pack (PNG)/32x/paint_icon.png" alt="Paint" />
       <span>Paint</span>
     </div>
 
-    <div class="desk-icon" style="top:416px;left:12px;" ondblclick="openWin('win-pub')">
-      <img src="Social Icons Pack (PNG)/32x/doc_icon.png" alt="Publications" />
-      <span>Publications</span>
-    </div>
-
-    <div class="desk-icon" style="top:496px;left:12px;" ondblclick="alert('Empty — just like my free time.')">
+    <!-- Recycle Bin: positioned bottom-right by JS -->
+    <div class="desk-icon" id="icon-bin" ondblclick="alert('Empty — just like my free time.')">
       <img src="Social Icons Pack (PNG)/32x/bin_icon.png" alt="Recycle Bin" />
       <span>Recycle Bin</span>
     </div>
 
     <!-- ═══ ABOUT WINDOW ═══ -->
-    <div class="win" id="win-about" style="top:24px; left:118px; width:560px; z-index:103;">
+    <div class="win" id="win-about" style="top:40px; left:520px; width:450px; z-index:103;">
       <div class="win-titlebar" onmousedown="startDrag(event,'win-about')">
         <span class="win-titlebar-icon"><img src="Social Icons Pack (PNG)/32x/windows_icon.png" alt="" /></span>
         <span class="win-titlebar-text">About Keneth &mdash; Notepad</span>
@@ -794,7 +928,7 @@
     </div>
 
     <!-- ═══ EXPERIENCE WINDOW ═══ -->
-    <div class="win" id="win-exp" style="top:24px; left:700px; width:440px; z-index:102;">
+    <div class="win" id="win-exp" style="top:155px; left:130px; width:360px; z-index:102;">
       <div class="win-titlebar" onmousedown="startDrag(event,'win-exp')">
         <span class="win-titlebar-icon"><img src="Social Icons Pack (PNG)/32x/folder_icon.png" alt="" /></span>
         <span class="win-titlebar-text">Experience.txt</span>
@@ -861,7 +995,7 @@
     </div>
 
     <!-- ═══ PUBLICATIONS WINDOW ═══ -->
-    <div class="win" id="win-pub" style="top:420px; left:118px; width:560px; z-index:101;">
+    <div class="win" id="win-pub" style="top:500px; left:570px; width:450px; z-index:101;">
       <div class="win-titlebar" onmousedown="startDrag(event,'win-pub')">
         <span class="win-titlebar-icon"><img src="Social Icons Pack (PNG)/32x/doc_icon.png" alt="" /></span>
         <span class="win-titlebar-text">Publications &mdash; Research</span>
@@ -947,6 +1081,90 @@
       </div>
     </div>
 
+    <!-- ═══ RESUME WINDOW ═══ -->
+    <div class="win" id="win-resume"
+      style="top:40px; left:180px; width:680px; height:620px; z-index:100; display:none;">
+      <div class="win-titlebar" onmousedown="startDrag(event,'win-resume')">
+        <span class="win-titlebar-icon"><img src="Social Icons Pack (PNG)/32x/doc_icon.png" alt="" /></span>
+        <span class="win-titlebar-text">Resume.pdf &mdash; Document Viewer</span>
+        <div class="win-controls">
+          <div class="wbtn" onclick="minimizeWin('win-resume')">_</div>
+          <div class="wbtn">&#9633;</div>
+          <div class="wbtn" onclick="closeWin('win-resume')" style="font-weight:bold;">&#x2715;</div>
+        </div>
+      </div>
+      <div class="resume-toolbar">
+        <a href="resume.pdf" download="Keneth_Martin_Resume.pdf" class="tool-btn"
+          style="display:flex;align-items:center;gap:4px;text-decoration:none;color:#000;">&#11015; Download</a>
+        <span style="font-size:12px; color:#555;">resume.pdf</span>
+      </div>
+      <div class="win-body" style="padding:0; flex:1; min-height:0;">
+        <iframe src="resume.pdf" style="width:100%;height:100%;border:none;display:block;"
+          title="Keneth Martin Resume"></iframe>
+      </div>
+    </div>
+
+    <!-- ═══ SKILLS WINDOW ═══ -->
+    <div class="win" id="win-skills" style="top:60px; left:220px; width:380px; z-index:100; display:none;">
+      <div class="win-titlebar" onmousedown="startDrag(event,'win-skills')">
+        <span class="win-titlebar-icon"><img src="Social Icons Pack (PNG)/32x/folder_icon.png" alt="" /></span>
+        <span class="win-titlebar-text">Skills &mdash; My Computer</span>
+        <div class="win-controls">
+          <div class="wbtn" onclick="minimizeWin('win-skills')">_</div>
+          <div class="wbtn">&#9633;</div>
+          <div class="wbtn" onclick="closeWin('win-skills')" style="font-weight:bold;">&#x2715;</div>
+        </div>
+      </div>
+      <div class="win-menubar">
+        <span class="mitem">View</span><span class="mitem">Help</span>
+      </div>
+      <div class="win-body" style="padding:6px;">
+        <div class="inset" style="padding:14px;">
+          <div class="skills-section">
+            <div class="skills-section-label">Languages</div>
+            <div class="skills-tags">
+              <span class="skill-tag">JavaScript</span>
+              <span class="skill-tag">Python</span>
+              <span class="skill-tag">HTML / CSS</span>
+              <span class="skill-tag">C#</span>
+              <span class="skill-tag">Java</span>
+              <span class="skill-tag">SQL</span>
+            </div>
+          </div>
+          <div class="skills-section">
+            <div class="skills-section-label">Frameworks &amp; Tools</div>
+            <div class="skills-tags">
+              <span class="skill-tag">React.js</span>
+              <span class="skill-tag">Git</span>
+              <span class="skill-tag">GitHub</span>
+              <span class="skill-tag">VS Code</span>
+              <span class="skill-tag">Node.js</span>
+            </div>
+          </div>
+          <div class="skills-section">
+            <div class="skills-section-label">Research &amp; Domain</div>
+            <div class="skills-tags">
+              <span class="skill-tag">NLP</span>
+              <span class="skill-tag">Data Analysis</span>
+              <span class="skill-tag">Cultural Technology</span>
+              <span class="skill-tag">ʻŌlelo Hawaiʻi</span>
+            </div>
+          </div>
+          <div class="skills-section">
+            <div class="skills-section-label">Other</div>
+            <div class="skills-tags">
+              <span class="skill-tag">Communication</span>
+              <span class="skill-tag">Creative Media</span>
+              <span class="skill-tag">Technical Writing</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="win-statusbar">
+        <div class="status-cell">18 skills</div>
+      </div>
+    </div>
+
   </div><!-- #desktop -->
 
   <!-- ═══ TASKBAR ═══ -->
@@ -979,6 +1197,16 @@
         <img src="Social Icons Pack (PNG)/32x/doc_icon.png"
           style="width:22px;height:22px;image-rendering:pixelated;flex-shrink:0;" />
         Publications
+      </div>
+      <div class="sm-item" onclick="openWin('win-skills'); toggleStart()">
+        <img src="Social Icons Pack (PNG)/32x/folder_icon.png"
+          style="width:22px;height:22px;image-rendering:pixelated;flex-shrink:0;" />
+        Skills
+      </div>
+      <div class="sm-item" onclick="openWin('win-resume'); toggleStart()">
+        <img src="Social Icons Pack (PNG)/32x/doc_icon.png"
+          style="width:22px;height:22px;image-rendering:pixelated;flex-shrink:0;" />
+        Resume
       </div>
       <div class="sm-item" onclick="openWin('win-paint'); toggleStart()">
         <img src="Social Icons Pack (PNG)/32x/paint_icon.png"
@@ -1013,7 +1241,7 @@
   <script>
     // ── Window management ──
     let topZ = 103;
-    const WIN_IDS = ['win-about', 'win-exp', 'win-pub', 'win-paint'];
+    const WIN_IDS = ['win-about', 'win-exp', 'win-pub', 'win-paint', 'win-resume', 'win-skills'];
 
     function openWin(id) {
       const el = document.getElementById(id);
@@ -1074,6 +1302,26 @@
       document.getElementById('tb-win-about').classList.add('pressed');
     }
 
+    // ── Icon Drag ──
+    let iconDrag = null, iconMoved = false;
+
+    function initIcons() {
+      document.querySelectorAll('.desk-icon').forEach(icon => {
+        icon.addEventListener('mousedown', e => {
+          if (e.button !== 0) return;
+          e.preventDefault();
+          const r = icon.getBoundingClientRect();
+          iconDrag = { el: icon, ox: e.clientX - r.left, oy: e.clientY - r.top };
+          iconMoved = false;
+        });
+        ['click', 'dblclick'].forEach(evt => {
+          icon.addEventListener(evt, e => {
+            if (iconMoved) { e.stopImmediatePropagation(); iconMoved = false; }
+          }, true);
+        });
+      });
+    }
+
     // ── Drag ──
     let dragging = null, ox = 0, oy = 0;
 
@@ -1087,13 +1335,80 @@
       e.preventDefault();
     }
 
+    // ── Resize ──
+    let resizing = null;
+
+    function startResize(e, id, dir) {
+      if (e.button !== 0) return;
+      e.preventDefault();
+      e.stopPropagation();
+      focusWin(id);
+      const el = document.getElementById(id);
+      const r = el.getBoundingClientRect();
+      resizing = {
+        el, dir, startX: e.clientX, startY: e.clientY,
+        startW: r.width, startH: r.height, startL: r.left, startT: r.top
+      };
+    }
+
+    function addResizeHandles(id) {
+      const win = document.getElementById(id);
+      ['n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'].forEach(dir => {
+        const h = document.createElement('div');
+        h.className = 'rh rh-' + dir;
+        h.addEventListener('mousedown', e => startResize(e, id, dir));
+        win.appendChild(h);
+      });
+    }
+
     document.addEventListener('mousemove', e => {
+      if (iconDrag) {
+        const x = e.clientX - iconDrag.ox;
+        const y = e.clientY - iconDrag.oy;
+        const maxX = window.innerWidth - iconDrag.el.offsetWidth;
+        const maxY = window.innerHeight - 42 - iconDrag.el.offsetHeight;
+        iconDrag.el.style.left = Math.max(0, Math.min(maxX, x)) + 'px';
+        iconDrag.el.style.top = Math.max(0, Math.min(maxY, y)) + 'px';
+        iconMoved = true;
+      }
       if (dragging) {
         dragging.style.left = (e.clientX - ox) + 'px';
         dragging.style.top = Math.max(0, e.clientY - oy) + 'px';
       }
+      if (resizing) {
+        const { el, dir, startX, startY, startW, startH, startL, startT } = resizing;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        if (dir.includes('e')) el.style.width = Math.max(220, startW + dx) + 'px';
+        if (dir.includes('s')) el.style.height = Math.max(120, startH + dy) + 'px';
+        if (dir.includes('w')) {
+          const nw = Math.max(220, startW - dx);
+          el.style.width = nw + 'px';
+          el.style.left = (startL + startW - nw) + 'px';
+        }
+        if (dir.includes('n')) {
+          const nh = Math.max(120, startH - dy);
+          el.style.height = nh + 'px';
+          el.style.top = Math.max(0, startT + startH - nh) + 'px';
+        }
+      }
     });
-    document.addEventListener('mouseup', () => { dragging = null; });
+    document.addEventListener('mouseup', () => {
+      dragging = null;
+      resizing = null;
+      if (iconDrag) {
+        const el = iconDrag.el;
+        const x = parseInt(el.style.left) || 0;
+        const y = parseInt(el.style.top) || 0;
+        const col = 100, colOff = 10;
+        const row = 80, rowOff = 16;
+        const maxX = window.innerWidth - el.offsetWidth;
+        const maxY = window.innerHeight - 42 - el.offsetHeight;
+        el.style.left = Math.max(0, Math.min(maxX, Math.round((x - colOff) / col) * col + colOff)) + 'px';
+        el.style.top = Math.max(0, Math.min(maxY, Math.round((y - rowOff) / row) * row + rowOff)) + 'px';
+        iconDrag = null;
+      }
+    });
 
     // ── Clock ──
     function tick() {
@@ -1137,7 +1452,12 @@
     document.getElementById('win-exp').classList.add('inactive');
     document.getElementById('win-pub').classList.add('inactive');
     document.getElementById('win-paint').classList.add('inactive');
+    WIN_IDS.forEach(addResizeHandles);
+    initIcons();
     initPaint();
+    const bin = document.getElementById('icon-bin');
+    bin.style.left = (window.innerWidth - bin.offsetWidth - 15) + 'px';
+    bin.style.top = (window.innerHeight - 42 - bin.offsetHeight - 15) + 'px';
 
     function initPaint() {
       const canvas = document.getElementById('paint-canvas');
