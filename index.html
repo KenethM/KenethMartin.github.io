@@ -296,6 +296,44 @@
       margin-bottom: 5px;
     }
 
+    /* ── CONTACT FORM ── */
+    .form-field { display: flex; flex-direction: column; gap: 3px; margin-bottom: 10px; }
+    .form-field label { font-size: 12px; font-weight: bold; color: #000; }
+    .form-field input,
+    .form-field textarea {
+      border: 1px solid; border-color: #808080 #fff #fff #808080;
+      background: #fff; padding: 3px 5px; font-family: inherit; font-size: 13px;
+      outline: none; user-select: text;
+    }
+    .form-field input:focus,
+    .form-field textarea:focus { outline: 1px dotted #000080; }
+    .form-field textarea { resize: vertical; min-height: 80px; }
+    .form-actions { display: flex; gap: 6px; justify-content: flex-end; margin-top: 4px; }
+    .form-msg { font-size: 12px; padding: 6px 8px; border: 1px solid; display: none; }
+    .form-msg.ok  { border-color: #008000; background: #e8ffe8; color: #006000; }
+    .form-msg.err { border-color: #800000; background: #ffe8e8; color: #800000; }
+
+    /* ── PROJECT SHOWCASE ── */
+    .proj-grid { display: flex; flex-direction: column; gap: 12px; }
+    .proj-card {
+      border: 1px solid; border-color: #808080 #fff #fff #808080;
+      background: #fff; padding: 10px; display: flex; gap: 10px;
+    }
+    .proj-thumb {
+      width: 100px; height: 70px; flex-shrink: 0;
+      border: 1px solid; border-color: #808080 #fff #fff #808080;
+      background: #c0c0c0; display: flex; align-items: center;
+      justify-content: center; font-size: 10px; color: #808080;
+      text-align: center; overflow: hidden;
+    }
+    .proj-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .proj-info { flex: 1; min-width: 0; }
+    .proj-title { font-weight: bold; font-size: 13px; color: #000080; margin-bottom: 3px; }
+    .proj-desc  { font-size: 12px; line-height: 1.5; color: #000; margin-bottom: 6px; }
+    .proj-links { display: flex; gap: 8px; margin-top: 6px; }
+    .proj-links a { font-size: 12px; color: #000080; text-decoration: underline; }
+    .proj-links a:hover { color: #0000ff; }
+
     /* ── RESIZE HANDLES ── */
     .rh {
       position: absolute;
@@ -778,6 +816,11 @@
         display: none !important;
       }
 
+      #win-projects,
+      #win-contact {
+        display: flex !important;
+      }
+
       .win-titlebar {
         cursor: default;
       }
@@ -840,6 +883,16 @@
     <div class="desk-icon" style="top:16px;left:310px;" ondblclick="openWin('win-resume')">
       <img src="Social Icons Pack (PNG)/32x/doc_icon.png" alt="Resume" />
       <span>Resume.pdf</span>
+    </div>
+
+    <div class="desk-icon" style="top:96px;left:210px;" ondblclick="openWin('win-projects')">
+      <img src="Social Icons Pack (PNG)/32x/folder_icon.png" alt="Projects" />
+      <span>Projects</span>
+    </div>
+
+    <div class="desk-icon" style="top:96px;left:310px;" ondblclick="openWin('win-contact')">
+      <img src="Social Icons Pack (PNG)/32x/doc_icon.png" alt="Contact" />
+      <span>Contact</span>
     </div>
 
     <!-- Col 1: social links -->
@@ -1165,6 +1218,113 @@
       </div>
     </div>
 
+    <!-- ═══ PROJECTS WINDOW ═══ -->
+    <div class="win" id="win-projects" style="top:60px; left:420px; width:520px; z-index:100; display:none;">
+      <div class="win-titlebar" onmousedown="startDrag(event,'win-projects')">
+        <span class="win-titlebar-icon"><img src="Social Icons Pack (PNG)/32x/folder_icon.png" alt="" /></span>
+        <span class="win-titlebar-text">Projects &mdash; My Work</span>
+        <div class="win-controls">
+          <div class="wbtn" onclick="minimizeWin('win-projects')">_</div>
+          <div class="wbtn">&#9633;</div>
+          <div class="wbtn" onclick="closeWin('win-projects')" style="font-weight:bold;">&#x2715;</div>
+        </div>
+      </div>
+      <div class="win-menubar">
+        <span class="mitem">View</span><span class="mitem">Help</span>
+      </div>
+      <div class="win-body" style="padding:6px;">
+        <div class="inset" style="padding:12px;">
+          <div class="proj-grid">
+
+            <div class="proj-card">
+              <div class="proj-thumb">
+                <!-- <img src="img/project1.png" alt="ʻŌlelo Hawaiʻi Platform" /> -->
+                No Preview
+              </div>
+              <div class="proj-info">
+                <div class="proj-title">&#699;&#332;lelo Hawai&#699;i Learning Platform</div>
+                <div class="proj-desc">A browser-based platform streamlining teaching workflows and enhancing learning for Hawaiian language classrooms. Published at LREC 2026.</div>
+                <div class="exp-tags">
+                  <span class="tag">React.js</span><span class="tag">NLP</span><span class="tag">JavaScript</span>
+                </div>
+                <div class="proj-links">
+                  <a href="#" target="_blank">Paper ↗</a>
+                  <a href="https://github.com/KenethM" target="_blank">GitHub ↗</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="proj-card">
+              <div class="proj-thumb">No Preview</div>
+              <div class="proj-info">
+                <div class="proj-title">Project Title</div>
+                <div class="proj-desc">Short description of what it does, what problem it solves, and what you learned.</div>
+                <div class="exp-tags">
+                  <span class="tag">Python</span><span class="tag">GitHub</span>
+                </div>
+                <div class="proj-links">
+                  <a href="https://github.com/KenethM" target="_blank">GitHub ↗</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="proj-card">
+              <div class="proj-thumb">No Preview</div>
+              <div class="proj-info">
+                <div class="proj-title">Project Title</div>
+                <div class="proj-desc">Short description of what it does, what problem it solves, and what you learned.</div>
+                <div class="exp-tags">
+                  <span class="tag">JavaScript</span><span class="tag">HTML/CSS</span>
+                </div>
+                <div class="proj-links">
+                  <a href="https://github.com/KenethM" target="_blank">GitHub ↗</a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="win-statusbar">
+        <div class="status-cell">3 projects</div>
+      </div>
+    </div>
+
+    <!-- ═══ CONTACT WINDOW ═══ -->
+    <div class="win" id="win-contact" style="top:80px; left:460px; width:380px; z-index:100; display:none;">
+      <div class="win-titlebar" onmousedown="startDrag(event,'win-contact')">
+        <span class="win-titlebar-icon"><img src="Social Icons Pack (PNG)/32x/doc_icon.png" alt="" /></span>
+        <span class="win-titlebar-text">Contact Keneth</span>
+        <div class="win-controls">
+          <div class="wbtn" onclick="minimizeWin('win-contact')">_</div>
+          <div class="wbtn">&#9633;</div>
+          <div class="wbtn" onclick="closeWin('win-contact')" style="font-weight:bold;">&#x2715;</div>
+        </div>
+      </div>
+      <div class="win-body" style="padding:8px;">
+        <div class="inset" style="padding:14px;">
+          <div id="contact-msg" class="form-msg"></div>
+          <form id="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+            <div class="form-field">
+              <label for="cf-name">Name</label>
+              <input id="cf-name" type="text" name="name" required autocomplete="name" />
+            </div>
+            <div class="form-field">
+              <label for="cf-email">Email</label>
+              <input id="cf-email" type="email" name="email" required autocomplete="email" />
+            </div>
+            <div class="form-field">
+              <label for="cf-msg">Message</label>
+              <textarea id="cf-msg" name="message" required></textarea>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="tool-btn">Send</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
   </div><!-- #desktop -->
 
   <!-- ═══ TASKBAR ═══ -->
@@ -1198,6 +1358,11 @@
           style="width:22px;height:22px;image-rendering:pixelated;flex-shrink:0;" />
         Publications
       </div>
+      <div class="sm-item" onclick="openWin('win-projects'); toggleStart()">
+        <img src="Social Icons Pack (PNG)/32x/folder_icon.png"
+          style="width:22px;height:22px;image-rendering:pixelated;flex-shrink:0;" />
+        Projects
+      </div>
       <div class="sm-item" onclick="openWin('win-skills'); toggleStart()">
         <img src="Social Icons Pack (PNG)/32x/folder_icon.png"
           style="width:22px;height:22px;image-rendering:pixelated;flex-shrink:0;" />
@@ -1207,6 +1372,11 @@
         <img src="Social Icons Pack (PNG)/32x/doc_icon.png"
           style="width:22px;height:22px;image-rendering:pixelated;flex-shrink:0;" />
         Resume
+      </div>
+      <div class="sm-item" onclick="openWin('win-contact'); toggleStart()">
+        <img src="Social Icons Pack (PNG)/32x/doc_icon.png"
+          style="width:22px;height:22px;image-rendering:pixelated;flex-shrink:0;" />
+        Contact
       </div>
       <div class="sm-item" onclick="openWin('win-paint'); toggleStart()">
         <img src="Social Icons Pack (PNG)/32x/paint_icon.png"
@@ -1241,7 +1411,7 @@
   <script>
     // ── Window management ──
     let topZ = 103;
-    const WIN_IDS = ['win-about', 'win-exp', 'win-pub', 'win-paint', 'win-resume', 'win-skills'];
+    const WIN_IDS = ['win-about', 'win-exp', 'win-pub', 'win-paint', 'win-resume', 'win-skills', 'win-projects', 'win-contact'];
 
     function openWin(id) {
       const el = document.getElementById(id);
@@ -1584,6 +1754,36 @@
       }
       paintCtx.putImageData(img, 0, 0);
     }
+
+    // ── Contact form ──
+    document.getElementById('contact-form').addEventListener('submit', async e => {
+      e.preventDefault();
+      const form = e.target;
+      const msg  = document.getElementById('contact-msg');
+      const btn  = form.querySelector('button[type=submit]');
+      btn.textContent = 'Sending…';
+      btn.disabled = true;
+      msg.style.display = 'none';
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST', body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+          msg.textContent = 'Message sent! I\'ll get back to you soon.';
+          msg.className = 'form-msg ok';
+          form.reset();
+        } else {
+          throw new Error();
+        }
+      } catch {
+        msg.textContent = 'Something went wrong. Email me directly at keneth@purplemaia.org';
+        msg.className = 'form-msg err';
+      }
+      msg.style.display = 'block';
+      btn.textContent = 'Send';
+      btn.disabled = false;
+    });
   </script>
 </body>
 
