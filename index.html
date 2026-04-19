@@ -11,6 +11,8 @@
   <meta property="og:description"
     content="CS student at UH Hilo. NLP research, software development, Big Island roots." />
   <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://kenethkmartin.com/Images/IMG_2379.png" />
+  <meta property="og:url" content="https://kenethkmartin.com" />
   <meta name="theme-color" content="#000080" />
   <link rel="icon" type="image/png" href="Social Icons Pack (PNG)/32x/windows_icon.png" />
   <style>
@@ -375,8 +377,8 @@
     }
 
     .proj-thumb {
-      width: 100px;
-      height: 70px;
+      width: 300px;
+      height: 210px;
       flex-shrink: 0;
       border: 1px solid;
       border-color: #808080 #fff #fff #808080;
@@ -1049,9 +1051,9 @@
           class="mitem">Help</span>
       </div>
       <div class="win-body" style="padding:6px;">
-        <div class="inset" style="padding:14px; flex:1; height:320px;">
+        <div class="inset" style="padding:14px; flex:1; min-height:320px;">
           <div class="about-wrap">
-            <img class="about-photo" src="IMG_2379.png" alt="Keneth Martin" />
+            <img class="about-photo" src="Images/IMG_2379.png" alt="Keneth Martin" />
             <div>
               <p><strong>Keneth Martin</strong></p>
               <p>Howdy! I'm from the Big Island, born and raised. After living on a farm for most of my life, I wanted
@@ -1316,7 +1318,7 @@
     </div>
 
     <!-- ═══ PROJECTS WINDOW ═══ -->
-    <div class="win" id="win-projects" style="top:60px; left:420px; width:520px; z-index:100; display:none;">
+    <div class="win" id="win-projects" style="top:60px; left:280px; width:780px; z-index:100; display:none;">
       <div class="win-titlebar" onmousedown="startDrag(event,'win-projects')">
         <span class="win-titlebar-icon"><img src="Social Icons Pack (PNG)/32x/folder_icon.png" alt="" /></span>
         <span class="win-titlebar-text">Projects &mdash; My Work</span>
@@ -1330,12 +1332,12 @@
         <span class="mitem">View</span><span class="mitem">Help</span>
       </div>
       <div class="win-body" style="padding:6px;">
-        <div class="inset" style="padding:12px;">
+        <div class="inset" style="padding:12px; max-height:calc(100vh - 160px); overflow-y:auto;">
           <div class="proj-grid">
 
             <div class="proj-card">
               <div class="proj-thumb">
-                <img src="Images/haw_learn.gif" alt="ʻŌlelo Hawaiʻi Learning Platform" />
+                <img src="Images/haw_learn.gif" alt="ʻŌlelo Hawaiʻi Learning Platform" onclick="openLightbox(this)" style="cursor:zoom-in;" loading="lazy" title="Click to enlarge" />
               </div>
               <div class="proj-info">
                 <div class="proj-title">&#699;&#332;lelo Hawai&#699;i Learning Platform</div>
@@ -1345,7 +1347,6 @@
                   <span class="tag">React.js</span><span class="tag">NLP</span><span class="tag">JavaScript</span>
                 </div>
                 <div class="proj-links">
-                  <a href="#" target="_blank">Paper ↗</a>
                   <a href="https://github.com/KenethM" target="_blank">GitHub ↗</a>
                 </div>
               </div>
@@ -1353,7 +1354,7 @@
 
             <div class="proj-card">
               <div class="proj-thumb">
-                <img src="Images/BirdPipe.gif" alt="BirdPipe" />
+                <img src="Images/BirdPipe.gif" alt="BirdPipe" onclick="openLightbox(this)" style="cursor:zoom-in;" loading="lazy" title="Click to enlarge" />
               </div>
               <div class="proj-info">
                 <div class="proj-title">Lohe Lab Bird Audio Analysis Tool</div>
@@ -1369,7 +1370,7 @@
 
             <div class="proj-card">
               <div class="proj-thumb">
-                <img src="Images/purple.gif" alt="Purple Maia" />
+                <img src="Images/purple.gif" alt="Purple Maia" onclick="openLightbox(this)" style="cursor:zoom-in;" loading="lazy" title="Click to enlarge" />
               </div>
               <div class="proj-info">
                 <div class="proj-title">&#699;&#332;lelo Research Agent</div>
@@ -1687,7 +1688,7 @@
         new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
     }
     tick();
-    setInterval(tick, 15000);
+    setInterval(tick, 60000);
 
     // ── Start Menu ──
     let startOpen = false;
@@ -1884,6 +1885,49 @@
       msg.style.display = 'block';
       btn.textContent = 'Send';
       btn.disabled = false;
+    });
+  </script>
+
+  <!-- ═══ LIGHTBOX ═══ -->
+  <div id="lightbox" onclick="closeLightbox()" style="
+    display:none; position:fixed; inset:0; z-index:10001;
+    background:rgba(0,0,0,0.75);
+    align-items:center; justify-content:center;">
+    <div style="position:relative;" onclick="event.stopPropagation()">
+      <div style="
+        background:#c0c0c0; border:2px solid;
+        border-color:#fff #808080 #808080 #fff;
+        padding:0;">
+        <div style="
+          background:#000080; color:#fff;
+          font-family:'w95fa',sans-serif; font-size:12px;
+          padding:3px 6px; display:flex; justify-content:space-between; align-items:center;">
+          <span>Preview</span>
+          <span onclick="closeLightbox()" style="
+            cursor:pointer; background:#c0c0c0; color:#000;
+            border:1px solid; border-color:#fff #808080 #808080 #fff;
+            padding:0 5px; font-weight:bold; line-height:16px;">&#x2715;</span>
+        </div>
+        <div style="padding:8px;">
+          <img id="lightbox-img" src="" alt="" style="max-width:80vw; max-height:75vh; display:block;" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openLightbox(imgEl) {
+      const lb = document.getElementById('lightbox');
+      document.getElementById('lightbox-img').src = imgEl.src;
+      document.getElementById('lightbox-img').alt = imgEl.alt;
+      lb.style.display = 'flex';
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').style.display = 'none';
+      document.getElementById('lightbox-img').src = '';
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeLightbox();
     });
   </script>
 </body>
