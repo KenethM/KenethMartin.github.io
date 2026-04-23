@@ -818,10 +818,10 @@
 
     .paint-canvas-wrap {
       flex: 1;
-      overflow: auto;
+      overflow: hidden;
       background: #808080;
-      padding: 8px;
-      display: flex;
+      position: relative;
+      min-height: 0;
     }
 
     #paint-canvas {
@@ -829,8 +829,10 @@
       border-color: #808080 #fff #fff #808080;
       cursor: crosshair;
       display: block;
-      flex-shrink: 0;
       touch-action: none;
+      position: absolute;
+      top: 8px;
+      left: 8px;
     }
 
     .paint-colors {
@@ -1226,7 +1228,7 @@
     </div>
 
     <!-- ═══ PAINT WINDOW ═══ -->
-    <div class="win" id="win-paint" style="top:50px; left:150px; width:620px; z-index:100; display:none;">
+    <div class="win" id="win-paint" style="top:50px; left:150px; width:620px; height:540px; z-index:100; display:none;">
       <div class="win-titlebar" onmousedown="startDrag(event,'win-paint')">
         <span class="win-titlebar-icon"><img src="Social Icons Pack (PNG)/32x/paint_icon.png" alt="" /></span>
         <span class="win-titlebar-text" id="paint-title">Paint &mdash; Untitled</span>
@@ -1665,8 +1667,13 @@
         btn.textContent = title.length > 22 ? title.slice(0, 22) + '…' : title;
         btn.onclick = () => {
           const el = document.getElementById(id);
-          if (el.style.display === 'none') { openWin(id); }
-          else { focusWin(id); }
+          if (el.style.display === 'none') {
+            openWin(id);
+          } else if (btn.classList.contains('pressed')) {
+            minimizeWin(id);
+          } else {
+            focusWin(id);
+          }
         };
         if (document.getElementById(id).style.display === 'none') btn.style.display = 'none';
         container.appendChild(btn);
@@ -1834,9 +1841,25 @@
 
     function initPaint() {
       const canvas = document.getElementById('paint-canvas');
+      const wrap = canvas.parentElement;
       paintCtx = canvas.getContext('2d');
-      paintCtx.fillStyle = '#ffffff';
-      paintCtx.fillRect(0, 0, canvas.width, canvas.height);
+
+      function resizePaintCanvas() {
+        const newW = Math.max(200, wrap.clientWidth - 16);
+        const newH = Math.max(150, wrap.clientHeight - 16);
+        if (newW === canvas.width && newH === canvas.height) return;
+        const tmp = document.createElement('canvas');
+        tmp.width = canvas.width; tmp.height = canvas.height;
+        tmp.getContext('2d').drawImage(canvas, 0, 0);
+        canvas.width = newW; canvas.height = newH;
+        paintCtx.fillStyle = bgColor;
+        paintCtx.fillRect(0, 0, newW, newH);
+        paintCtx.drawImage(tmp, 0, 0);
+      }
+
+      resizePaintCanvas();
+      new ResizeObserver(resizePaintCanvas).observe(wrap);
+
 
       // Build palette swatches
       const container = document.getElementById('paint-swatches');
@@ -1889,7 +1912,9 @@
 
     function canvasXY(canvas, e) {
       const r = canvas.getBoundingClientRect();
-      return [Math.floor(e.clientX - r.left), Math.floor(e.clientY - r.top)];
+      const scaleX = canvas.width / r.width;
+      const scaleY = canvas.height / r.height;
+      return [Math.floor((e.clientX - r.left) * scaleX), Math.floor((e.clientY - r.top) * scaleY)];
     }
 
     function paintDot(x, y) {
