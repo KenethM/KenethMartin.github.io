@@ -162,11 +162,49 @@
     .mitem {
       padding: 3px 10px;
       cursor: pointer;
+      position: relative;
     }
 
     .mitem:hover {
       background: #000080;
       color: #fff;
+    }
+
+    .mitem:hover .mdrop {
+      display: block;
+    }
+
+    .mdrop {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #c0c0c0;
+      border: 2px solid;
+      border-color: #fff #808080 #808080 #fff;
+      outline: 1px solid #000;
+      z-index: 99999;
+      min-width: 160px;
+      white-space: nowrap;
+    }
+
+    .mdrop-item {
+      padding: 5px 20px;
+      color: #000;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .mdrop-item:hover {
+      background: #000080;
+      color: #fff;
+    }
+
+    .mdrop-sep {
+      border: none;
+      border-top: 1px solid #808080;
+      border-bottom: 1px solid #fff;
+      margin: 2px 0;
     }
 
     .win-body {
@@ -532,10 +570,8 @@
       cursor: default;
     }
 
-    .skill-tag:hover {
-      background: #000080;
-      color: #fff;
-      border-color: #1084d0;
+    .skill-tag {
+      cursor: default;
     }
 
     /* ── RESUME WINDOW ── */
@@ -1042,22 +1078,29 @@
         <span class="win-titlebar-text">About Keneth &mdash; Notepad</span>
         <div class="win-controls">
           <div class="wbtn" onclick="minimizeWin('win-about')">_</div>
-          <div class="wbtn">&#9633;</div>
+          <div class="wbtn" id="max-win-about" onclick="maximizeWin('win-about')">&#9633;</div>
           <div class="wbtn" onclick="closeWin('win-about')" style="font-weight:bold;">&#x2715;</div>
         </div>
       </div>
       <div class="win-menubar">
-        <span class="mitem">File</span><span class="mitem">Edit</span><span class="mitem">View</span><span
-          class="mitem">Help</span>
+        <span class="mitem">File<div class="mdrop">
+          <div class="mdrop-item" onclick="minimizeWin('win-about')">Minimize</div>
+          <div class="mdrop-item" onclick="maximizeWin('win-about')">Maximize / Restore</div>
+          <hr class="mdrop-sep"/>
+          <div class="mdrop-item" onclick="closeWin('win-about')">Close</div>
+        </div></span>
+        <span class="mitem">Help<div class="mdrop">
+          <div class="mdrop-item" onclick="alert('Keneth Martin — Personal Portfolio\nBuilt with vanilla HTML, CSS & JS.\nVersion 1.0')">About</div>
+        </div></span>
       </div>
       <div class="win-body" style="padding:6px;">
         <div class="inset" style="padding:14px; flex:1; min-height:320px;">
           <div class="about-wrap">
-            <img class="about-photo" src="Images/IMG_2379.png" alt="Keneth Martin" />
+            <img class="about-photo" src="Images/IMG_2379.png" alt="Keneth Martin" onclick="openLightbox(this)" style="cursor:zoom-in;" title="Click to enlarge" />
             <div>
               <p><strong>Keneth Martin</strong></p>
               <p>Howdy! I'm from the Big Island, born and raised. After living on a farm for most of my life, I wanted
-                to experience the flip side — a desk, a monitor, a well-ventilated room.</p>
+                to experience the flip side - a desk, a monitor, and a well-ventilated room.</p>
               <p>Graduating Spring 2026 with a B.S. in Computer Science from UH Hilo. Looking to work in land and
                 cultural conservation.</p>
               <p>Outside of school you'll find me diving, scrambling up streams after waterfalls, or jumping off rocks
@@ -1086,12 +1129,20 @@
         <span class="win-titlebar-text">Experience.txt</span>
         <div class="win-controls">
           <div class="wbtn" onclick="minimizeWin('win-exp')">_</div>
-          <div class="wbtn">&#9633;</div>
+          <div class="wbtn" id="max-win-exp" onclick="maximizeWin('win-exp')">&#9633;</div>
           <div class="wbtn" onclick="closeWin('win-exp')" style="font-weight:bold;">&#x2715;</div>
         </div>
       </div>
       <div class="win-menubar">
-        <span class="mitem">File</span><span class="mitem">Edit</span><span class="mitem">Help</span>
+        <span class="mitem">File<div class="mdrop">
+          <div class="mdrop-item" onclick="minimizeWin('win-exp')">Minimize</div>
+          <div class="mdrop-item" onclick="maximizeWin('win-exp')">Maximize / Restore</div>
+          <hr class="mdrop-sep"/>
+          <div class="mdrop-item" onclick="closeWin('win-exp')">Close</div>
+        </div></span>
+        <span class="mitem">Help<div class="mdrop">
+          <div class="mdrop-item" onclick="alert('Keneth Martin — Personal Portfolio\nBuilt with vanilla HTML, CSS & JS.\nVersion 1.0')">About</div>
+        </div></span>
       </div>
       <div class="win-body" style="padding:6px;">
         <div class="inset" style="padding:14px; height:450px;">
@@ -1153,7 +1204,7 @@
         <span class="win-titlebar-text">Publications &mdash; Research</span>
         <div class="win-controls">
           <div class="wbtn" onclick="minimizeWin('win-pub')">_</div>
-          <div class="wbtn">&#9633;</div>
+          <div class="wbtn" id="max-win-pub" onclick="maximizeWin('win-pub')">&#9633;</div>
           <div class="wbtn" onclick="closeWin('win-pub')" style="font-weight:bold;">&#x2715;</div>
         </div>
       </div>
@@ -1181,13 +1232,23 @@
         <span class="win-titlebar-text" id="paint-title">Paint &mdash; Untitled</span>
         <div class="win-controls">
           <div class="wbtn" onclick="minimizeWin('win-paint')">_</div>
-          <div class="wbtn">&#9633;</div>
+          <div class="wbtn" id="max-win-paint" onclick="maximizeWin('win-paint')">&#9633;</div>
           <div class="wbtn" onclick="closeWin('win-paint')" style="font-weight:bold;">&#x2715;</div>
         </div>
       </div>
       <div class="win-menubar">
-        <span class="mitem">File</span><span class="mitem">Edit</span><span class="mitem">View</span><span
-          class="mitem">Help</span>
+        <span class="mitem">File<div class="mdrop">
+          <div class="mdrop-item" onclick="saveCanvas()">Save as PNG</div>
+          <hr class="mdrop-sep"/>
+          <div class="mdrop-item" onclick="minimizeWin('win-paint')">Minimize</div>
+          <div class="mdrop-item" onclick="closeWin('win-paint')">Close</div>
+        </div></span>
+        <span class="mitem">Edit<div class="mdrop">
+          <div class="mdrop-item" onclick="clearCanvas()">Clear Canvas</div>
+        </div></span>
+        <span class="mitem">Help<div class="mdrop">
+          <div class="mdrop-item" onclick="alert('Keneth Martin — Personal Portfolio\nBuilt with vanilla HTML, CSS & JS.\nVersion 1.0')">About</div>
+        </div></span>
       </div>
 
       <!-- Toolbar -->
@@ -1241,7 +1302,7 @@
         <span class="win-titlebar-text">Resume.pdf &mdash; Document Viewer</span>
         <div class="win-controls">
           <div class="wbtn" onclick="minimizeWin('win-resume')">_</div>
-          <div class="wbtn">&#9633;</div>
+          <div class="wbtn" id="max-win-resume" onclick="maximizeWin('win-resume')">&#9633;</div>
           <div class="wbtn" onclick="closeWin('win-resume')" style="font-weight:bold;">&#x2715;</div>
         </div>
       </div>
@@ -1263,12 +1324,20 @@
         <span class="win-titlebar-text">Skills &mdash; My Computer</span>
         <div class="win-controls">
           <div class="wbtn" onclick="minimizeWin('win-skills')">_</div>
-          <div class="wbtn">&#9633;</div>
+          <div class="wbtn" id="max-win-skills" onclick="maximizeWin('win-skills')">&#9633;</div>
           <div class="wbtn" onclick="closeWin('win-skills')" style="font-weight:bold;">&#x2715;</div>
         </div>
       </div>
       <div class="win-menubar">
-        <span class="mitem">View</span><span class="mitem">Help</span>
+        <span class="mitem">File<div class="mdrop">
+          <div class="mdrop-item" onclick="minimizeWin('win-skills')">Minimize</div>
+          <div class="mdrop-item" onclick="maximizeWin('win-skills')">Maximize / Restore</div>
+          <hr class="mdrop-sep"/>
+          <div class="mdrop-item" onclick="closeWin('win-skills')">Close</div>
+        </div></span>
+        <span class="mitem">Help<div class="mdrop">
+          <div class="mdrop-item" onclick="alert('Keneth Martin — Personal Portfolio\nBuilt with vanilla HTML, CSS & JS.\nVersion 1.0')">About</div>
+        </div></span>
       </div>
       <div class="win-body" style="padding:6px;">
         <div class="inset" style="padding:14px;">
@@ -1324,12 +1393,20 @@
         <span class="win-titlebar-text">Projects &mdash; My Work</span>
         <div class="win-controls">
           <div class="wbtn" onclick="minimizeWin('win-projects')">_</div>
-          <div class="wbtn">&#9633;</div>
+          <div class="wbtn" id="max-win-projects" onclick="maximizeWin('win-projects')">&#9633;</div>
           <div class="wbtn" onclick="closeWin('win-projects')" style="font-weight:bold;">&#x2715;</div>
         </div>
       </div>
       <div class="win-menubar">
-        <span class="mitem">View</span><span class="mitem">Help</span>
+        <span class="mitem">File<div class="mdrop">
+          <div class="mdrop-item" onclick="minimizeWin('win-projects')">Minimize</div>
+          <div class="mdrop-item" onclick="maximizeWin('win-projects')">Maximize / Restore</div>
+          <hr class="mdrop-sep"/>
+          <div class="mdrop-item" onclick="closeWin('win-projects')">Close</div>
+        </div></span>
+        <span class="mitem">Help<div class="mdrop">
+          <div class="mdrop-item" onclick="alert('Keneth Martin — Personal Portfolio\nBuilt with vanilla HTML, CSS & JS.\nVersion 1.0')">About</div>
+        </div></span>
       </div>
       <div class="win-body" style="padding:6px;">
         <div class="inset" style="padding:12px; max-height:calc(100vh - 160px); overflow-y:auto;">
@@ -1399,7 +1476,7 @@
         <span class="win-titlebar-text">Contact Keneth</span>
         <div class="win-controls">
           <div class="wbtn" onclick="minimizeWin('win-contact')">_</div>
-          <div class="wbtn">&#9633;</div>
+          <div class="wbtn" id="max-win-contact" onclick="maximizeWin('win-contact')">&#9633;</div>
           <div class="wbtn" onclick="closeWin('win-contact')" style="font-weight:bold;">&#x2715;</div>
         </div>
       </div>
@@ -1499,7 +1576,7 @@
       </div>
       <hr class="sm-rule" />
       <div class="sm-item" style="color:#800;"
-        onclick="alert('Shut Down?\n\nAre you sure you want to leave this page?\n\n[ Yes ] — you cannot.')">
+        onclick="if(confirm('Shut Down?\n\nAre you sure you want to close this page?')) window.close()">
         <svg viewBox="0 0 24 24">
           <circle cx="12" cy="12" r="9" fill="#c0c0c0" stroke="#808080" />
           <rect x="11" y="5" width="2" height="8" fill="#000" />
@@ -1546,6 +1623,30 @@
       document.getElementById(id).style.display = 'none';
       const tb = document.getElementById('tb-' + id);
       if (tb) tb.style.display = 'none';
+    }
+
+    // ── Maximize / Restore ──
+    const winRestoreState = {};
+    function maximizeWin(id) {
+      const el = document.getElementById(id);
+      const btn = document.getElementById('max-' + id);
+      if (winRestoreState[id]) {
+        const s = winRestoreState[id];
+        el.style.left = s.left; el.style.top = s.top;
+        el.style.width = s.width; el.style.height = s.height;
+        delete winRestoreState[id];
+        if (btn) btn.textContent = '□';
+      } else {
+        winRestoreState[id] = {
+          left: el.style.left, top: el.style.top,
+          width: el.style.width, height: el.style.height
+        };
+        el.style.left = '0px'; el.style.top = '0px';
+        el.style.width = '100vw';
+        el.style.height = 'calc(100vh - 42px)';
+        if (btn) btn.textContent = '❏';
+        focusWin(id);
+      }
     }
 
     // Click window body to focus
@@ -1863,6 +1964,22 @@
       const form = e.target;
       const msg = document.getElementById('contact-msg');
       const btn = form.querySelector('button[type=submit]');
+
+      // Field validation
+      const name = form.querySelector('#cf-name').value.trim();
+      const email = form.querySelector('#cf-email').value.trim();
+      const message = form.querySelector('#cf-msg').value.trim();
+      const empty = [];
+      if (!name) empty.push('Name');
+      if (!email) empty.push('Email');
+      if (!message) empty.push('Message');
+      if (empty.length) {
+        msg.textContent = 'Please fill in: ' + empty.join(', ');
+        msg.className = 'form-msg err';
+        msg.style.display = 'block';
+        return;
+      }
+
       btn.textContent = 'Sending…';
       btn.disabled = true;
       msg.style.display = 'none';
