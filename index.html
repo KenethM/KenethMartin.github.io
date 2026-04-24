@@ -780,6 +780,15 @@
       border-color: #fff #000 #000 #fff;
     }
 
+    .tool-btn.disabled {
+      color: #888;
+      cursor: default;
+    }
+
+    .tool-btn.disabled:hover {
+      border-color: #fff #808080 #808080 #fff;
+    }
+
     .brush-btn {
       width: 30px;
       height: 28px;
@@ -1086,19 +1095,22 @@
       </div>
       <div class="win-menubar">
         <span class="mitem">File<div class="mdrop">
-          <div class="mdrop-item" onclick="minimizeWin('win-about')">Minimize</div>
-          <div class="mdrop-item" onclick="maximizeWin('win-about')">Maximize / Restore</div>
-          <hr class="mdrop-sep"/>
-          <div class="mdrop-item" onclick="closeWin('win-about')">Close</div>
-        </div></span>
+            <div class="mdrop-item" onclick="minimizeWin('win-about')">Minimize</div>
+            <div class="mdrop-item" onclick="maximizeWin('win-about')">Maximize / Restore</div>
+            <hr class="mdrop-sep" />
+            <div class="mdrop-item" onclick="closeWin('win-about')">Close</div>
+          </div></span>
         <span class="mitem">Help<div class="mdrop">
-          <div class="mdrop-item" onclick="alert('Keneth Martin — Personal Portfolio\nBuilt with vanilla HTML, CSS & JS.\nVersion 1.0')">About</div>
-        </div></span>
+            <div class="mdrop-item"
+              onclick="alert('Keneth Martin — Personal Portfolio\nBuilt with vanilla HTML, CSS & JS.\nVersion 1.0')">
+              About</div>
+          </div></span>
       </div>
       <div class="win-body" style="padding:6px;">
         <div class="inset" style="padding:14px; flex:1; min-height:320px;">
           <div class="about-wrap">
-            <img class="about-photo" src="Images/IMG_2379.png" alt="Keneth Martin" onclick="openLightbox(this)" style="cursor:zoom-in;" title="Click to enlarge" />
+            <img class="about-photo" src="Images/IMG_2379.png" alt="Keneth Martin" onclick="openLightbox(this)"
+              style="cursor:zoom-in;" title="Click to enlarge" />
             <div>
               <p><strong>Keneth Martin</strong></p>
               <p>Howdy! I'm from the Big Island, born and raised. After living on a farm for most of my life, I wanted
@@ -1137,14 +1149,16 @@
       </div>
       <div class="win-menubar">
         <span class="mitem">File<div class="mdrop">
-          <div class="mdrop-item" onclick="minimizeWin('win-exp')">Minimize</div>
-          <div class="mdrop-item" onclick="maximizeWin('win-exp')">Maximize / Restore</div>
-          <hr class="mdrop-sep"/>
-          <div class="mdrop-item" onclick="closeWin('win-exp')">Close</div>
-        </div></span>
+            <div class="mdrop-item" onclick="minimizeWin('win-exp')">Minimize</div>
+            <div class="mdrop-item" onclick="maximizeWin('win-exp')">Maximize / Restore</div>
+            <hr class="mdrop-sep" />
+            <div class="mdrop-item" onclick="closeWin('win-exp')">Close</div>
+          </div></span>
         <span class="mitem">Help<div class="mdrop">
-          <div class="mdrop-item" onclick="alert('Keneth Martin — Personal Portfolio\nBuilt with vanilla HTML, CSS & JS.\nVersion 1.0')">About</div>
-        </div></span>
+            <div class="mdrop-item"
+              onclick="alert('Keneth Martin — Personal Portfolio\nBuilt with vanilla HTML, CSS & JS.\nVersion 1.0')">
+              About</div>
+          </div></span>
       </div>
       <div class="win-body" style="padding:6px;">
         <div class="inset" style="padding:14px; height:450px;">
@@ -1240,17 +1254,22 @@
       </div>
       <div class="win-menubar">
         <span class="mitem">File<div class="mdrop">
-          <div class="mdrop-item" onclick="saveCanvas()">Save as PNG</div>
-          <hr class="mdrop-sep"/>
-          <div class="mdrop-item" onclick="minimizeWin('win-paint')">Minimize</div>
-          <div class="mdrop-item" onclick="closeWin('win-paint')">Close</div>
-        </div></span>
+            <div class="mdrop-item" onclick="saveCanvas()">Save as PNG</div>
+            <hr class="mdrop-sep" />
+            <div class="mdrop-item" onclick="minimizeWin('win-paint')">Minimize</div>
+            <div class="mdrop-item" onclick="closeWin('win-paint')">Close</div>
+          </div></span>
         <span class="mitem">Edit<div class="mdrop">
-          <div class="mdrop-item" onclick="clearCanvas()">Clear Canvas</div>
-        </div></span>
+            <div class="mdrop-item" onclick="paintUndo()">Undo</div>
+            <div class="mdrop-item" onclick="paintRedo()">Redo</div>
+            <hr class="mdrop-sep" />
+            <div class="mdrop-item" onclick="clearCanvas()">Clear Canvas</div>
+          </div></span>
         <span class="mitem">Help<div class="mdrop">
-          <div class="mdrop-item" onclick="alert('Keneth Martin — Personal Portfolio\nBuilt with vanilla HTML, CSS & JS.\nVersion 1.0')">About</div>
-        </div></span>
+            <div class="mdrop-item"
+              onclick="alert('Keneth Martin — Personal Portfolio\nBuilt with vanilla HTML, CSS & JS.\nVersion 1.0')">
+              About</div>
+          </div></span>
       </div>
 
       <!-- Toolbar -->
@@ -1274,6 +1293,9 @@
         <div class="paint-sep"></div>
         <div class="tool-btn" onclick="clearCanvas()" title="Clear">Clear</div>
         <div class="tool-btn" onclick="saveCanvas()" title="Save as PNG">Save</div>
+        <div class="paint-sep"></div>
+        <div class="tool-btn disabled" id="pbtn-undo" onclick="paintUndo()" title="Undo (Ctrl+Z)">&#8617;</div>
+        <div class="tool-btn disabled" id="pbtn-redo" onclick="paintRedo()" title="Redo (Ctrl+Y)">&#8618;</div>
       </div>
 
       <!-- Canvas -->
@@ -1332,14 +1354,16 @@
       </div>
       <div class="win-menubar">
         <span class="mitem">File<div class="mdrop">
-          <div class="mdrop-item" onclick="minimizeWin('win-skills')">Minimize</div>
-          <div class="mdrop-item" onclick="maximizeWin('win-skills')">Maximize / Restore</div>
-          <hr class="mdrop-sep"/>
-          <div class="mdrop-item" onclick="closeWin('win-skills')">Close</div>
-        </div></span>
+            <div class="mdrop-item" onclick="minimizeWin('win-skills')">Minimize</div>
+            <div class="mdrop-item" onclick="maximizeWin('win-skills')">Maximize / Restore</div>
+            <hr class="mdrop-sep" />
+            <div class="mdrop-item" onclick="closeWin('win-skills')">Close</div>
+          </div></span>
         <span class="mitem">Help<div class="mdrop">
-          <div class="mdrop-item" onclick="alert('Keneth Martin — Personal Portfolio\nBuilt with vanilla HTML, CSS & JS.\nVersion 1.0')">About</div>
-        </div></span>
+            <div class="mdrop-item"
+              onclick="alert('Keneth Martin — Personal Portfolio\nBuilt with vanilla HTML, CSS & JS.\nVersion 1.0')">
+              About</div>
+          </div></span>
       </div>
       <div class="win-body" style="padding:6px;">
         <div class="inset" style="padding:14px;">
@@ -1401,14 +1425,16 @@
       </div>
       <div class="win-menubar">
         <span class="mitem">File<div class="mdrop">
-          <div class="mdrop-item" onclick="minimizeWin('win-projects')">Minimize</div>
-          <div class="mdrop-item" onclick="maximizeWin('win-projects')">Maximize / Restore</div>
-          <hr class="mdrop-sep"/>
-          <div class="mdrop-item" onclick="closeWin('win-projects')">Close</div>
-        </div></span>
+            <div class="mdrop-item" onclick="minimizeWin('win-projects')">Minimize</div>
+            <div class="mdrop-item" onclick="maximizeWin('win-projects')">Maximize / Restore</div>
+            <hr class="mdrop-sep" />
+            <div class="mdrop-item" onclick="closeWin('win-projects')">Close</div>
+          </div></span>
         <span class="mitem">Help<div class="mdrop">
-          <div class="mdrop-item" onclick="alert('Keneth Martin — Personal Portfolio\nBuilt with vanilla HTML, CSS & JS.\nVersion 1.0')">About</div>
-        </div></span>
+            <div class="mdrop-item"
+              onclick="alert('Keneth Martin — Personal Portfolio\nBuilt with vanilla HTML, CSS & JS.\nVersion 1.0')">
+              About</div>
+          </div></span>
       </div>
       <div class="win-body" style="padding:6px;">
         <div class="inset" style="padding:12px; max-height:calc(100vh - 160px); overflow-y:auto;">
@@ -1416,7 +1442,8 @@
 
             <div class="proj-card">
               <div class="proj-thumb">
-                <img src="Images/haw_learn.gif" alt="ʻŌlelo Hawaiʻi Learning Platform" onclick="openLightbox(this)" style="cursor:zoom-in;" loading="lazy" title="Click to enlarge" />
+                <img src="Images/haw_learn.gif" alt="ʻŌlelo Hawaiʻi Learning Platform" onclick="openLightbox(this)"
+                  style="cursor:zoom-in;" loading="lazy" title="Click to enlarge" />
               </div>
               <div class="proj-info">
                 <div class="proj-title">&#699;&#332;lelo Hawai&#699;i Learning Platform</div>
@@ -1433,11 +1460,13 @@
 
             <div class="proj-card">
               <div class="proj-thumb">
-                <img src="Images/BirdPipe.gif" alt="BirdPipe" onclick="openLightbox(this)" style="cursor:zoom-in;" loading="lazy" title="Click to enlarge" />
+                <img src="Images/BirdPipe.gif" alt="BirdPipe" onclick="openLightbox(this)" style="cursor:zoom-in;"
+                  loading="lazy" title="Click to enlarge" />
               </div>
               <div class="proj-info">
                 <div class="proj-title">Lohe Lab Bird Audio Analysis Tool</div>
-                <div class="proj-desc">Creating a tool for the Lohe Lab located on the UH Hilo campus that allows for an all-in-one location for data upload, classification, and validation.</div>
+                <div class="proj-desc">Creating a tool for the Lohe Lab located on the UH Hilo campus that allows for an
+                  all-in-one location for data upload, classification, and validation.</div>
                 <div class="exp-tags">
                   <span class="tag">Python</span><span class="tag">GitHub</span>
                 </div>
@@ -1449,11 +1478,14 @@
 
             <div class="proj-card">
               <div class="proj-thumb">
-                <img src="Images/purple.gif" alt="Purple Maia" onclick="openLightbox(this)" style="cursor:zoom-in;" loading="lazy" title="Click to enlarge" />
+                <img src="Images/purple.gif" alt="Purple Maia" onclick="openLightbox(this)" style="cursor:zoom-in;"
+                  loading="lazy" title="Click to enlarge" />
               </div>
               <div class="proj-info">
                 <div class="proj-title">&#699;&#332;lelo Research Agent</div>
-                <div class="proj-desc">An agentic search tool — an environment-focused web interface that leverages the UH M&#257;noa CTAHR database in collaboration with the &#699;&#256;ina Foundry, part of Purple Mai&#699;a Foundation.</div>
+                <div class="proj-desc">An agentic search tool — an environment-focused web interface that leverages the
+                  UH M&#257;noa CTAHR database in collaboration with the &#699;&#256;ina Foundry, part of Purple
+                  Mai&#699;a Foundation.</div>
                 <div class="exp-tags">
                   <span class="tag">JavaScript</span><span class="tag">HTML/CSS</span>
                 </div>
@@ -1819,6 +1851,8 @@
     let bgColor = '#ffffff';
     let painting = false;
     let lastX = 0, lastY = 0;
+    let paintHistory = [];
+    let paintRedoStack = [];
 
     const PALETTE = [
       '#000000', '#808080', '#800000', '#808000', '#008000', '#008080', '#000080', '#800080',
@@ -1855,6 +1889,9 @@
         paintCtx.fillStyle = bgColor;
         paintCtx.fillRect(0, 0, newW, newH);
         paintCtx.drawImage(tmp, 0, 0);
+        paintHistory = [];
+        paintRedoStack = [];
+        updateUndoRedo();
       }
 
       resizePaintCanvas();
@@ -1887,6 +1924,7 @@
         canvas.setPointerCapture(e.pointerId);
         const [x, y] = canvasXY(canvas, e);
         if (paintTool === 'fill') { floodFill(x, y); return; }
+        savePaintHistory();
         painting = true;
         lastX = x; lastY = y;
         paintDot(x, y);
@@ -1944,6 +1982,7 @@
     }
 
     function clearCanvas() {
+      savePaintHistory();
       paintCtx.fillStyle = bgColor;
       paintCtx.fillRect(0, 0, paintCtx.canvas.width, paintCtx.canvas.height);
     }
@@ -1957,6 +1996,7 @@
     }
 
     function floodFill(x, y) {
+      savePaintHistory();
       const { width: w, height: h } = paintCtx.canvas;
       const img = paintCtx.getImageData(0, 0, w, h);
       const d = img.data;
@@ -1982,6 +2022,44 @@
       }
       paintCtx.putImageData(img, 0, 0);
     }
+
+    function savePaintHistory() {
+      const canvas = paintCtx.canvas;
+      paintHistory.push(paintCtx.getImageData(0, 0, canvas.width, canvas.height));
+      if (paintHistory.length > 50) paintHistory.shift();
+      paintRedoStack = [];
+      updateUndoRedo();
+    }
+
+    function paintUndo() {
+      if (!paintHistory.length) return;
+      const canvas = paintCtx.canvas;
+      paintRedoStack.push(paintCtx.getImageData(0, 0, canvas.width, canvas.height));
+      paintCtx.putImageData(paintHistory.pop(), 0, 0);
+      updateUndoRedo();
+    }
+
+    function paintRedo() {
+      if (!paintRedoStack.length) return;
+      const canvas = paintCtx.canvas;
+      paintHistory.push(paintCtx.getImageData(0, 0, canvas.width, canvas.height));
+      paintCtx.putImageData(paintRedoStack.pop(), 0, 0);
+      updateUndoRedo();
+    }
+
+    function updateUndoRedo() {
+      const u = document.getElementById('pbtn-undo');
+      const r = document.getElementById('pbtn-redo');
+      if (u) u.classList.toggle('disabled', paintHistory.length === 0);
+      if (r) r.classList.toggle('disabled', paintRedoStack.length === 0);
+    }
+
+    document.addEventListener('keydown', e => {
+      if (!e.ctrlKey) return;
+      const k = e.key.toLowerCase();
+      if (k === 'z' && !e.shiftKey) { e.preventDefault(); paintUndo(); }
+      if (k === 'y' || (k === 'z' && e.shiftKey)) { e.preventDefault(); paintRedo(); }
+    });
 
     // ── Contact form ──
     document.getElementById('contact-form').addEventListener('submit', async e => {
@@ -2051,7 +2129,8 @@
             padding:0 5px; font-weight:bold; line-height:16px;">&#x2715;</span>
         </div>
         <div style="padding:8px;">
-          <img id="lightbox-img" src="" alt="" style="width:960px; height:540px; max-width:90vw; max-height:80vh; object-fit:contain; background:#000; display:block;" />
+          <img id="lightbox-img" src="" alt=""
+            style="width:960px; height:540px; max-width:90vw; max-height:80vh; object-fit:contain; background:#000; display:block;" />
         </div>
       </div>
     </div>
@@ -2068,7 +2147,7 @@
       document.getElementById('lightbox').style.display = 'none';
       document.getElementById('lightbox-img').src = '';
     }
-    document.addEventListener('keydown', function(e) {
+    document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') closeLightbox();
     });
   </script>
